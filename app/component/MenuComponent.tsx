@@ -6,6 +6,15 @@ import { ZCOOL_KuaiLe } from "next/font/google";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "@/components/ui/avatar";
+
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 export default function MenuComponent({
@@ -15,6 +24,14 @@ export default function MenuComponent({
 }) {
 	const [blink, setBlink] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isLogin, setIsLogin] = useState(false);
+	const { data: session, status } = useSession();
+	const router = useRouter();
+	useEffect(() => {
+		if (status === "authenticated") {
+			setIsLogin(true);
+		}
+	}, [status]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -32,6 +49,11 @@ export default function MenuComponent({
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
+	};
+
+	const handleLinkClick = (path: string) => {
+		router.push(path);
+		setIsMenuOpen(false);
 	};
 
 	return (
@@ -80,6 +102,7 @@ export default function MenuComponent({
 							<a
 								href="#"
 								className="hover:text-gray-300 transition-colors"
+								onClick={() => handleLinkClick("/")}
 							>
 								首页
 							</a>
@@ -102,22 +125,38 @@ export default function MenuComponent({
 								联系方式
 							</a>
 							<div className="flex gap-4 md:gap-14">
-								<Button>
-									<a
-										href="#"
-										className="hover:text-gray-300 transition-colors"
-									>
-										登录
-									</a>
-								</Button>
-								<Button>
-									<a
-										href="#"
-										className="hover:text-gray-300 transition-colors"
-									>
-										注册
-									</a>
-								</Button>
+								{!isLogin ? (
+									<div className="flex gap-4 md:gap-14">
+										<Button
+											onClick={() => handleLinkClick("/auth/login")}
+										>
+											登录
+										</Button>
+										<Button
+											onClick={() =>
+												handleLinkClick("/auth/register/account")
+											}
+										>
+											注册
+										</Button>
+									</div>
+								) : (
+									<div className="flex flex-col gap-2 justify-center items-center">
+											<Avatar className="w-10 h-10 md:w-16 md:h-16 border-2 border-white"
+												onClick={() => handleLinkClick("/profile")}
+											>
+											<AvatarImage src={session?.user.image || "null"} alt="U" />
+											<AvatarFallback>CN</AvatarFallback>
+										</Avatar>
+										<Button
+											onClick={() =>
+												signOut({ callbackUrl: "/auth/login" })
+											}
+										>
+											退出
+										</Button>
+									</div>
+								)}
 							</div>
 						</div>
 

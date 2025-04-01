@@ -33,7 +33,7 @@ export default function AppointmentReminder() {
 	};
 
 	return (
-		<div className="w-80 h-40 bg-white rounded-t-2xl rounded-bl-2xl p-2 px-4 border-2 ">
+		<div className="w-80 h-fit bg-white rounded-t-2xl rounded-bl-2xl p-2 px-4 border-2 ">
 			<div
 				className={`${zcool.className} text-[#fa5e75] flex justify-between`}
 			>

@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  username        String   @unique
+  password        String
+  image          String    @default("https://robohash.org/c143b89fb9077cdd6fd77269a7bfefb5?set=set4&bgset=&size=400x400")
+  membershipType String    @default("free")
+  securityQuestion String
+  securityAnswer   String
+  nickname        String?
+  gender          Gender?
+  lastLoginAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}

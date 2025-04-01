@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
+
 import DailyInfo from "./component/daily_info";
-import MenuComponent from "./component/MenuComponent";
+
 import "animate.css";
 import AppointmentReminder from "./component/AppointmentReminder";
 import { ZCOOL_KuaiLe } from "next/font/google";
@@ -36,23 +36,10 @@ export default function Home() {
 		router.push(url || "/");
 	};
 	return (
-		<div className="w-full h-svh bg-[url('/background_img.png')] bg-cover bg-center">
+		<div className="w-full h-full flex flex-col">
 			<Toaster />
-			<div className="w-full h-full flex flex-col justify-between px-4 md:px-10">
-				<div className="flex justify-between pt-4">
-					<Image
-						src="/Beaver.svg"
-						alt="美甲店标志"
-						width={isMobile ? 120 : 180}
-						height={isMobile ? 120 : 180}
-						className="z-10"
-					/>
-					<MenuComponent
-						className={`${
-							isMobile ? "absolute" : "fixed"
-						} top-0 right-0`}
-					/>
-				</div>
+			<div className="w-full flex-1 flex flex-col justify-between px-4 md:px-10">
+
 				<div
 					className={`w-full flex-1 bg-transparent flex flex-col gap-6 md:gap-10 items-center justify-center ${zcool.className} mt-4 md:mt-0`}
 				>
@@ -72,7 +59,7 @@ export default function Home() {
 				<div
 					className={`${
 						isMobile ? "flex flex-col gap-4" : "flex justify-between"
-					} p-3 md:p-5 mb-2 md:mb-0`}
+					} p-3 md:p-5 mb-2 md:mb-0 w-full mt-auto`}
 				>
 					<div className={isMobile ? "self-center" : ""}>
 						<DailyInfo />

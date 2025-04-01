@@ -1,0 +1,149 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ZCOOL_KuaiLe } from "next/font/google";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRegisterStore } from "../registerStore";
+import { toast } from "react-hot-toast";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+
+const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
+
+const UserInfoPage = () => {
+	const router = useRouter();
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const {
+		account,
+		password,
+		securityQuestion,
+		securityAnswer,
+		nickname,
+		gender,
+		setNickname,
+		setGender,
+		reset
+	} = useRegisterStore();
+
+	const handleLinkClick = (url?: string) => {
+		router.push(url || "/");
+	};
+
+	const handleRegister = async () => {
+		// 验证前面步骤的数据是否完整
+		if (!account || !password || !securityQuestion || !securityAnswer) {
+			toast.error("请完成前面的注册步骤");
+			router.push("/auth/register/account");
+			return;
+		}
+
+		setIsSubmitting(true);
+
+		try {
+			const response = await fetch("/api/register", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					account,
+					password,
+					securityQuestion,
+					securityAnswer,
+					nickname: nickname || undefined,
+					gender: gender || undefined,
+					mode:"create"
+				}),
+			});
+
+			const data = await response.json();
+
+			if (data.success) {
+				toast.success("注册成功！");
+				reset(); // 重置表单
+				router.push("/auth/login");
+			} else {
+				toast.error(`注册失败: ${data.message}`);
+			}
+		} catch (error) {
+			console.error("注册请求失败:", error);
+			toast.error("注册失败，请稍后重试");
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+
+	return (
+		<div
+			className={`bg-[url('/background_img.png')] bg-cover bg-center w-full h-full flex items-end justify-center ${zcool.className}`}
+		>
+			<div className="border-none bg-gradient-to-r from-pink-300 to-pink-400 w-full md:w-2/3 h-fit md:h-full rounded-b-none rounded-t-full flex flex-col items-center justify-center">
+				<div className="w-2/3 flex flex-col justify-between h-full py-12 gap-5">
+					<div className="flex items-center justify-center text-3xl md:text-5xl">
+						个人信息
+					</div>
+					<div className="">
+						<div className="text-lg">昵称</div>
+						<div className="flex gap-3 items-center">
+							<Input
+								value={nickname}
+								onChange={(e) => setNickname(e.target.value)}
+								className="border-b-2 border-transparent shadow-sm focus:border-black focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
+							/>
+						</div>
+					</div>
+					<div className="">
+						<div className="text-lg">性别</div>
+						<div className="flex gap-3 items-center">
+							<Select value={gender} onValueChange={setGender}>
+								<SelectTrigger className="w-[180px] border-none">
+									<SelectValue placeholder="选择性别" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="MALE">男</SelectItem>
+									<SelectItem value="FEMALE">女</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
+					</div>
+
+					<div className="flex">
+						<div
+							className="flex justify-center items-center w-full"
+							onClick={() => handleLinkClick("/auth/register/securityQuestion")}
+						>
+							<Button variant="outline">返回</Button>
+						</div>
+						<div className="flex justify-center items-center w-full">
+							<Button
+								onClick={handleRegister}
+								disabled={isSubmitting}
+							>
+								{isSubmitting ? "注册中..." : "注册"}
+							</Button>
+						</div>
+					</div>
+					<div className="flex justify-center items-center w-full text-sm md:text-base">
+						<div className="flex">
+							<div className="">已经有账号？</div>
+							<div
+								className="ml-1 cursor-pointer hover:underline"
+								onClick={() => handleLinkClick("/auth/login")}
+							>
+								登录
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default UserInfoPage;
