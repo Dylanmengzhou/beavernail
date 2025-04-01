@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ZCOOL_KuaiLe } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRegisterStore } from "../registerStore";
 import { toast } from "react-hot-toast";
 import {
@@ -13,12 +13,18 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import {
+	InputOTP,
+	InputOTPGroup,
+	InputOTPSlot,
+} from "@/components/ui/input-otp";
 
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 const UserInfoPage = () => {
 	const router = useRouter();
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [birthdayString, setBirthdayString] = useState("");
 	const {
 		account,
 		password,
@@ -26,18 +32,44 @@ const UserInfoPage = () => {
 		securityAnswer,
 		nickname,
 		gender,
+		birthday,
 		setNickname,
 		setGender,
-		reset
+		setBirthday,
+		reset,
 	} = useRegisterStore();
+
+	// 添加一个useEffect来处理birthdayString的变化
+	useEffect(() => {
+		if (birthdayString.length === 8) {
+			// 格式为YYYYMMDD，如20000613
+			const year = parseInt(birthdayString.substring(0, 4));
+			const month = parseInt(birthdayString.substring(4, 6)) - 1; // 月份从0开始
+			const day = parseInt(birthdayString.substring(6, 8));
+
+			// 创建Date对象
+			const birthdayDate = new Date(year, month, day);
+
+			// 检查日期是否有效
+			if (!isNaN(birthdayDate.getTime())) {
+				setBirthday(birthdayDate);
+			}
+		}
+	}, [birthdayString, setBirthday]);
 
 	const handleLinkClick = (url?: string) => {
 		router.push(url || "/");
 	};
 
 	const handleRegister = async () => {
+
 		// 验证前面步骤的数据是否完整
-		if (!account || !password || !securityQuestion || !securityAnswer) {
+		if (
+			!account ||
+			!password ||
+			!securityQuestion ||
+			!securityAnswer
+		) {
 			toast.error("请完成前面的注册步骤");
 			router.push("/auth/register/account");
 			return;
@@ -56,9 +88,10 @@ const UserInfoPage = () => {
 					password,
 					securityQuestion,
 					securityAnswer,
+					birthday: birthday || undefined,
 					nickname: nickname || undefined,
 					gender: gender || undefined,
-					mode:"create"
+					mode: "create",
 				}),
 			});
 
@@ -99,6 +132,32 @@ const UserInfoPage = () => {
 						</div>
 					</div>
 					<div className="">
+						<div className="text-lg">生日</div>
+						<div className="flex gap-3 items-center">
+							<InputOTP maxLength={8} className="border-black"
+								value={birthdayString}
+								onChange={(birthdayString) => setBirthdayString(birthdayString)}
+							>
+								<InputOTPGroup>
+									<InputOTPSlot index={0} />
+									<InputOTPSlot index={1} />
+									<InputOTPSlot index={2} />
+									<InputOTPSlot index={3} />
+								</InputOTPGroup>
+								<div className="">-</div>
+								<InputOTPGroup>
+									<InputOTPSlot index={4} />
+									<InputOTPSlot index={5} />
+								</InputOTPGroup>
+								<div className="">-</div>
+								<InputOTPGroup>
+									<InputOTPSlot index={6} />
+									<InputOTPSlot index={7} />
+								</InputOTPGroup>
+							</InputOTP>
+						</div>
+					</div>
+					<div className="">
 						<div className="text-lg">性别</div>
 						<div className="flex gap-3 items-center">
 							<Select value={gender} onValueChange={setGender}>
@@ -116,7 +175,9 @@ const UserInfoPage = () => {
 					<div className="flex">
 						<div
 							className="flex justify-center items-center w-full"
-							onClick={() => handleLinkClick("/auth/register/securityQuestion")}
+							onClick={() =>
+								handleLinkClick("/auth/register/securityQuestion")
+							}
 						>
 							<Button variant="outline">返回</Button>
 						</div>

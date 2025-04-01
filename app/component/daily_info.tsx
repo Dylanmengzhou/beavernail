@@ -38,14 +38,13 @@ const weatherMapping: Record<string, string> = {
 
 const DailyInfo = () => {
 	const [date, setDate] = useState(new Date());
-	const [weather, setWeather] = useState("sunny"); // 默认天气
-	const [location, setLocation] = useState("");
+	const [weather, setWeather] = useState("Hongdae"); // 默认天气
 
 	useEffect(() => {
 		// 更新日期
 		const timer = setInterval(() => {
 			setDate(new Date());
-		}, 60000); // 每分钟更新一次
+		}, 60000*60*24); // 每天更新一次
 
 		// 获取天气信息
 		const fetchWeather = async () => {
@@ -69,7 +68,6 @@ const DailyInfo = () => {
 				const mappedWeather = weatherMapping[condition] || "sunny";
 
 				setWeather(mappedWeather);
-				setLocation("Hongdae Seoul");
 
 				console.log("天气更新成功:", mappedWeather, "原始天气:", condition);
 			} catch (error) {
@@ -107,7 +105,7 @@ const DailyInfo = () => {
 					width={40}
 					height={40}
 				/>
-				<span>{location}</span>
+				<span>Hongdae</span>
 			</div>
 		</div>
 	);

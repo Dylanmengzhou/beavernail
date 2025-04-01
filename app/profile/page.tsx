@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
-import { LogOut } from 'lucide-react';
+import { LogOut } from "lucide-react";
 import { Coiny } from "next/font/google";
 import { ZCOOL_KuaiLe } from "next/font/google";
 import { History } from "lucide-react";
-import { UserRoundPen } from 'lucide-react';
+import { UserRoundPen } from "lucide-react";
 import {
 	Card,
-  CardContent,
-  CardFooter,
+	CardContent,
+	CardFooter,
 	CardDescription,
 	CardHeader,
 	CardTitle,
@@ -57,7 +57,10 @@ const ProfilePage = () => {
 					</CardTitle>
 					<CardDescription className="text-black">
 						<div className="flex flex-col">
-							<div className="text-xl truncate max-w-[200px] md:max-w-[250px]" title={session?.user.username || ""}>
+							<div
+								className="text-xl truncate max-w-[200px] md:max-w-[250px]"
+								title={session?.user.username || ""}
+							>
 								{session?.user.username}
 							</div>
 							<div className="flex items-center gap-3">
@@ -82,15 +85,21 @@ const ProfilePage = () => {
 						<div className="w-full flex flex-col items-center justify-center">
 							<Button className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-white hover:bg-white text-black rounded-4xl">
 								<UserRoundPen size={18} />
-								<span className={`text-base ${zcool.className}`}>
-									修改个人信息
+								<span
+									className={`text-base ${zcool.className}`}
+									onClick={() => router.push("/profile/setting")}
+								>
+									个人名片
 								</span>
 							</Button>
 						</div>
 						<div className="w-full flex flex-col items-center justify-center">
-              <Button className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-500 text-white rounded-4xl"
-              onClick={() => signOut({ callbackUrl: "/auth/login" })}
-              >
+							<Button
+								className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-500 text-white rounded-4xl"
+								onClick={() =>
+									signOut({ callbackUrl: "/auth/login" })
+								}
+							>
 								<LogOut size={18} />
 								<span className={`text-base ${zcool.className}`}>
 									退出
@@ -98,10 +107,8 @@ const ProfilePage = () => {
 							</Button>
 						</div>
 					</CardContent>
-        </CardContent>
-        <CardFooter>
-
-      </CardFooter>
+				</CardContent>
+				<CardFooter></CardFooter>
 			</Card>
 		</div>
 	);

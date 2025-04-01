@@ -14,6 +14,8 @@ declare module "next-auth" {
 			nickname?: string | null;
 			gender?: string | null;
 			lastLoginAt?: Date | null;
+			createdAt?: Date | null;
+			birthday?: Date | null;
 		};
 	}
 	// 添加这个接口声明
@@ -26,6 +28,8 @@ declare module "next-auth" {
 		nickname?: string | null;
 		gender?: string | null;
 		lastLoginAt?: Date | null;
+		createdAt?: Date | null;
+		birthday?: Date | null;
 	}
 }
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -69,6 +73,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					nickname: user.nickname,
 					gender: user.gender,
 					lastLoginAt: user.lastLoginAt,
+					createdAt: user.createdAt, // 修改这里，将 createdAt 改为 createAt
+					birthday: user.birthday
 				};
 			},
 		}),
@@ -89,6 +95,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				token.nickname = user.nickname;
 				token.gender = user.gender;
 				token.lastLoginAt = user.lastLoginAt;
+				token.createdAt = user.createdAt;
+				token.birthday = user.birthday;
 			}
 			return token;
 		},
@@ -104,6 +112,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				session.user.nickname = token.nickname as string;
 				session.user.gender = token.gender as string;
 				session.user.lastLoginAt = token.lastLoginAt as Date;
+				session.user.createdAt = token.createdAt as Date;
+				session.user.birthday = token.birthday as Date;
 			}
 			return session;
 		},

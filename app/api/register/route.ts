@@ -7,9 +7,10 @@ const register = async (
 	password: string,
 	securityQuestion: string,
 	securityAnswer: string,
+	birthday: Date,
 	nickname?: string,
-    gender?: string,
-    mode?:string
+	gender?: string,
+	mode?: string
 ) => {
 	// 检查用户名是否已存在
 	const user = await prisma.user.findUnique({
@@ -36,6 +37,7 @@ const register = async (
 						? "MALE"
 						: "FEMALE"
 					: null, // 确保值匹配枚举
+				birthday: birthday || null,
 				lastLoginAt: null,
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -53,13 +55,14 @@ export async function POST(req: NextRequest) {
 		password,
 		securityQuestion,
 		securityAnswer,
+		birthday,
 		nickname,
-        gender,
-        mode
+		gender,
+		mode,
 	} = body;
 
 	// 验证必填字段
-	if (!account || !password || !securityQuestion || !securityAnswer) {
+	if (!account || !password || !securityQuestion) {
 		return NextResponse.json(
 			{ success: false, message: "缺少必要信息" },
 			{ status: 400 }
@@ -72,9 +75,10 @@ export async function POST(req: NextRequest) {
 			password,
 			securityQuestion,
 			securityAnswer,
+			birthday,
 			nickname,
-            gender,
-            mode
+			gender,
+			mode
 		);
 
 		console.log("注册结果:", result);
