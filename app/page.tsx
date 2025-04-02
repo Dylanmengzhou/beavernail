@@ -50,7 +50,7 @@ export default function Home() {
 					</span> */}
 					<Button
 						className={`bg-gradient-to-r from-red-400 to-pink-500 drop-shadow-2xl text-xl md:text-3xl p-3 md:p-5  w-24 h-24 rounded-full md:w-52 md:h-52`}
-						onClick={() => handleClick("/appointment")}
+						onClick={() => handleClick("/reservation")}
 					>
 						快速预约
 					</Button>

@@ -8,168 +8,177 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
+// import { signOut } from "next-auth/react";
 import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
+   Avatar,
+   AvatarFallback,
+   AvatarImage,
 } from "@/components/ui/avatar";
+
 
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 export default function MenuComponent({
-	className,
+   className,
 }: {
-	className?: string;
+   className?: string;
 }) {
-	const [blink, setBlink] = useState(false);
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [isLogin, setIsLogin] = useState(false);
-	const { data: session, status } = useSession();
-	const router = useRouter();
-	useEffect(() => {
-		if (status === "authenticated") {
-			setIsLogin(true);
-		}
-	}, [status]);
+   const [blink, setBlink] = useState(false);
+   const [isMenuOpen, setIsMenuOpen] = useState(false);
+   const [isLogin, setIsLogin] = useState(false);
+   const { status } = useSession();
+   const router = useRouter();
+   useEffect(() => {
+       if (status === "authenticated") {
+           setIsLogin(true);
+       }
+   }, [status]);
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setBlink(true);
-			setTimeout(() => {
-				setBlink(false);
-				setTimeout(() => {
-					setBlink(true);
-					setTimeout(() => setBlink(false), 100); // 第二次眨眼结束
-				}, 100); // 第二次眨眼开始
-			}, 100); // 第一次眨眼结束
-		}, 3000); // 每3秒眨眼两次
-		return () => clearInterval(interval);
-	}, []);
 
-	const toggleMenu = () => {
-		setIsMenuOpen(!isMenuOpen);
-	};
+   useEffect(() => {
+       const interval = setInterval(() => {
+           setBlink(true);
+           setTimeout(() => {
+               setBlink(false);
+               setTimeout(() => {
+                   setBlink(true);
+                   setTimeout(() => setBlink(false), 100); // 第二次眨眼结束
+               }, 100); // 第二次眨眼开始
+           }, 100); // 第一次眨眼结束
+       }, 3000); // 每3秒眨眼两次
+       return () => clearInterval(interval);
+   }, []);
 
-	const handleLinkClick = (path: string) => {
-		router.push(path);
-		setIsMenuOpen(false);
-	};
 
-	return (
-		<>
-			<div
-				className={`flex flex-col items-center justify-center p-5 ${
-					className || ""
-				} cursor-pointer`}
-				onClick={toggleMenu}
-			>
-				<div className="relative">
-					<Image
-						src="/menu.svg"
-						alt="description"
-						width={100}
-						height={100}
-					/>
-					<div className="absolute inset-0 flex flex-col items-center justify-center">
-						<div className="flex space-x-2">
-							<div
-								className={`w-1 ${
-									blink ? "h-0" : "h-2"
-								} bg-white rounded-full transition-all duration-100`}
-							></div>
-							<div
-								className={`w-1 ${
-									blink ? "h-0" : "h-2"
-								} bg-white rounded-full transition-all duration-100`}
-							></div>
-						</div>
-						<span className={`text-white ${coiny.className}`}>
-							Menu
-						</span>
-					</div>
-				</div>
-			</div>
+   const toggleMenu = () => {
+       setIsMenuOpen(!isMenuOpen);
+   };
 
-			{/* 菜单展开页面 */}
-			{isMenuOpen && (
-				<div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-opacity-30">
-					<div className="relative bg-[url('/nav_texture.svg')] bg-cover bg-center bg-[#f4a3af] bg-blend-soft-light bg-opacity-10 backdrop-filter backdrop-blur-sm rounded-[4rem] w-2/3 max-w-md h-[50vh] md:h-[90vh] mx-4 flex flex-col items-center justify-center shadow-lg">
-						{/* 菜单内容 */}
-						<div
-							className={`h-2/3 text-white text-2xl md:text-4xl flex flex-col items-center justify-between ${zcool.className}`}
-						>
-							<a
-								href="#"
-								className="hover:text-gray-300 transition-colors"
-								onClick={() => handleLinkClick("/")}
-							>
-								首页
-							</a>
-							<a
-								href="#"
-								className="hover:text-gray-300 transition-colors"
-							>
-								预约
-							</a>
-							<a
-								href="#"
-								className="hover:text-gray-300 transition-colors"
-							>
-								关于我们
-							</a>
-							<a
-								href="#"
-								className="hover:text-gray-300 transition-colors"
-							>
-								联系方式
-							</a>
-							<div className="flex gap-4 md:gap-14">
-								{!isLogin ? (
-									<div className="flex gap-4 md:gap-14">
-										<Button
-											onClick={() => handleLinkClick("/auth/login")}
-										>
-											登录
-										</Button>
-										<Button
-											onClick={() =>
-												handleLinkClick("/auth/register/account")
-											}
-										>
-											注册
-										</Button>
-									</div>
-								) : (
-									<div className="flex flex-col gap-2 justify-center items-center">
-											<Avatar className="w-10 h-10 md:w-16 md:h-16 border-2 border-white"
-												onClick={() => handleLinkClick("/profile")}
-											>
-											<AvatarImage src={session?.user.image || "null"} alt="U" />
-											<AvatarFallback>CN</AvatarFallback>
-										</Avatar>
-										<Button
-											onClick={() =>
-												signOut({ callbackUrl: "/auth/login" })
-											}
-										>
-											退出
-										</Button>
-									</div>
-								)}
-							</div>
-						</div>
 
-						{/* 右下角关闭按钮 - 圆心放在长方形角上 */}
-						<Button
-							onClick={toggleMenu}
-							className="absolute bottom-4 right-3 bg-white rounded-full w-16 h-16 flex items-center justify-center transform translate-x-1/2 translate-y-1/2 shadow-lg"
-						>
-							<X className="w-8 h-8 text-pink-300" />
-						</Button>
-					</div>
-				</div>
-			)}
-		</>
-	);
+   const handleLinkClick = (path: string) => {
+       router.push(path);
+       setIsMenuOpen(false);
+   };
+
+
+   return (
+       <>
+           <div
+               className={`flex flex-col items-center justify-center p-5 ${
+                   className || ""
+               } cursor-pointer`}
+               onClick={toggleMenu}
+           >
+               <div className="relative">
+                   <Image
+                       src="/menu.svg"
+                       alt="description"
+                       width={100}
+                       height={100}
+                   />
+                   <div className="absolute inset-0 flex flex-col items-center justify-center">
+                       <div className="flex space-x-2">
+                           <div
+                               className={`w-1 ${
+                                   blink ? "h-0" : "h-2"
+                               } bg-white rounded-full transition-all duration-100`}
+                           ></div>
+                           <div
+                               className={`w-1 ${
+                                   blink ? "h-0" : "h-2"
+                               } bg-white rounded-full transition-all duration-100`}
+                           ></div>
+                       </div>
+                       <span className={`text-white ${coiny.className}`}>
+                           Menu
+                       </span>
+                   </div>
+               </div>
+           </div>
+
+
+           {/* 菜单展开页面 */}
+           {isMenuOpen && (
+               <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-opacity-30">
+                   <div className="relative bg-[url('/nav_texture.svg')] bg-cover bg-center bg-[#f4a3af] bg-blend-soft-light bg-opacity-10 backdrop-filter backdrop-blur-sm rounded-[4rem] w-2/3 max-w-md h-[50vh] md:h-[90vh] mx-4 flex flex-col items-center justify-center shadow-lg">
+                       {/* 菜单内容 */}
+                       <div
+                           className={`h-2/3 text-white text-2xl md:text-4xl flex flex-col items-center justify-between ${zcool.className}`}
+                       >
+                           <a
+                               href="#"
+                               className="hover:text-gray-300 transition-colors"
+                               onClick={() => handleLinkClick("/")}
+                           >
+                               首页
+                           </a>
+                           <a
+                               href="#"
+                               className="hover:text-gray-300 transition-colors"
+                               onClick={() => handleLinkClick("/reservation")}
+                           >
+                               预约
+                           </a>
+                           <a
+                               href="#"
+                               className="hover:text-gray-300 transition-colors"
+                           >
+                               关于我们
+                           </a>
+                           <a
+                               href="#"
+                               className="hover:text-gray-300 transition-colors"
+                           >
+                               联系方式
+                           </a>
+                           <div className="flex gap-4 md:gap-14">
+                               {!isLogin ? (
+                                   <div className="flex gap-4 md:gap-14">
+                                       <Button
+                                           onClick={() => handleLinkClick("/auth/login")}
+                                       >
+                                           登录
+                                       </Button>
+                                       <Button
+                                           onClick={() =>
+                                               handleLinkClick("/auth/register/account")
+                                           }
+                                       >
+                                           注册
+                                       </Button>
+                                   </div>
+                               ) : (
+                                   <div className="flex flex-col gap-2 justify-center items-center">
+                                       <Avatar
+                                           className="w-16 h-16 md:w-16 md:h-16 border-2 border-transparent"
+                                           onClick={() => handleLinkClick("/profile")}
+                                       >
+                                           <AvatarImage src="/avatarHead.png" alt="U" />
+                                           <AvatarFallback>CN</AvatarFallback>
+                                       </Avatar>
+                                       {/* <Button
+                                           onClick={() =>
+                                               signOut({ callbackUrl: "/auth/login" })
+                                           }
+                                       >
+                                           退出
+                                       </Button> */}
+                                   </div>
+                               )}
+                           </div>
+                       </div>
+
+
+                       {/* 右下角关闭按钮 - 圆心放在长方形角上 */}
+                       <Button
+                           onClick={toggleMenu}
+                           className="absolute bottom-4 right-3 bg-white rounded-full w-16 h-16 flex items-center justify-center transform translate-x-1/2 translate-y-1/2 shadow-lg"
+                       >
+                           <X className="w-8 h-8 text-pink-300" />
+                       </Button>
+                   </div>
+               </div>
+           )}
+       </>
+   );
 }

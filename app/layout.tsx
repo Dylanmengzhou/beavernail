@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
+import { useRouter } from "next/navigation";
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
@@ -22,6 +23,8 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const [isMobile, setIsMobile] = useState(false);
+	const router = useRouter();
+
 	useEffect(() => {
 		const checkIfMobile = () => {
 			setIsMobile(window.innerWidth <= 768);
@@ -50,6 +53,7 @@ export default function RootLayout({
 								width={isMobile ? 120 : 180}
 								height={isMobile ? 120 : 180}
 								className="z-10"
+								onClick={() => router.push("/")}
 							/>
 							<MenuComponent
 								className={`${

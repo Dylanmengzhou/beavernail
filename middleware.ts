@@ -5,7 +5,7 @@ export default auth((req) => {
   const { nextUrl } = req
 
   // 需要登录才能访问的路由
-  const protectedRoutes = ['/profile', '/settings']
+  const protectedRoutes = ['/profile', '/settings','/reservation']
 
   // 如果用户未登录且访问受保护的路由
   if (!isLoggedIn && protectedRoutes.some(route => nextUrl.pathname.startsWith(route))) {
@@ -14,7 +14,7 @@ export default auth((req) => {
 
   // 如果用户已登录且访问登录页面，重定向到个人资料页
   if (isLoggedIn && nextUrl.pathname.startsWith('/auth/login')) {
-    return Response.redirect(new URL('/profile', nextUrl))
+    return Response.redirect(new URL('/', nextUrl))
   }
 })
 
