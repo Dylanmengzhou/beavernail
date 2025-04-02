@@ -46,7 +46,7 @@ const ResetPasswordPage = () => {
     // 验证密码
     if (!newPassword) {
 
-	  toast("请输入新密码", {
+	  toast.warning("请输入新密码", {
 		position: "top-center",
 		duration: 2000,
 	});
@@ -55,7 +55,7 @@ const ResetPasswordPage = () => {
 
     if (newPassword.length < 6) {
 
-		toast("密码长度至少为6位", {
+		toast.warning("密码长度至少为6位", {
 					position: "top-center",
 					duration: 2000,
 				});
@@ -64,7 +64,7 @@ const ResetPasswordPage = () => {
 
     if (newPassword !== confirmPassword) {
 
-	  toast("两次输入的密码不一致", {
+	  toast.warning("两次输入的密码不一致", {
 		position: "top-center",
 		duration: 2000,
 	});
@@ -87,7 +87,7 @@ const ResetPasswordPage = () => {
       const data = await response.json();
 
       if (data.success) {
-        toast("密码重置成功，请使用新密码登录", {
+        toast.success("密码重置成功，请使用新密码登录", {
           position: "top-center",
           duration: 2000,
         });
@@ -99,7 +99,7 @@ const ResetPasswordPage = () => {
         router.push("/auth/login");
       } else {
 
-		  toast(data.message, {
+		  toast.error(data.message, {
 					position: "top-center",
 					duration: 2000,
 				});
@@ -107,7 +107,7 @@ const ResetPasswordPage = () => {
     } catch (error) {
       console.error("重置密码失败:", error);
 
-	  toast("服务器错误，请稍后再试", {
+	  toast.error("服务器错误，请稍后再试", {
 		position: "top-center",
 		duration: 2000,
 	});

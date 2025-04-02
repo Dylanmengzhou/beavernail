@@ -62,7 +62,6 @@ const UserInfoPage = () => {
 	};
 
 	const handleRegister = async () => {
-
 		// 验证前面步骤的数据是否完整
 		if (
 			!account ||
@@ -70,7 +69,10 @@ const UserInfoPage = () => {
 			!securityQuestion ||
 			!securityAnswer
 		) {
-			toast.error("请完成前面的注册步骤");
+			toast.error("请完成前面的注册步骤", {
+				position: "top-center",
+				duration: 2000,
+			});
 			router.push("/auth/register/account");
 			return;
 		}
@@ -98,15 +100,24 @@ const UserInfoPage = () => {
 			const data = await response.json();
 
 			if (data.success) {
-				toast.success("注册成功！");
+				toast.success("注册成功！", {
+					position: "top-center",
+					duration: 2000,
+				});
 				reset(); // 重置表单
 				router.push("/auth/login");
 			} else {
-				toast.error(`注册失败: ${data.message}`);
+				toast.error(`注册失败: ${data.message}`, {
+					position: "top-center",
+					duration: 2000,
+				});
 			}
 		} catch (error) {
 			console.error("注册请求失败:", error);
-			toast.error("注册失败，请稍后重试");
+			toast.error("注册失败，请稍后重试", {
+				position: "top-center",
+				duration: 2000,
+			});
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -128,15 +139,21 @@ const UserInfoPage = () => {
 								value={nickname}
 								onChange={(e) => setNickname(e.target.value)}
 								className="border-b-2 border-transparent shadow-sm focus:border-black focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
+								disabled={isSubmitting}
 							/>
 						</div>
 					</div>
 					<div className="">
 						<div className="text-lg">生日</div>
 						<div className="flex gap-3 items-center">
-							<InputOTP maxLength={8} className="border-black"
+							<InputOTP
+								maxLength={8}
+								className="border-black"
 								value={birthdayString}
-								onChange={(birthdayString) => setBirthdayString(birthdayString)}
+								onChange={(birthdayString) =>
+									setBirthdayString(birthdayString)
+								}
+								disabled={isSubmitting}
 							>
 								<InputOTPGroup>
 									<InputOTPSlot index={0} />
@@ -160,7 +177,11 @@ const UserInfoPage = () => {
 					<div className="">
 						<div className="text-lg">性别</div>
 						<div className="flex gap-3 items-center">
-							<Select value={gender} onValueChange={setGender}>
+							<Select
+								value={gender}
+								onValueChange={setGender}
+								disabled={isSubmitting}
+							>
 								<SelectTrigger className="w-[180px] border-none">
 									<SelectValue placeholder="选择性别" />
 								</SelectTrigger>

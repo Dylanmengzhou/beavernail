@@ -47,7 +47,10 @@ const ReservationPage = () => {
 				}
 			} catch (error) {
 				console.error("获取不可预约日期失败:", error);
-				toast.error("获取可预约日期信息失败，请稍后再试");
+				toast.error("获取可预约日期信息失败，请稍后再试", {
+					position: "top-center",
+					duration: 2000,
+				  });
 			}
 		};
 
@@ -80,7 +83,10 @@ const ReservationPage = () => {
 			}
 		} catch (error) {
 			console.error("获取不可预约时间段失败:", error);
-			toast.error("获取可预约时间信息失败，请稍后再试");
+			toast.error("获取可预约时间信息失败，请稍后再试", {
+				position: "top-center",
+				duration: 2000,
+			  });
 		} finally {
 			setIsLoading(false);
 		}
@@ -129,15 +135,24 @@ const ReservationPage = () => {
 					timeSlot: selectedTime,
 				}));
 
-				toast.success("预约成功！");
+				toast.success("预约成功！", {
+					position: "top-center",
+					duration: 2000,
+				  });
 				// 跳转到确认页面
 				router.push("/reservation/confirmation");
 			} else {
-				toast.error(data.message || "预约失败，请稍后再试");
+				toast.error(data.message || "预约失败，请稍后再试", {
+					position: "top-center",
+					duration: 2000,
+				  });
 			}
 		} catch (error) {
 			console.error("预约失败:", error);
-			toast.error("预约失败，请稍后再试");
+			toast.error("预约失败，请稍后再试", {
+				position: "top-center",
+				duration: 2000,
+			  });
 		} finally {
 			setIsLoading(false);
 		}

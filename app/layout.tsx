@@ -50,8 +50,8 @@ export default function RootLayout({
 							<Image
 								src="/Beaver.svg"
 								alt="美甲店标志"
-								width={isMobile ? 120 : 180}
-								height={isMobile ? 120 : 180}
+								width={isMobile ? 90 : 100}
+								height={isMobile ? 90 : 100}
 								className="z-10"
 								onClick={() => router.push("/")}
 							/>
@@ -66,7 +66,7 @@ export default function RootLayout({
 						</div>
 					</SessionProvider>
 				</div>
-				<Toaster />
+				<Toaster richColors />
 			</body>
 		</html>
 	);

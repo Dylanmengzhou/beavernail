@@ -8,12 +8,6 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-// import { signOut } from "next-auth/react";
-import {
-   Avatar,
-   AvatarFallback,
-   AvatarImage,
-} from "@/components/ui/avatar";
 
 
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
@@ -54,10 +48,12 @@ export default function MenuComponent({
        setIsMenuOpen(!isMenuOpen);
    };
 
-
    const handleLinkClick = (path: string) => {
-       router.push(path);
-       setIsMenuOpen(false);
+       setIsMenuOpen(false); // 先关闭菜单
+       // 使用 setTimeout 延迟路由跳转，让菜单有时间关闭
+       setTimeout(() => {
+           router.push(path);
+       }, 10); // 极短的延迟，足够让菜单开始关闭动画
    };
 
 
@@ -122,6 +118,13 @@ export default function MenuComponent({
                            <a
                                href="#"
                                className="hover:text-gray-300 transition-colors"
+                               onClick={() => handleLinkClick("/priceList")}
+                           >
+                               价格表
+                           </a>
+                           <a
+                               href="#"
+                               className="hover:text-gray-300 transition-colors"
                            >
                                关于我们
                            </a>
@@ -148,22 +151,11 @@ export default function MenuComponent({
                                        </Button>
                                    </div>
                                ) : (
-                                   <div className="flex flex-col gap-2 justify-center items-center">
-                                       <Avatar
-                                           className="w-16 h-16 md:w-16 md:h-16 border-2 border-transparent"
+                                       <a className="flex flex-col gap-2 justify-center items-center hover:text-gray-300 transition-colors"
                                            onClick={() => handleLinkClick("/profile")}
                                        >
-                                           <AvatarImage src="/avatarHead.png" alt="U" />
-                                           <AvatarFallback>CN</AvatarFallback>
-                                       </Avatar>
-                                       {/* <Button
-                                           onClick={() =>
-                                               signOut({ callbackUrl: "/auth/login" })
-                                           }
-                                       >
-                                           退出
-                                       </Button> */}
-                                   </div>
+                                       个人中心
+                                   </a>
                                )}
                            </div>
                        </div>

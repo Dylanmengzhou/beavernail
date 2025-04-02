@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRegisterStore } from "../registerStore";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
@@ -24,6 +25,7 @@ const AccountRegisterPage = () => {
 		password?: string;
 		confirmPassword?: string;
 	}>({});
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleLinkClick = (url?: string) => {
 		router.push(url || "/");
@@ -58,6 +60,7 @@ const AccountRegisterPage = () => {
 
   const handleNextStep = async () => {
     if (validateForm()) {
+      setIsLoading(true);
       try {
         const response = await fetch("/api/register", {
           method: "POST",
@@ -81,23 +84,27 @@ const AccountRegisterPage = () => {
         if (data.success) {
           router.push("/auth/register/securityQuestion");
         } else {
-          toast(data.message, {
+          toast.error(data.message, {
             position: "top-center",
             duration: 2000,
           });
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("我靠:", error);
-        toast("注册请求失败", {
+        toast.error("注册请求失败", {
           position: "top-center",
           duration: 2000,
         });
+        setIsLoading(false);
       }
 
     } else {
-      toast.error("请检查表单填写是否正确");
+      toast.error("请检查表单填写是否正确", {
+		position: "top-center",
+		duration: 2000,
+	  });
     }
-
 	};
 
 	return (
@@ -115,6 +122,7 @@ const AccountRegisterPage = () => {
 							value={account}
 							onChange={(e) => setAccount(e.target.value)}
 							className="border-b-2 border-transparent shadow-sm focus:border-black focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
+							disabled={isLoading}
 						/>
 						{errors.account && (
 							<p className="text-red-500 text-sm mt-1">
@@ -130,6 +138,7 @@ const AccountRegisterPage = () => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								className="border-b-2 border-transparent shadow-sm focus:border-black focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
+								disabled={isLoading}
 							/>
 						</div>
 						{errors.password && (
@@ -146,6 +155,7 @@ const AccountRegisterPage = () => {
 								value={confirmPassword}
 								onChange={(e) => setConfirmPassword(e.target.value)}
 								className="border-b-2 border-transparent shadow-sm focus:border-black focus-visible:ring-0 focus-visible:ring-offset-0 rounded-none"
+								disabled={isLoading}
 							/>
 						</div>
 						{errors.confirmPassword && (
@@ -155,14 +165,27 @@ const AccountRegisterPage = () => {
 						)}
 					</div>
 					<div className="flex justify-center items-center w-full">
-						<Button onClick={handleNextStep}>下一步</Button>
+						<Button
+							onClick={handleNextStep}
+							disabled={isLoading}
+							className="min-w-[100px]"
+						>
+							{isLoading ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									检查中...
+								</>
+							) : (
+								"下一步"
+							)}
+						</Button>
 					</div>
 					<div className="flex justify-center items-center w-full text-sm md:text-base">
 						<div className="flex">
 							<div className="">已经有账号？</div>
 							<div
-								className="ml-1 cursor-pointer hover:underline"
-								onClick={() => handleLinkClick("/auth/login")}
+								className={`ml-1 cursor-pointer hover:underline ${isLoading ? 'pointer-events-none opacity-70' : ''}`}
+								onClick={() => !isLoading && handleLinkClick("/auth/login")}
 							>
 								登录
 							</div>

@@ -116,7 +116,10 @@ export default function ConfirmationPage() {
 										textarea.select();
 										document.execCommand("copy");
 										document.body.removeChild(textarea);
-										toast.success("账户已复制到剪切板");
+										toast.success("账户已复制到剪切板", {
+											position: "top-center",
+											duration: 2000,
+										  });
 									}
 								}
 							>

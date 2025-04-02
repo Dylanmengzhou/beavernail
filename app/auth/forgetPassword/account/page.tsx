@@ -49,7 +49,7 @@ const ForgetPasswordPage = () => {
 			} else {
 				setError(data.message || "账号不存在");
 
-				toast(data.message, {
+				toast.error(data.message, {
 					position: "top-center",
 					duration: 2000,
 				});
@@ -58,7 +58,7 @@ const ForgetPasswordPage = () => {
 			console.error("获取安全问题失败:", error);
 			setError("服务器错误，请稍后再试");
 
-			toast("服务器错误，请稍后再试", {
+			toast.error("服务器错误，请稍后再试", {
 				position: "top-center",
 				duration: 2000,
 			});
@@ -96,7 +96,7 @@ const ForgetPasswordPage = () => {
 			} else {
 				setError(data.message || "安全问题答案错误");
 
-				toast(data.message, {
+				toast.warning(data.message, {
 					position: "top-center",
 					duration: 2000,
 				});
@@ -105,7 +105,7 @@ const ForgetPasswordPage = () => {
 			console.error("验证安全问题失败:", error);
 			setError("服务器错误，请稍后再试");
 
-			toast("服务器错误，请稍后再试", {
+			toast.error("服务器错误，请稍后再试", {
 				position: "top-center",
 				duration: 2000,
 			});

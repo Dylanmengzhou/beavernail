@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ZCOOL_KuaiLe } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
@@ -25,6 +26,17 @@ const LoginPage = () => {
 		password?: string;
 	}>({});
 	const [loading, setLoading] = useState(false);
+	const searchParams = useSearchParams();
+
+	useEffect(() => {
+		// 检查是否有requireLogin参数
+		if (searchParams.get("requireLogin") === "true") {
+			toast.warning("登录后才能预约哦～", {
+				position: "top-center",
+				duration: 3000,
+			});
+		}
+	}, [searchParams]);
 
 	const validateForm = () => {
 		try {
@@ -67,7 +79,7 @@ const LoginPage = () => {
 			const data = await res.json();
 
 			if (data?.success === false) {
-				toast(data.message, {
+				toast.error(data.message, {
 					position: "top-center",
 					duration: 2000,
 				});
@@ -80,7 +92,7 @@ const LoginPage = () => {
 				});
 			}
 		} catch (error) {
-			toast("登录失败，请稍后重试", {
+			toast.error("登录失败，请稍后重试", {
 				position: "top-center",
 				duration: 2000,
 			});
