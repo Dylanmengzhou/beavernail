@@ -12,15 +12,18 @@ const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 // 定义登录表单验证模式
 const loginSchema = z.object({
-  account: z.string().min(1, "请输入账号"),
-  password: z.string().min(1, "请输入密码"),
+	account: z.string().min(1, "请输入账号"),
+	password: z.string().min(1, "请输入密码"),
 });
 
 const LoginPage = () => {
 	const router = useRouter();
 	const [account, setAccount] = useState("");
 	const [password, setPassword] = useState("");
-	const [errors, setErrors] = useState<{ account?: string; password?: string }>({});
+	const [errors, setErrors] = useState<{
+		account?: string;
+		password?: string;
+	}>({});
 	const [loading, setLoading] = useState(false);
 
 	const validateForm = () => {
@@ -30,10 +33,14 @@ const LoginPage = () => {
 			return true;
 		} catch (error) {
 			if (error instanceof z.ZodError) {
-				const formattedErrors: { account?: string; password?: string } = {};
+				const formattedErrors: {
+					account?: string;
+					password?: string;
+				} = {};
 				error.errors.forEach((err) => {
 					const path = err.path[0] as string;
-					formattedErrors[path as 'account' | 'password'] = err.message;
+					formattedErrors[path as "account" | "password"] =
+						err.message;
 				});
 				setErrors(formattedErrors);
 			}
@@ -69,7 +76,7 @@ const LoginPage = () => {
 					username: account,
 					password: password,
 					redirect: true,
-					callbackUrl: "/profile", // 登录成功后跳转的页面
+					callbackUrl: "/", // 登录成功后跳转的页面
 				});
 			}
 		} catch (error) {
@@ -77,7 +84,7 @@ const LoginPage = () => {
 				position: "top-center",
 				duration: 2000,
 			});
-			console.log(error)
+			console.log(error);
 		} finally {
 			setLoading(false);
 		}
@@ -107,7 +114,9 @@ const LoginPage = () => {
 							disabled={loading}
 						/>
 						{errors.account && (
-							<div className="text-red-500 text-sm mt-1">{errors.account}</div>
+							<div className="text-red-500 text-sm mt-1">
+								{errors.account}
+							</div>
 						)}
 					</div>
 					<div className="">
@@ -122,7 +131,9 @@ const LoginPage = () => {
 							/>
 						</div>
 						{errors.password && (
-							<div className="text-red-500 text-sm mt-1">{errors.password}</div>
+							<div className="text-red-500 text-sm mt-1">
+								{errors.password}
+							</div>
 						)}
 					</div>
 					<div

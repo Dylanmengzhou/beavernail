@@ -65,8 +65,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
 				return {
 					id: user.id,
-                    username: user.username,
-                    image: user.image,
+					username: user.username,
+					image: user.image,
 					membershipType: user.membershipType,
 					securityQuestion: user.securityQuestion,
 					securityAnswer: user.securityAnswer,
@@ -74,14 +74,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 					gender: user.gender,
 					lastLoginAt: user.lastLoginAt,
 					createdAt: user.createdAt, // 修改这里，将 createdAt 改为 createAt
-					birthday: user.birthday
+					birthday: user.birthday,
 				};
 			},
 		}),
 	],
 	session: {
 		strategy: "jwt",
-		maxAge: 30 * 24 * 60 * 60, // 改为30天
+		maxAge: 100 * 24 * 60 * 60, // 改为90天
 	},
 	callbacks: {
 		async jwt({ token, user }) {
