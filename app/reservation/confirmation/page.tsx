@@ -162,7 +162,7 @@ export default function ConfirmationPage() {
 						返回首页
 					</Button>
 					<Button
-						onClick={() => router.push("/user/reservations")}
+						onClick={() => router.push("/reservation/history")}
 						className="bg-pink-500 hover:bg-pink-600"
 					>
 						查看我的预约
