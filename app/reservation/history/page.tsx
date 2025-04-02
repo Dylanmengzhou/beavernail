@@ -1,0 +1,329 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Loader2 } from "lucide-react"; // 添加Loader2图标导入
+
+// 预约数据类型
+type Reservation = {
+  id: string;
+  date: Date;
+  timeSlot: string;
+  status: "upcoming" | "completed" | "cancelled";
+};
+
+// API返回的预约数据类型
+interface ApiReservation {
+  id: string;
+  date: string; // API返回的日期是字符串格式
+  timeSlot: string;
+  status: "upcoming" | "completed" | "cancelled";
+}
+
+// 分页数据类型
+type PaginationData = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
+// 状态映射
+const statusMap = {
+  upcoming: { label: "即将到来", className: "bg-blue-100 text-blue-800" },
+  completed: { label: "已完成", className: "bg-green-100 text-green-800" },
+  cancelled: { label: "已取消", className: "bg-red-100 text-red-800" },
+};
+
+const HistoryPage = () => {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [pagination, setPagination] = useState<PaginationData>({
+    total: 0,
+    page: 1,
+    limit: 5,
+    totalPages: 0,
+  });
+  const [activeTab, setActiveTab] = useState<"all" | "upcoming" | "completed">("all");
+  const [loading, setLoading] = useState(true);
+
+  // 从API获取数据
+  const fetchReservations = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `/api/reservations/history?page=${pagination.page}&limit=${pagination.limit}&filter=${activeTab}`
+      );
+
+      if (!response.ok) {
+        throw new Error("获取预约记录失败");
+      }
+
+      const data = await response.json();
+
+      // 转换日期字符串为Date对象
+      const formattedReservations = data.reservations.map((res: ApiReservation) => ({
+        ...res,
+        date: new Date(res.date),
+      }));
+
+      setReservations(formattedReservations);
+      setPagination(data.pagination);
+    } catch (error) {
+      console.error("获取预约记录失败:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 初始加载和筛选/分页变化时获取数据
+  useEffect(() => {
+    fetchReservations();
+  }, [pagination.page, activeTab]);
+
+  // 处理页面变化
+  const handlePageChange = (page: number) => {
+    setPagination((prev) => ({ ...prev, page }));
+  };
+
+  // 处理标签变化
+  const handleTabChange = (value: string) => {
+    setActiveTab(value as "all" | "upcoming" | "completed");
+    setPagination((prev) => ({ ...prev, page: 1 })); // 切换标签时重置到第一页
+  };
+
+  return (
+    <div className=" w-11/12 pt-4 md:py-6 px-4 md:px-6 h-full  bg-amber-200  rounded-t-3xl ">
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">我的预约记录</h1>
+
+      <Tabs defaultValue="all" onValueChange={handleTabChange} className="w-full">
+        <TabsList className="mb-4 w-full md:w-auto grid grid-cols-3 md:flex">
+          <TabsTrigger value="all" className="flex-1 md:flex-none">全部预约</TabsTrigger>
+          <TabsTrigger value="upcoming" className="flex-1 md:flex-none">即将到来</TabsTrigger>
+          <TabsTrigger value="completed" className="flex-1 md:flex-none">已完成</TabsTrigger>
+        </TabsList>
+
+        {/* 电脑端内容 */}
+        <div className="hidden md:block bg-white rounded-lg shadow-sm p-5 mb-4 h-[300px] overflow-y-auto">
+          <TabsContent value="all" className="mt-0 h-full">
+            {loading ? (
+              <div className="flex items-center justify-center h-full">
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <ReservationTable reservations={reservations} />
+            )}
+          </TabsContent>
+
+          <TabsContent value="upcoming" className="mt-0 h-full">
+            {loading ? (
+              <div className="flex items-center justify-center h-full">
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <ReservationTable reservations={reservations} />
+            )}
+          </TabsContent>
+
+          <TabsContent value="completed" className="mt-0 h-full">
+            {loading ? (
+              <div className="flex items-center justify-center h-full">
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <ReservationTable reservations={reservations} />
+            )}
+          </TabsContent>
+        </div>
+
+        {/* 移动端内容 */}
+        <div className="block md:hidden h-[320px]">
+          <TabsContent value="all" className="mt-0 h-full">
+            {loading ? (
+              <div className="flex items-center justify-center h-full bg-white rounded-lg shadow-sm">
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <ReservationCards reservations={reservations} />
+            )}
+          </TabsContent>
+
+          <TabsContent value="upcoming" className="mt-0 h-full">
+            {loading ? (
+              <div className="flex items-center justify-center h-full bg-white rounded-lg shadow-sm">
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <ReservationCards reservations={reservations} />
+            )}
+          </TabsContent>
+
+          <TabsContent value="completed" className="mt-0 h-full">
+            {loading ? (
+              <div className="flex items-center justify-center h-full bg-white rounded-lg shadow-sm">
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <ReservationCards reservations={reservations} />
+            )}
+          </TabsContent>
+        </div>
+      </Tabs>
+
+      {pagination.totalPages > 1 && (
+        <Pagination className="mt-4 mb-4 md:mb-0">
+          <PaginationContent className="flex flex-wrap justify-center">
+            {pagination.page > 1 && (
+              <PaginationItem>
+                <PaginationPrevious onClick={() => handlePageChange(pagination.page - 1)} />
+              </PaginationItem>
+            )}
+
+            {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
+              let pageNumber;
+              if (pagination.totalPages <= 5) {
+                pageNumber = i + 1;
+              } else if (pagination.page <= 3) {
+                pageNumber = i + 1;
+              } else if (pagination.page >= pagination.totalPages - 2) {
+                pageNumber = pagination.totalPages - 4 + i;
+              } else {
+                pageNumber = pagination.page - 2 + i;
+              }
+
+              return (
+                <PaginationItem key={pageNumber}>
+                  <PaginationLink
+                    isActive={pageNumber === pagination.page}
+                    onClick={() => handlePageChange(pageNumber)}
+                  >
+                    {pageNumber}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+
+            {pagination.page < pagination.totalPages && (
+              <PaginationItem>
+                <PaginationNext onClick={() => handlePageChange(pagination.page + 1)} />
+              </PaginationItem>
+            )}
+          </PaginationContent>
+        </Pagination>
+      )}
+    </div>
+  );
+};
+
+// 预约表格组件 (桌面端)
+const ReservationTable = ({ reservations }: { reservations: Reservation[] }) => {
+  return (
+    <div className="overflow-x-auto h-full">
+      <Table>
+        <TableHeader className="bg-gray-50">
+          <TableRow>
+            <TableHead className="w-[100px]">预约编号</TableHead>
+            <TableHead>日期</TableHead>
+            <TableHead>时间段</TableHead>
+            <TableHead>状态</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="min-h-[250px]">
+          {reservations.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center py-6 h-[250px] align-middle">暂无预约记录</TableCell>
+            </TableRow>
+          ) : (
+            <>
+              {reservations.map((reservation) => (
+                <TableRow key={reservation.id} className="hover:bg-gray-50">
+                  <TableCell className="font-medium">{reservation.id.substring(0, 8)}</TableCell>
+                  <TableCell>{format(reservation.date, 'yyyy年MM月dd日', { locale: zhCN })}</TableCell>
+                  <TableCell>{reservation.timeSlot}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className={`px-2 py-1 ${statusMap[reservation.status].className}`}>
+                      {statusMap[reservation.status].label}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {/* 如果数据少于5条，添加空行保持高度 */}
+              {reservations.length < 5 && Array.from({ length: 5 - reservations.length }).map((_, index) => (
+                <TableRow key={`empty-${index}`} className="h-[50px]">
+                  <TableCell colSpan={4}>&nbsp;</TableCell>
+                </TableRow>
+              ))}
+            </>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+// 预约卡片组件 (移动端) - 修改为更小的尺寸
+const ReservationCards = ({ reservations }: { reservations: Reservation[] }) => {
+  if (reservations.length === 0) {
+    return (
+      <div className="text-center py-8 bg-white rounded-lg shadow-sm h-[400px] flex items-center justify-center">
+        <p className="text-gray-500">暂无预约记录</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3 h-full overflow-y-auto pb-4">
+      {reservations.map((reservation) => (
+        <Card key={reservation.id} className="shadow-sm border-gray-100">
+          <CardHeader className="pb-1 pt-2 px-3">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-xs font-medium">
+                预约 #{reservation.id.substring(0, 8)}
+              </CardTitle>
+              <Badge variant="outline" className={`${statusMap[reservation.status].className} text-xs px-1.5 py-0.5`}>
+                {statusMap[reservation.status].label}
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="pb-2 px-3">
+            <div className="grid grid-cols-2 gap-1 text-xs">
+              <div className="text-gray-500">日期</div>
+              <div>{format(reservation.date, 'yyyy年MM月dd日', { locale: zhCN })}</div>
+              <div className="text-gray-500">时间段</div>
+              <div>{reservation.timeSlot}</div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+      {/* 如果数据少于5条，添加空白卡片保持高度 */}
+      {reservations.length < 5 && Array.from({ length: 5 - reservations.length }).map((_, index) => (
+        <div key={`empty-card-${index}`} className="h-[70px]">&nbsp;</div>
+      ))}
+    </div>
+  );
+};
+
+// 删除骨架屏组件，不再需要
+// const ReservationTableSkeleton = () => { ... }
+// const ReservationCardsSkeleton = () => { ... }
+
+export default HistoryPage;

@@ -79,7 +79,9 @@ const ProfilePage = () => {
                <CardContent className="w-full">
                    <CardContent className="flex flex-col gap-5 items-center justify-center px-0">
                        <div className="w-full flex flex-col items-center justify-center">
-                           <Button className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-white hover:bg-white text-black rounded-4xl">
+                           <Button className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-white hover:bg-white text-black rounded-4xl"
+                           onClick={() => router.push("/reservation/history")}
+                           >
                                <History size={18} />
                                <span className={`text-base ${zcool.className}`}>
                                    预约历史
