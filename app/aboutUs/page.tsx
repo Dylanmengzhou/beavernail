@@ -2,15 +2,16 @@ import { ZCOOL_KuaiLe } from "next/font/google";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 const AboutUsPage = () => {
 	return (
-		<section className={`w-full h-full mx-auto px-4 py-8 md:px-10 md:py-16 ${zcool.className}`}>
+		<section
+			className={`w-full h-full mx-auto px-4 py-8 md:px-10 md:py-16 ${zcool.className}`}
+		>
 			<h1 className="text-4xl font-bold text-pink-600 mb-6">
 				关于我们
 			</h1>
 			<p className="text-base leading-relaxed mb-4">
 				嘿～欢迎光临我们的指尖星球！✨
 				<br />
-				我们是一家藏在弘大樱花步行街旁的{" "}
-				<strong>私人美甲工作室</strong>
+				我们是一家藏在弘大樱花步行街旁的 <strong>美甲店</strong>
 				，温柔又有点小俏皮，专治各种“不开心”和“手部空虚症”～🌸
 			</p>
 			<p className="text-base leading-relaxed mb-4">
@@ -30,7 +31,7 @@ const AboutUsPage = () => {
 			<p className="text-base leading-relaxed mb-4">
 				高中时一个人来到韩国，语言不通、人生重启，但对「美」的热爱没变过！
 				<br />
-				我读的是西京大学美容美发专业，从高中开始就狂考国家资格证：
+				我毕业于西京大学美容美发专业，从高中开始就狂考国家资格证：
 				<br />
 				✔️ 国家级化妆师证
 				<br />

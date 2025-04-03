@@ -22,15 +22,23 @@ export default function AppointmentReminder() {
 		timeSlot: string;
 		rawDate?: Date; // 添加原始日期用于计算倒计时
 	} | null>(null);
-	const [timeLeft, setTimeLeft] = useState<{days: number, hours: number, minutes: number} | null>(null);
+	const [timeLeft, setTimeLeft] = useState<{
+		days: number;
+		hours: number;
+		minutes: number;
+	} | null>(null);
 
 	// 计算剩余时间的函数
 	const calculateTimeLeft = (reservationDate: Date) => {
 		const now = new Date();
 		const diffTime = reservationDate.getTime() - now.getTime();
 		const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-		const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+		const diffHours = Math.floor(
+			(diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+		);
+		const diffMinutes = Math.floor(
+			(diffTime % (1000 * 60 * 60)) / (1000 * 60)
+		);
 
 		return { days: diffDays, hours: diffHours, minutes: diffMinutes };
 	};
@@ -59,7 +67,9 @@ export default function AppointmentReminder() {
 				if (data.nextReservation) {
 					const reservationDate = new Date(data.nextReservation.date);
 					// 解析时间段获取小时
-					const timeSlotHour = parseInt(data.nextReservation.timeSlot.split(':')[0]);
+					const timeSlotHour = parseInt(
+						data.nextReservation.timeSlot.split(":")[0]
+					);
 					// 设置预约的具体时间（小时）
 					reservationDate.setHours(timeSlotHour);
 
@@ -81,7 +91,7 @@ export default function AppointmentReminder() {
 						).padStart(2, "0")}`,
 						weekDay: weekDays[reservationDate.getDay()],
 						timeSlot: data.nextReservation.timeSlot,
-						rawDate: reservationDate // 保存原始日期对象
+						rawDate: reservationDate, // 保存原始日期对象
 					});
 
 					// 计算剩余时间
@@ -173,8 +183,11 @@ export default function AppointmentReminder() {
 							</div>
 							{/* 添加倒计时显示 */}
 							{timeLeft && (
-								<div className={`${zcool.className} text-[#fa5e75] text-lg mt-1`}>
-									距离预约还有 {timeLeft.days} 天 {timeLeft.hours} 小时 {timeLeft.minutes} 分钟
+								<div
+									className={`${zcool.className} text-[#fa5e75] text-lg mt-1`}
+								>
+									距离预约还有 {timeLeft.days} 天 {timeLeft.hours}{" "}
+									小时 {timeLeft.minutes} 分钟
 								</div>
 							)}
 							{/* 其他内容保持不变 */}
@@ -209,8 +222,10 @@ export default function AppointmentReminder() {
 				</>
 			) : (
 				// 未登录显示提示
-				<div className={`${zcool.className} py-4 text-center text-[#424242]`}>
-					宝贝你还没登录哦,登录才能看到我～
+				<div
+					className={`${zcool.className} py-4 text-center text-[#424242]`}
+				>
+					宝贝你还没登录哦, 登录查看预约提醒哟~
 				</div>
 			)}
 		</div>
