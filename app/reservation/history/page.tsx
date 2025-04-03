@@ -28,13 +28,11 @@ import { zhCN } from "date-fns/locale";
 import {
 	Card,
 	CardContent,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react"; // 添加Loader2图标导入
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 // 预约数据类型
@@ -89,7 +87,6 @@ const HistoryPage = () => {
 		"all" | "upcoming" | "completed"
 	>("all");
 	const [loading, setLoading] = useState(true);
-	const router = useRouter();
 
 	// 从API获取数据
 	const fetchReservations = async () => {

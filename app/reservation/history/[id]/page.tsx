@@ -6,7 +6,6 @@ import { format, addHours, isBefore, subHours } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import { use } from "react";
 
 import {
   Card,
@@ -58,9 +57,8 @@ export default function ReservationDetailPage({ params }: { params: { id: string
   const [dialogOpen, setDialogOpen] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
 
-  // 使用 React.use 解包 params
-  const resolvedParams = use(params);
-  const reservationId = resolvedParams.id;
+  // 直接使用params.id，不使用React.use
+  const reservationId = params.id;
 
   // 获取预约详情
   useEffect(() => {
@@ -165,7 +163,6 @@ export default function ReservationDetailPage({ params }: { params: { id: string
 
   const canCancel = reservation.status === "upcoming";
   const isWithin24Hours = !canCancelInTime(reservation.date);
-  const cancelDisabled = !canCancel || isWithin24Hours;
 
   return (
     <div className="w-11/12 pt-4 md:py-6 px-4 md:px-6 h-full bg-amber-200 rounded-t-3xl">
