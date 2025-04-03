@@ -10,6 +10,7 @@
 		"postinstall": "npx prisma generate"
 	},
 	"dependencies": {
+		"@arco-design/web-react": "^2.65.0",
 		"@auth/prisma-adapter": "^2.8.0",
 		"@prisma/client": "^6.5.0",
 		"@radix-ui/react-avatar": "^1.1.3",
@@ -33,6 +34,7 @@
 		"react-day-picker": "^8.10.1",
 		"react-dom": "^19.0.0",
 		"react-hot-toast": "^2.5.2",
+		"react-icons": "^5.5.0",
 		"sonner": "^2.0.2",
 		"tailwind-merge": "^3.0.2",
 		"tw-animate-css": "^1.2.5",

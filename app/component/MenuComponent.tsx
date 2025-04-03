@@ -125,12 +125,14 @@ export default function MenuComponent({
                            <a
                                href="#"
                                className="hover:text-gray-300 transition-colors"
+                               onClick={() => handleLinkClick("/aboutUs")}
                            >
                                关于我们
                            </a>
                            <a
                                href="#"
                                className="hover:text-gray-300 transition-colors"
+                               onClick={() => handleLinkClick("/contact")}
                            >
                                联系方式
                            </a>

@@ -66,9 +66,9 @@ export default function RootLayout({
 				<meta name="twitter:description" content={metadata.description} />
 			</head>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased h-full w-full flex flex-col`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased h-full w-full flex flex-col bg-[url('/background_img.png')] bg-cover bg-center`}
 			>
-				<div className="bg-[url('/background_img.png')] bg-cover bg-center flex-grow flex flex-col h-full">
+				<div className=" flex-grow flex flex-col h-full">
 					<SessionProvider>
 						<div className="flex justify-between items-center w-full px-4 pt-4">
 							<Image

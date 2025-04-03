@@ -29,10 +29,39 @@ const ProfilePage = () => {
 	const { data: session, status } = useSession();
 	const router = useRouter();
 	const [isSigningOut, setIsSigningOut] = useState(false);
+	const [reservationCount, setReservationCount] = useState<number | null>(null);
+	const [isLoadingCount, setIsLoadingCount] = useState(false);
+
 	const handleSignOut = async () => {
 		setIsSigningOut(true);
 		await signOut({ callbackUrl: "/auth/login" });
 	};
+
+	// 获取用户预约次数
+	useEffect(() => {
+		const fetchReservationCount = async () => {
+			if (session?.user?.username) {
+				setIsLoadingCount(true);
+				try {
+					const response = await fetch(`/api/reservations/count?username=${encodeURIComponent(session.user.username)}`);
+					if (response.ok) {
+						const data = await response.json();
+						setReservationCount(data.count);
+					} else {
+						console.error("获取预约次数失败");
+					}
+				} catch (error) {
+					console.error("获取预约次数时出错:", error);
+				} finally {
+					setIsLoadingCount(false);
+				}
+			}
+		};
+
+		if (session?.user?.username) {
+			fetchReservationCount();
+		}
+	}, [session?.user?.username]);
 
 	useEffect(() => {
 		if (status === "unauthenticated") {
@@ -72,7 +101,13 @@ const ProfilePage = () => {
 								<div className={`text-sm ${zcool.className}`}>
 									预约次数
 								</div>
-								<div className={`text-sm ${zcool.className}`}>3</div>
+								<div className={`text-sm ${zcool.className}`}>
+									{isLoadingCount ? (
+										<Loader2 className="h-4 w-4 animate-spin inline" />
+									) : (
+										reservationCount !== null ? reservationCount : "-"
+									)}
+								</div>
 							</div>
 						</div>
 					</CardDescription>
@@ -91,12 +126,12 @@ const ProfilePage = () => {
 							</Button>
 						</div>
 						<div className="w-full flex flex-col items-center justify-center">
-							<Button className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-white hover:bg-white text-black rounded-4xl">
+							<Button
+								className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-white hover:bg-white text-black rounded-4xl"
+								onClick={() => router.push("/profile/setting")}
+							>
 								<UserRoundPen size={18} />
-								<span
-									className={`text-base ${zcool.className}`}
-									onClick={() => router.push("/profile/setting")}
-								>
+								<span className={`text-base ${zcool.className}`}>
 									个人名片
 								</span>
 							</Button>
