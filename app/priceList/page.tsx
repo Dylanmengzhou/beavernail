@@ -79,6 +79,7 @@ const PriceListPage = () => {
 					</div>
 					<div className="w-full h-1/6">
 						<ul className="">
+							<li>* 以上价格均为韩币</li>
 							<li>* 所有项目均带建构</li>
 							<li>* 以上价格为现金价 (刷卡的话附加税+10%)</li>
 							<li>* 本店美甲续做时，免费卸甲</li>

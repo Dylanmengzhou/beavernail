@@ -188,8 +188,31 @@ const ReservationPage = () => {
 					onSelect={handleDateSelect}
 					className="rounded-md border-none justify-center items-center"
 					disabled={[
-						{ before: new Date() },
-						{ dayOfWeek: [1] },
+						{
+							before: (() => {
+								// 起始日期是2025年4月25日
+								const startDate = new Date(2025, 3, 25);
+								// 获取当前日期
+								const today = new Date();
+								// 如果当前日期已经超过起始日期，则使用当前日期作为最早可选日期
+								return today > startDate ? today : startDate;
+							})()
+						},
+						{ dayOfWeek: [1] },    // 禁用周一
+						{
+							after: (() => {
+								// 起始日期是2025年4月25日
+								const startDate = new Date(2025, 3, 25);
+								// 获取当前日期
+								const today = new Date();
+								// 使用较晚的日期作为计算基准
+								const baseDate = today > startDate ? today : startDate;
+								// 从基准日期开始计算15天后的日期
+								const maxDate = new Date(baseDate);
+								maxDate.setDate(baseDate.getDate() + 15);
+								return maxDate;
+							})()
+						},
 						...disabledDates.map(
 							(disabledDate) => new Date(disabledDate)
 						),
