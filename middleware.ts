@@ -27,3 +27,15 @@ export default auth((req) => {
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
 }
+
+export function middleware(request: Request) {
+  const rawIp = request.headers.get("x-forwarded-for") || "Unknown IP"
+  // 处理 IPv6 映射的 IPv4 地址格式 (::ffff:172.30.1.30)
+  const ip = rawIp.includes("::ffff:") ? rawIp.split("::ffff:")[1] : rawIp
+  const timestamp = new Date().toISOString()
+  const method = request.method
+  const url = request.url
+  const path = new URL(url).pathname
+
+  console.log(`[${timestamp}] IP: ${ip} | ${method} | Path: ${path}`)
+}
