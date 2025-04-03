@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
+import { Analytics } from '@vercel/analytics/next';
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
@@ -86,7 +87,11 @@ export default function RootLayout({
 							/>
 						</div>
 						<div className="flex-grow flex flex-col h-full justify-end md:justify-center items-center">
-							<Suspense>{children}</Suspense>
+							<Suspense>
+								{children}
+								<Analytics />
+
+							</Suspense>
 						</div>
 					</SessionProvider>
 				</div>
