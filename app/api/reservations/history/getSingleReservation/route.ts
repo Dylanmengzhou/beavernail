@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@/auth";
 import { addHours, subHours, isBefore } from "date-fns";
+import { type NextRequest } from 'next/server'
 
 const prisma = new PrismaClient();
 
@@ -20,10 +21,15 @@ const canCancelInTime = (reservationDate: Date) => {
 
 // 获取单个预约详情
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest
 ) {
-  const { id } = await params;
+  const searchParams = request.nextUrl.searchParams
+
+  const reservationId = searchParams.get('reservationId')
+
+  if (!reservationId) {
+    return NextResponse.json({ error: "预约ID不存在" }, { status: 400 });
+  }
 
   try {
     // 获取当前登录用户
@@ -47,7 +53,7 @@ export async function GET(
     // 获取指定的预约详情
     const reservation = await prisma.reservation.findUnique({
       where: {
-        id: id,
+        id: reservationId,
         userId: user.id, // 确保只能查看自己的预约
       },
     });
@@ -77,11 +83,14 @@ export async function GET(
 
 // 取消预约
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest
 ) {
-  const { id } = await params;
+  const searchParams = request.nextUrl.searchParams
+  const reservationId = searchParams.get('reservationId')
 
+  if (!reservationId) {
+    return NextResponse.json({ error: "预约ID不存在" }, { status: 400 });
+  }
   try {
     // 获取当前登录用户
     const session = await auth();
@@ -104,7 +113,7 @@ export async function POST(
     // 查找预约并确认是否存在
     const reservation = await prisma.reservation.findUnique({
       where: {
-        id: id,
+        id: reservationId,
         userId: user.id, // 确保只能取消自己的预约
       },
     });
@@ -133,7 +142,7 @@ export async function POST(
     // 删除预约
     await prisma.reservation.delete({
       where: {
-        id: id,
+        id: reservationId,
       },
     });
 

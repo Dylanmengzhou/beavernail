@@ -34,6 +34,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react"; // 添加Loader2图标导入
 import { useRouter } from "next/navigation";
+import { ZCOOL_KuaiLe } from "next/font/google";
+
+const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 // 预约数据类型
 type Reservation = {
@@ -136,7 +139,9 @@ const HistoryPage = () => {
 	};
 
 	return (
-		<div className=" w-11/12 pt-4 md:py-6 px-4 md:px-6 h-full  bg-amber-200  rounded-t-3xl ">
+		<div
+			className={` w-11/12 pt-4 md:py-6 px-4 md:px-6 h-full  bg-amber-200  rounded-t-3xl ${zcool.className}`}
+		>
 			<h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
 				我的预约记录
 			</h1>
@@ -300,7 +305,9 @@ const ReservationTable = ({
 
 	// 点击预约行时导航到详情页
 	const handleRowClick = (id: string) => {
-		router.push(`/reservation/history/${id}`);
+		router.push(
+			`/reservation/history/singleReservation?reservationId=${id}`
+		);
 	};
 
 	return (
@@ -383,7 +390,9 @@ const ReservationCards = ({
 
 	// 点击卡片时导航到详情页
 	const handleCardClick = (id: string) => {
-		router.push(`/reservation/history/${id}`);
+		router.push(
+			`/reservation/history/singleReservation?reservationId=${id}`
+		);
 	};
 
 	if (reservations.length === 0) {
@@ -399,13 +408,16 @@ const ReservationCards = ({
 			{reservations.map((reservation) => (
 				<Card
 					key={reservation.id}
-					className="shadow-sm border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors"
+					className="shadow-sm border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors "
 					onClick={() => handleCardClick(reservation.id)}
 				>
 					<CardHeader className="pb-1 pt-2 px-3">
 						<div className="flex justify-between items-center">
-							<CardTitle className="text-xs font-medium">
-								预约 #{reservation.id.substring(0, 8)}
+							<CardTitle className="text-lg font-medium flex flex-col gap-1 text-teal-400">
+								<div className="">预约编号</div>
+								<div className="">
+									#{reservation.id.substring(0, 8)}
+								</div>
 							</CardTitle>
 							<Badge
 								variant="outline"
@@ -426,7 +438,9 @@ const ReservationCards = ({
 								})}
 							</div>
 							<div className="text-gray-500">时间段</div>
-							<div className="w-full justify-end flex">{reservation.timeSlot}</div>
+							<div className="w-full justify-end flex">
+								{reservation.timeSlot}
+							</div>
 						</div>
 					</CardContent>
 				</Card>
