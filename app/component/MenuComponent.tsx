@@ -102,35 +102,30 @@ export default function MenuComponent({
                            className={`h-2/3 text-white text-2xl md:text-4xl flex flex-col items-center justify-between ${zcool.className}`}
                        >
                            <a
-                               href="#"
                                className="hover:text-gray-300 transition-colors"
                                onClick={() => handleLinkClick("/")}
                            >
                                首页
                            </a>
                            <a
-                               href="#"
                                className="hover:text-gray-300 transition-colors"
                                onClick={() => handleLinkClick("/reservation")}
                            >
                                预约
                            </a>
                            <a
-                               href="#"
                                className="hover:text-gray-300 transition-colors"
                                onClick={() => handleLinkClick("/priceList")}
                            >
                                价格表
                            </a>
                            <a
-                               href="#"
                                className="hover:text-gray-300 transition-colors"
                                onClick={() => handleLinkClick("/aboutUs")}
                            >
                                关于我们
                            </a>
                            <a
-                               href="#"
                                className="hover:text-gray-300 transition-colors"
                                onClick={() => handleLinkClick("/contact")}
                            >

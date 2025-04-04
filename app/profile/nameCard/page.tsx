@@ -31,7 +31,7 @@ const SettingPage = () => {
                            Birthday:{" "}
                            {session?.user.birthday
                                ? new Date(session.user.birthday).toLocaleDateString()
-                               : ""}
+                               : "Secret"}
                        </div>
                        <div className="">
                            Create At:{" "}

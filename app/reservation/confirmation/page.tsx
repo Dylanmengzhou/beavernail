@@ -177,8 +177,8 @@ export default function ConfirmationPage() {
 									</div>
 								) : (
 									<div className="flex items-center space-x-2">
-										<span className="font-mono text-xs">
-											{reservationId}
+										<span className="font-mono text-base">
+											{reservationId?.substring(0, 8)}
 										</span>
 										{reservationId && (
 											<Button
@@ -204,7 +204,7 @@ export default function ConfirmationPage() {
 								<div className="flex flex-col">
 									<span className=" text-end">정영나 토스뱅크</span>
 									<span className="flex justify-center item-center gap-2">
-										<span className="flex justify-center items-center">1001-2704-8397</span>
+										<span className="flex justify-center items-center">1001-****-8397</span>
 										<Button
 											variant="outline"
 											size="sm"
@@ -252,7 +252,7 @@ export default function ConfirmationPage() {
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
 										<span>
-											点击
+
 											<strong className="font-bold text-red-400">
 												联系客服
 											</strong>

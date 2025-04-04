@@ -138,7 +138,7 @@ const ProfilePage = () => {
 						<div className="w-full flex flex-col items-center justify-center">
 							<Button
 								className=" w-5/6 h-12 flex items-center justify-center gap-2 bg-white hover:bg-white text-black rounded-4xl"
-								onClick={() => router.push("/profile/setting")}
+								onClick={() => router.push("/profile/nameCard")}
 							>
 								<UserRoundPen size={18} />
 								<span className={`text-base ${zcool.className}`}>
