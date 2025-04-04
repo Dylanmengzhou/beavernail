@@ -89,17 +89,62 @@ export default function ConfirmationPage() {
 	// 复制预约编号到剪贴板
 	const copyReservationId = () => {
 		if (reservationId) {
+			// 检查navigator.clipboard是否可用
+			if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+				navigator.clipboard
+					.writeText(reservationId)
+					.then(() => {
+						toast.success("预约编号已复制到剪贴板", {
+							position: "top-center",
+							duration: 2000,
+						});
+						setHasCopiedId(true); // 设置已复制状态为true
+					})
+					.catch((err) => {
+						console.error("复制失败:", err);
+						// 如果现代API失败，回退到传统方法
+						fallbackCopyTextToClipboard(reservationId);
+					});
+			} else {
+				// 如果不支持现代API，使用传统方法
+				fallbackCopyTextToClipboard(reservationId);
+			}
+		}
+	};
+
+	// 传统复制方法作为后备
+	const fallbackCopyTextToClipboard = (text: string) => {
+		try {
 			const textarea = document.createElement("textarea");
-			textarea.value = reservationId;
+			textarea.value = text;
+			// 确保textarea在视口内但不可见
+			textarea.style.position = 'fixed';
+			textarea.style.left = '0';
+			textarea.style.top = '0';
+			textarea.style.opacity = '0';
 			document.body.appendChild(textarea);
+			textarea.focus();
 			textarea.select();
-			document.execCommand("copy");
+
+			const successful = document.execCommand("copy");
 			document.body.removeChild(textarea);
-			toast.success("预约编号已复制到剪贴板", {
+
+			if (successful) {
+				toast.success("预约编号已复制到剪贴板", {
+					position: "top-center",
+					duration: 2000,
+				});
+				setHasCopiedId(true);
+			} else {
+				toast.error("复制失败，请重试", {
+					position: "top-center",
+				});
+			}
+		} catch (err) {
+			console.error("复制失败:", err);
+			toast.error("复制失败，请重试", {
 				position: "top-center",
-				duration: 2000,
 			});
-			setHasCopiedId(true); // 设置已复制状态为true
 		}
 	};
 
@@ -209,22 +254,28 @@ export default function ConfirmationPage() {
 											variant="outline"
 											size="sm"
 											className="h-7 px-2 text-xs border-pink-300 text-pink-500 hover:bg-pink-50"
-											onClick={
-												// 复制到剪切板
-												() => {
-													const textarea =
-														document.createElement("textarea");
-													textarea.value = "전영나 토스뱅크 1001-2704-8397";
-													document.body.appendChild(textarea);
-													textarea.select();
-													document.execCommand("copy");
-													document.body.removeChild(textarea);
-													toast.success("账户已复制到剪切板", {
-														position: "top-center",
-														duration: 2000,
-													  });
+											onClick={() => {
+												const address = "전영나 토스뱅크 1001-2704-8397";
+												// 检查navigator.clipboard是否可用
+												if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+													navigator.clipboard
+														.writeText(address)
+														.then(() => {
+															toast.success("账户已复制到剪贴板", {
+																position: "top-center",
+																duration: 2000,
+															});
+														})
+														.catch((err) => {
+															console.error("复制失败:", err);
+															// 如果现代API失败，回退到传统方法
+															fallbackCopyTextToClipboard(address);
+														});
+												} else {
+													// 如果不支持现代API，使用传统方法
+													fallbackCopyTextToClipboard(address);
 												}
-											}
+											}}
 										>
 											复制
 										</Button>
@@ -287,7 +338,22 @@ export default function ConfirmationPage() {
 											<strong className="font-bold text-red-400">
 												提前一天
 											</strong>
-											声明（不追加额外定金）。
+											声明，最多修改
+											<strong className="font-bold text-red-400">
+											两次
+											</strong>
+											（不追加额外定金）。
+										</span>
+									</li>
+									<li className="flex items-start">
+										<span className="mr-2">•</span>
+										<span>
+
+											迟到
+											<strong className="font-bold text-red-400">
+												30分钟以上
+											</strong>
+											无联系者，视为默认放弃预约，定金不予退还。
 										</span>
 									</li>
 								</ul>

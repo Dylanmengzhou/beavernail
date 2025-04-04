@@ -165,21 +165,23 @@ export default function AppointmentReminder() {
 					</div>
 					<div className={`${zcool.className} text-[#424242]`}>
 						您接下来的预约行程:
-					</div>
+						</div>
+
 					{nextReservation ? (
 						<>
 							<div
 								className={`${coiny.className} text-[#424242] text-2xl flex items-center gap-2`}
 							>
 								<span>{nextReservation.date}</span>
+									<span>{nextReservation.timeSlot}</span>
 								<span className={`${zcool.className} text-xl`}>
 									{nextReservation.weekDay}
-								</span>
+									</span>
 							</div>
 							<div
 								className={`${coiny.className} text-[#424242] text-xl`}
 							>
-								{nextReservation.timeSlot}
+								
 							</div>
 							{/* 添加倒计时显示 */}
 							{timeLeft && (
