@@ -12,13 +12,14 @@ export async function middleware(request: NextRequest) {
 
   console.log(`[${timestamp}] IP: ${ip} | ${method} | Path: ${path}`);
 
+  console.log(request)
   // Auth protection logic
   let isLoggedIn = false;
   try {
     // Explicitly pass the secret from environment variable
     const token = await getToken({
       req: request,
-      secret: process.env.AUTH_SECRET || process.env.JWT_SECRET
+      secret: process.env.AUTH_SECRET,
     });
     isLoggedIn = !!token;
   } catch (error) {
@@ -26,6 +27,7 @@ export async function middleware(request: NextRequest) {
     // Continue as if user is not logged in
   }
 
+  console.log("checking the login status: ", isLoggedIn)
   const nextUrl = request.nextUrl;
 
   // 需要登录才能访问的路由
