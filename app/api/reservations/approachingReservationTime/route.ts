@@ -5,15 +5,16 @@ import { auth } from "@/auth";
 const prisma = new PrismaClient();
 
 export async function GET() {
+	const session = await auth();
+	console.log(session)
 	try {
-		const session = await auth();
-
 		if (!session || !session.user) {
 			return NextResponse.json(
 				{ error: "请先登录后再进行预约" },
 				{ status: 401 }
 			);
 		}
+		
 
 		const username = session.user.username;
 

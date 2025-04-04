@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
-
+import { FcGoogle } from "react-icons/fc";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 // 定义登录表单验证模式
@@ -71,24 +71,25 @@ const LoginPage = () => {
 		setLoading(true);
 
 		try {
-			const res = await fetch("/api/login", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ account, password }),
+			// 直接使用 NextAuth 的 signIn 方法
+			const result = await signIn("credentials", {
+				username: account,
+				password: password,
+				redirect: false,
 			});
-			const data = await res.json();
 
-			if (data?.success === false) {
-				toast.error(data.message, {
+			if (result?.error) {
+				toast.error("账号或密码错误", {
 					position: "top-center",
 					duration: 2000,
 				});
 			} else {
-				await signIn("credentials", {
-					username: account,
-					password: password,
-					redirect: true,
-					callbackUrl: "/", // 登录成功后跳转的页面
+				// 获取回调URL或默认跳转到首页
+				const callbackUrl = searchParams.get("callbackUrl") || "/";
+				router.push(callbackUrl);
+				toast.success("登录成功", {
+					position: "top-center",
+					duration: 2000,
 				});
 			}
 		} catch (error) {
@@ -105,6 +106,11 @@ const LoginPage = () => {
 	const handleLinkClick = (url?: string) => {
 		router.push(url || "/");
 	};
+	const handleGoogleSignIn = () => {
+		setLoading(true);
+		signIn("google", { callbackUrl: "/" });
+	};
+
 	return (
 		<div
 			className={`bg-[url('/background_img.png')] bg-cover bg-center w-full h-2/3 md:h-full flex items-end justify-center ${zcool.className}`}
@@ -161,6 +167,21 @@ const LoginPage = () => {
 							{loading ? "登录中..." : "登录"}
 						</Button>
 					</div>
+
+					{/* 添加 Google 登录按钮 */}
+					<div className="flex justify-center items-center w-full mt-4">
+						<Button
+							type="button"
+							variant="outline"
+							onClick={handleGoogleSignIn}
+							disabled={loading}
+							className="flex items-center gap-2"
+						>
+							<FcGoogle size={20} />
+							使用 Google 账号登录
+						</Button>
+					</div>
+
 					<div className="flex justify-center items-center w-full text-sm md:text-base">
 						<div className="flex">
 							<div className="">还没有账号？</div>
