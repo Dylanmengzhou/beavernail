@@ -29,7 +29,9 @@ const ProfilePage = () => {
 	const { data: session, status } = useSession();
 	const router = useRouter();
 	const [isSigningOut, setIsSigningOut] = useState(false);
-	const [reservationCount, setReservationCount] = useState<number | null>(null);
+	const [reservationCount, setReservationCount] = useState<
+		number | null
+	>(null);
 	const [isLoadingCount, setIsLoadingCount] = useState(false);
 
 	const handleSignOut = async () => {
@@ -43,7 +45,11 @@ const ProfilePage = () => {
 			if (session?.user?.username) {
 				setIsLoadingCount(true);
 				try {
-					const response = await fetch(`/api/reservations/count?username=${encodeURIComponent(session.user.username)}`);
+					const response = await fetch(
+						`/api/reservations/count?username=${encodeURIComponent(
+							session.user.username
+						)}`
+					);
 					if (response.ok) {
 						const data = await response.json();
 						setReservationCount(data.count);
@@ -85,7 +91,9 @@ const ProfilePage = () => {
 				<CardHeader className="flex gap-4 items-center justify-center ">
 					<CardTitle>
 						<Avatar className="w-14 h-14 md:w-20 md:h-20">
-							<AvatarImage src={"./avatarHead.png"} />
+							<AvatarImage
+								src={session?.user.image || "./avatarHead.png"}
+							/>
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
 					</CardTitle>
@@ -104,8 +112,10 @@ const ProfilePage = () => {
 								<div className={`text-sm ${zcool.className}`}>
 									{isLoadingCount ? (
 										<Loader2 className="h-4 w-4 animate-spin inline" />
+									) : reservationCount !== null ? (
+										reservationCount
 									) : (
-										reservationCount !== null ? reservationCount : "-"
+										"-"
 									)}
 								</div>
 							</div>

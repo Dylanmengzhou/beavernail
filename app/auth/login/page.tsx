@@ -9,6 +9,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 // 定义登录表单验证模式
@@ -113,7 +114,7 @@ const LoginPage = () => {
 
 	return (
 		<div
-			className={`bg-[url('/background_img.png')] bg-cover bg-center w-full h-2/3 md:h-full flex items-end justify-center ${zcool.className}`}
+			className={`w-full h-2/3 md:h-full flex items-end justify-center ${zcool.className}`}
 		>
 			<div className="border-none bg-gradient-to-r from-pink-300 to-pink-400 w-full md:w-2/3 h-full md:h-5/6 rounded-b-none rounded-t-full flex flex-col items-center justify-center">
 				<form
@@ -168,6 +169,8 @@ const LoginPage = () => {
 						</Button>
 					</div>
 
+
+
 					{/* 添加 Google 登录按钮 */}
 					<div className="flex justify-center items-center w-full mt-4">
 						<Button
@@ -175,14 +178,13 @@ const LoginPage = () => {
 							variant="outline"
 							onClick={handleGoogleSignIn}
 							disabled={loading}
-							className="flex items-center gap-2"
+							className="border-none rounded-4xl"
 						>
 							<FcGoogle size={20} />
-							使用 Google 账号登录
+							Google 登录
 						</Button>
 					</div>
-
-					<div className="flex justify-center items-center w-full text-sm md:text-base">
+					<div className="flex justify-center items-center w-full text-sm md:text-base mt-4">
 						<div className="flex">
 							<div className="">还没有账号？</div>
 							<div

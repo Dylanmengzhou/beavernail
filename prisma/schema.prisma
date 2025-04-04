@@ -15,7 +15,7 @@ model User {
   name             String?       // 添加 name 字段
   username         String?       @unique
   password         String?
-  image            String        @default("https://robohash.org/c143b89fb9077cdd6fd77269a7bfefb5?set=set4&bgset=&size=400x400")
+  image            String?
   membershipType   String        @default("free")
   securityQuestion String?
   securityAnswer   String?
@@ -29,7 +29,6 @@ model User {
   email            String?       @unique
   emailVerified    DateTime?
   accounts         Account[]
-  sessions         Session[]
 }
 
 // 添加 Account 模型用于 OAuth
@@ -50,24 +49,6 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-}
-
-// 添加 Session 模型
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-// 添加 VerificationToken 模型
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }
 
 enum Gender {
