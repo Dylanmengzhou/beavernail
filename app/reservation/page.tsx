@@ -133,6 +133,7 @@ const ReservationPage = () => {
 				localStorage.setItem("latestReservation", JSON.stringify({
 					date: formattedDate,
 					timeSlot: selectedTime,
+					rawDate: date,
 				}));
 
 				toast.success("预约成功！", {

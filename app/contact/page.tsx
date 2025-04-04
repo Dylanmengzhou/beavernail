@@ -264,8 +264,8 @@ const ContactPage = () => {
 			<div
 				className={`${zcool.className} mt-10 text-center text-gray-500`}
 			>
-				<p>我们会在24小时内回复您的咨询</p>
-				<p className="mt-2">期待与您的合作！</p>
+				<p>我们会在1小时内回复您的咨询</p>
+				<p className="mt-2">期待您的到来！</p>
 			</div>
 		</div>
 	);
