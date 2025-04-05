@@ -43,6 +43,7 @@ export async function GET(
     const user = await prisma.user.findUnique({
       where: {
         username: session.user.username as string,
+        provider: session.user.provider as string,
       },
     });
 
@@ -103,6 +104,7 @@ export async function POST(
     const user = await prisma.user.findUnique({
       where: {
         username: session.user.username as string,
+        provider: session.user.provider as string,
       },
     });
 

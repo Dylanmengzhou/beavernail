@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { auth } from "@/auth";
 
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth();
     const searchParams = request.nextUrl.searchParams;
     const username = searchParams.get("username");
 
@@ -17,7 +19,7 @@ export async function GET(request: NextRequest) {
 
     // 查找用户
     const user = await prisma.user.findUnique({
-      where: { username },
+      where: { username,provider: session?.user.provider as string },
     });
 
     if (!user) {

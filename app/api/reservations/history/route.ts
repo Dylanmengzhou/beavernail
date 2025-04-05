@@ -27,6 +27,7 @@ export async function GET(request: Request) {
     const user = await prisma.user.findUnique({
       where: {
         username: session.user.username as string,
+        provider: session.user.provider as string,
       },
     });
 

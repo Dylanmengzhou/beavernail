@@ -4,7 +4,10 @@ import bcrypt from "bcryptjs";
 
 const updatePassword = async (account: string, password: string) => {
 	const user = await prisma.user.findUnique({
-		where: { username: account as string },
+		where: {
+			username: account as string,
+			provider: "credentials",
+		},
 	});
 
 	console.log("user:", user);
@@ -13,7 +16,8 @@ const updatePassword = async (account: string, password: string) => {
 	}
     await prisma.user.update({
         where: {
-            username: account
+			username: account,
+			provider: "credentials"
         },
         data: {
             password: await bcrypt.hash(password, 10)

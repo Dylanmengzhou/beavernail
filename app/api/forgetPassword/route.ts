@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { username: account },
+      where: { username: account,provider:'credentials' },
       select: {
         id: true,
         securityQuestion: true,
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { username: account },
+      where: { username: account,provider:'credentials' },
       select: {
         id: true,
         securityAnswer: true,

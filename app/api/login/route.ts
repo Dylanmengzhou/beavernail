@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 const login = async (account: string, password: string) => {
 	const user = await prisma.user.findUnique({
-		where: { username: account as string },
+		where: { username: account as string, provider: "credentials" },
 	});
 
 	console.log("user:", user);
@@ -22,7 +22,8 @@ const login = async (account: string, password: string) => {
     // 更新最后登录时间
     await prisma.user.update({
         where: {
-            username: account
+			username: account,
+			provider: "credentials"
         },
         data: {
             lastLoginAt: new Date()

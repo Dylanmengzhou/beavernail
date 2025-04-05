@@ -20,6 +20,7 @@ declare module "next-auth" {
 			createdAt?: Date | null;
 			birthday?: Date | null;
 			email?: string | null;
+			provider?: string | null;
 		};
 	}
 
@@ -36,6 +37,7 @@ declare module "next-auth" {
 		createdAt?: Date | null;
 		birthday?: Date | null;
 		email?: string | null;
+		provider?: string | null;
 	}
 }
 
@@ -63,20 +65,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				token.createdAt = user.createdAt;
 				token.birthday = user.birthday;
 				token.email = user.email;
+				token.provider = user.provider;
 			}
 
 			// 如果是Google登录，更新最后登录时间
-			if (account?.provider === "google") {
+			if (account?.provider === "google" || account?.provider === "kakao") {
+				console.log("use oauth:", account?.provider,"update lastLoginAt")
 				await prisma.user.update({
-					where: { id: token.id as string },
+					where: { id: token.id as string,provider: account.provider as string  },
 					data: { lastLoginAt: new Date() }
 				});
 			}
 
 			// 在 jwt 回调中添加
-			if (account?.provider === "google" && user.name && !user.nickname) {
+			if (account?.provider === "google" || account?.provider === "kakao" && user.name && !user.nickname) {
 			  await prisma.user.update({
-			    where: { id: token.id as string },
+			    where: { id: token.id as string,provider: account.provider as string },
 			    data: {
 			      lastLoginAt: new Date(),
 			      nickname: user.name  // 将 Google 用户名同步到 nickname
@@ -101,7 +105,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				session.user.createdAt = token.createdAt as Date;
 				session.user.birthday = token.birthday as Date;
 				session.user.email = token.email as string;
+				session.user.provider = token.provider as string;
 			}
+			console.log("session:",session)
 			return session;
 		},
 	},

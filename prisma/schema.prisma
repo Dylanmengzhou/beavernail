@@ -29,6 +29,7 @@ model User {
   email            String?       @unique
   emailVerified    DateTime?
   accounts         Account[]
+  provider         String
 }
 
 // 添加 Account 模型用于 OAuth

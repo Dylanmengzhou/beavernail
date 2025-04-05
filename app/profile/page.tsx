@@ -101,9 +101,8 @@ const ProfilePage = () => {
 						<div className="flex flex-col">
 							<div
 								className="text-xl truncate max-w-[200px] md:max-w-[250px]"
-								title={session?.user.username || ""}
 							>
-								{session?.user.username}
+								{session?.user.nickname}
 							</div>
 							<div className="flex items-center gap-3">
 								<div className={`text-sm ${zcool.className}`}>

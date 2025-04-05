@@ -14,9 +14,10 @@ export async function GET() {
 				{ status: 401 }
 			);
 		}
-		
+
 
 		const username = session.user.username;
+		const provider = session.user.provider;
 
 		if (!username) {
 			return NextResponse.json(
@@ -28,6 +29,7 @@ export async function GET() {
 		const userWithReservations = await prisma.user.findUnique({
 			where: {
 				username: username,
+				provider: provider as string,
 			},
 			include: {
 				reservations: {

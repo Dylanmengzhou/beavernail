@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Roboto } from "next/font/google";
 import { ZCOOL_KuaiLe } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,8 +10,9 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-
+import { RiKakaoTalkFill } from "react-icons/ri";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
+const roboto = Roboto({ subsets: ["latin"], weight: "400" });
 
 // 定义登录表单验证模式
 const loginSchema = z.object({
@@ -107,9 +109,9 @@ const LoginPage = () => {
 	const handleLinkClick = (url?: string) => {
 		router.push(url || "/");
 	};
-	const handleGoogleSignIn = () => {
+	const handleGoogleSignIn = (provider:string) => {
 		setLoading(true);
-		signIn("google", { callbackUrl: "/" });
+		signIn(provider, { callbackUrl: "/" });
 	};
 
 	return (
@@ -172,16 +174,26 @@ const LoginPage = () => {
 
 
 					{/* 添加 Google 登录按钮 */}
-					<div className="flex justify-center items-center w-full mt-4">
+					<div className={`flex  gap-2 justify-center items-center w-full mt-4 ${roboto.className}`}>
 						<Button
 							type="button"
 							variant="outline"
-							onClick={handleGoogleSignIn}
+							onClick={() => { handleGoogleSignIn("google") }}
 							disabled={loading}
 							className="border-none rounded-4xl"
 						>
 							<FcGoogle size={20} />
-							Google 登录
+							Google
+						</Button>
+						<Button
+							type="button"
+							variant="outline"
+							onClick={() => { handleGoogleSignIn("kakao") }}
+							disabled={loading}
+							className="border-none rounded-4xl bg-[#FEE500]"
+						>
+							<RiKakaoTalkFill className="" size={20} />
+							Kakao
 						</Button>
 					</div>
 					<div className="flex justify-center items-center w-full text-sm md:text-base mt-4">
