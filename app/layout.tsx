@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/next";
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
@@ -27,10 +27,12 @@ export default function RootLayout({
 	const [isMobile, setIsMobile] = useState(false);
 	const router = useRouter();
 	const metadata = {
-		title: 'Beaver Nail - 韩国弘大专业美甲店',
-		description: '位于韩国弘大的专业美甲店，提供高品质的美甲服务，包括日式美甲、韩式美甲等多种风格。在线预约，轻松体验专业美甲服务。',
-		keywords: '美甲, 韩国美甲, 弘大美甲, 日式美甲, 韩式美甲, 美甲预约',
-	  };
+		title: "Beaver Nail - 韩国弘大专业美甲店",
+		description:
+			"位于韩国弘大的专业美甲店，提供高品质的美甲服务，包括日式美甲、韩式美甲等多种风格。在线预约，轻松体验专业美甲服务。",
+		keywords:
+			"美甲, 韩国美甲, 弘大美甲, 日式美甲, 韩式美甲, 美甲预约",
+	};
 
 	useEffect(() => {
 		const checkIfMobile = () => {
@@ -59,43 +61,50 @@ export default function RootLayout({
 				<meta name="description" content={metadata.description} />
 				<meta name="keywords" content={metadata.keywords} />
 				<meta property="og:title" content={metadata.title} />
-				<meta property="og:description" content={metadata.description} />
+				<meta
+					property="og:description"
+					content={metadata.description}
+				/>
 				<meta property="og:image" content="/og-image.png" />
 				<meta property="og:type" content="website" />
 				<meta name="twitter:card" content="summary_large_image" />
 				<meta name="twitter:title" content={metadata.title} />
-				<meta name="twitter:description" content={metadata.description} />
+				<meta
+					name="twitter:description"
+					content={metadata.description}
+				/>
 			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased h-full w-full flex flex-col bg-[url('/background_img.png')] bg-cover bg-center`}
 			>
-				<div className=" flex-grow flex flex-col h-full">
-					<SessionProvider>
-						<div className="flex justify-between items-center w-full px-4 pt-4">
-							<Image
-								src="/Beaver.svg"
-								alt="美甲店标志"
-								width={isMobile ? 90 : 100}
-								height={isMobile ? 90 : 100}
-								className="z-10"
-								onClick={() => router.push("/")}
-							/>
-							<MenuComponent
-								className={`${
-									isMobile ? "absolute" : "fixed"
-								} top-0 right-0`}
-							/>
-						</div>
-						<div className="flex-grow flex flex-col h-full justify-end md:justify-center items-center">
-							<Suspense>
-								{children}
-								<Analytics />
 
-							</Suspense>
-						</div>
-					</SessionProvider>
-				</div>
-				<Toaster richColors />
+					<div className=" flex-grow flex flex-col h-full">
+						<SessionProvider>
+							<div className="flex justify-between items-center w-full px-4 pt-4 pr-0">
+								<Image
+									src="/Beaver.svg"
+									alt="美甲店标志"
+									width={isMobile ? 90 : 100}
+									height={isMobile ? 90 : 100}
+									className="z-10"
+									onClick={() => router.push("/")}
+								/>
+								<MenuComponent
+									className={`${
+										isMobile ? "absolute" : "fixed"
+									} top-0 right-0`}
+								/>
+							</div>
+							<div className="flex-grow flex flex-col h-full justify-end md:justify-center items-center">
+								<Suspense>
+									{children}
+									<Analytics />
+								</Suspense>
+							</div>
+						</SessionProvider>
+					</div>
+					<Toaster richColors />
+				
 			</body>
 		</html>
 	);

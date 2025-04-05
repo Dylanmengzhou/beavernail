@@ -1,99 +1,142 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import languageData from "@/public/language.json";
+import { cookies } from "next/headers";
 
-// 获取用户安全问题
 export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
-  const account = url.searchParams.get("account");
+	// 使用 cookies() 方法获取语言设置
+	const cookieStore = cookies();
+	const languageCookie = (await cookieStore).get("language-storage");
+	let currentLang = "en"; // 默认语言
 
-  if (!account) {
-    return NextResponse.json(
-      { success: false, message: "请提供账号" },
-      { status: 400 }
-    );
-  }
+	// 从 cookie 中解析语言设置
+	if (languageCookie) {
+		try {
+			const languageState = JSON.parse(languageCookie.value);
+			currentLang = languageState.state.currentLang;
+		} catch (error) {
+			console.error("解析语言cookie失败:", error);
+		}
+	}
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: { username: account,provider:'credentials' },
-      select: {
-        id: true,
-        securityQuestion: true,
-      },
-    });
+	const data =
+		languageData[currentLang as keyof typeof languageData].auth
+			.forgetPassword.account.api;
 
-    if (!user) {
-      return NextResponse.json(
-        { success: false, message: "用户不存在" },
-        { status: 404 }
-      );
-    }
+	const url = new URL(req.url);
+	const account = url.searchParams.get("account");
 
-    if (!user.securityQuestion) {
-      return NextResponse.json(
-        { success: false, message: "该用户未设置安全问题，请联系管理员" },
-        { status: 400 }
-      );
-    }
+	if (!account) {
+		return NextResponse.json(
+			{ success: false, message: data.CheckAccountError },
+			{ status: 400 }
+		);
+	}
 
-    return NextResponse.json({
-      success: true,
-      securityQuestion: user.securityQuestion,
-    });
-  } catch (error) {
-    console.error("获取安全问题失败:", error);
-    return NextResponse.json(
-      { success: false, message: "服务器内部错误" },
-      { status: 500 }
-    );
-  }
+	try {
+		const user = await prisma.user.findUnique({
+			where: { username: account, provider: "credentials" },
+			select: {
+				id: true,
+				securityQuestion: true,
+			},
+		});
+
+		if (!user) {
+			return NextResponse.json(
+				{ success: false, message: data.MissingAccountError },
+				{ status: 404 }
+			);
+		}
+
+		if (!user.securityQuestion) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: data.SecurityQuestionMissingError,
+				},
+				{ status: 400 }
+			);
+		}
+
+		return NextResponse.json({
+			success: true,
+			securityQuestion: user.securityQuestion,
+		});
+	} catch (error) {
+		console.error(data.SecurityQuestionRequsetError, error);
+		return NextResponse.json(
+			{ success: false, message: data.InternalServerError },
+			{ status: 500 }
+		);
+	}
 }
 
 // 验证安全问题答案
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { account, securityAnswer } = body;
+	// 使用 cookies() 方法获取语言设置
+	const cookieStore = cookies();
+	const languageCookie = (await cookieStore).get("language-storage");
+	let currentLang = "en"; // 默认语言
 
-  if (!account || !securityAnswer) {
-    return NextResponse.json(
-      { success: false, message: "请提供账号和安全问题答案" },
-      { status: 400 }
-    );
-  }
+	// 从 cookie 中解析语言设置
+	if (languageCookie) {
+		try {
+			const languageState = JSON.parse(languageCookie.value);
+			currentLang = languageState.state.currentLang;
+		} catch (error) {
+			console.error("解析语言cookie失败:", error);
+		}
+	}
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: { username: account,provider:'credentials' },
-      select: {
-        id: true,
-        securityAnswer: true,
-      },
-    });
+	const data =
+		languageData[currentLang as keyof typeof languageData].auth
+      .forgetPassword.account.api;
 
-    if (!user) {
-      return NextResponse.json(
-        { success: false, message: "用户不存在" },
-        { status: 404 }
-      );
-    }
+  
+	const body = await req.json();
+	const { account, securityAnswer } = body;
 
-    // 验证安全问题答案
-    if (user.securityAnswer !== securityAnswer) {
-      return NextResponse.json(
-        { success: false, message: "安全问题答案错误" },
-        { status: 400 }
-      );
-    }
+	if (!account || !securityAnswer) {
+		return NextResponse.json(
+			{ success: false, message: data.NoAccountSecurityAnswerError },
+			{ status: 400 }
+		);
+	}
 
-    return NextResponse.json({
-      success: true,
-      message: "验证成功",
-    });
-  } catch (error) {
-    console.error("验证安全问题失败:", error);
-    return NextResponse.json(
-      { success: false, message: "服务器内部错误" },
-      { status: 500 }
-    );
-  }
+	try {
+		const user = await prisma.user.findUnique({
+			where: { username: account, provider: "credentials" },
+			select: {
+				id: true,
+				securityAnswer: true,
+			},
+		});
+
+		if (!user) {
+			return NextResponse.json(
+				{ success: false, message: data.MissingAccountError },
+				{ status: 404 }
+			);
+		}
+
+		// 验证安全问题答案
+		if (user.securityAnswer !== securityAnswer) {
+			return NextResponse.json(
+				{ success: false, message: data.SecurityAnswerMissMatch },
+				{ status: 400 }
+			);
+		}
+
+		return NextResponse.json({
+			success: true,
+			message: data.Success,
+		});
+	} catch (error) {
+		console.error(data.VerifedSecurityQuestionFailed, error);
+		return NextResponse.json(
+			{ success: false, message: data.InternalServerError },
+			{ status: 500 }
+		);
+	}
 }

@@ -1,0 +1,419 @@
+{
+	"zh": {
+		"aboutUs": {
+			"title": "关于我们",
+			"intro": {
+				"welcome": "嘿～欢迎光临我们的指尖星球！✨",
+				"description": {
+					"a": "我们是一家藏在弘大樱花步行街旁的",
+					"b": "美甲店",
+					"c": "，温柔又有点小俏皮，专治各种\"不开心\"和\"手部空虚症\"～🌸"
+				},
+				"service": {
+					"a": "在这里，你可以慢慢选颜色，慢慢挑风格，也可以一边做指甲一边大聊八卦，反正",
+					"b": "时间是你的，美也只属于你自己💅。"
+				}
+			},
+			"owner": {
+				"title": "老板娘碎碎念",
+				"intro": "我是这家店的创始人 & 唯一指定造梦师（请叫我老板娘也行嘿嘿😎）",
+				"childhood": "从小就超爱打扮，小时候用妈妈的指甲油涂得满手都是，还觉得自己美得不得了～",
+				"background": "高中时一个人来到韩国，语言不通、人生重启，但对「美」的热爱没变过！",
+				"education": "我毕业于西京大学美容美发专业，从高中开始就狂考国家资格证：",
+				"certificates": [
+					"国家级化妆师证",
+					"国家级色彩鉴定资格证",
+					"国家级美甲师证",
+					"还有无数个练手模型小手陪我熬夜奋斗"
+				],
+				"experience": "疫情时期，一边上课一边做单，还得养活自己交学费，靠双手换生活。一步步从小白变成专业美甲师，收获了无数来自不同国家的朋友，真的太值得了。",
+				"achievement": "五年过去，我终于！把这个属于我的小店开出来啦 🎉"
+			},
+			"specialFeatures": {
+				"title": "我们的店，有点特别",
+				"features": [
+					"🌸 在樱花路边，推门就能拍出春日感大片",
+					"💅 私人定制，每次来都不重样",
+					"🎧 安静舒服，聊天or躺平随你选",
+					"💖 Y2K、多巴胺、甜酷辣妹风，全部安排！",
+					"🎁 每次来都有小惊喜，我们就是爱整活儿！",
+					"🫶 我们不赶时间，更在乎你有没有开心"
+				]
+			},
+			"mission": {
+				"title": "我们的宗旨",
+				"quote": {
+					"a": "“没有最好的美甲，",
+					"b": "只有永远的服务 + 真心的友情！”"
+				},
+				"message": "每一双手背后，都是一个努力生活的你，而我希望能在你最需要的小空隙里，成为你的\"快乐制造机\"🎈",
+				"closing": [
+					"下次心情不好？来坐坐。",
+					"不做美甲也欢迎喝杯咖啡聊聊天～",
+					"因为我们不仅是美甲店，更是你生活里的小确幸✨"
+				]
+			}
+		},
+		"auth": {
+			"forgetPassword": {
+				"account": {
+					"page": {
+						"function": {
+							"SetCheckAccountError": "请输入账号",
+							"SetMissingAccountError": "用户不存在",
+							"GetSecurityQuestionError": "获取安全问题失败:",
+							"InternalServerError": "服务器错误,请稍候尝试",
+							"InputSecurityQuestionAnswer": "请输入安全问题答案",
+							"SecurityAnswerError": "安全问题答案错误",
+							"CheckSecurityAnswerError": "验证安全问题失败:"
+						},
+						"tag": {
+							"AccountConfirmation": "账号确认",
+							"Account": "账号",
+							"SecurityQuestion": "安全问题：",
+							"Checking": "检查中...",
+							"CheckAccount": "检查账号",
+							"Verifying": "验证中...",
+							"Next": "下一步",
+							"BackToLogin": "返回登录页面"
+						}
+					},
+					"api": {
+						"CheckAccountError": "请输入账号",
+						"MissingAccountError": "用户不存在",
+						"SecurityQuestionMissingError": "该用户未设置安全问题，请联系管理员",
+						"SecurityQuestionRequsetError": "获取安全问题失败:",
+						"InternalServerError": "服务器内部错误",
+						"NoAccountSecurityAnswerError": "请提供账号和安全问题答案",
+						"SecurityAnswerMissMatch": "安全问题答案错误",
+						"Success": "验证成功",
+						"VerifedSecurityQuestionFailed": "验证安全问题失败:"
+					}
+				},
+				"resetPass": {
+					"page": {
+						"function": {
+							"InputPasswordError": "请输入新密码",
+							"InputPasswordPatternError": "密码长度至少为6位",
+							"InputPasswordMissMatchError": "两次输入的密码不一致",
+							"ResetPasswordSuccess": "密码重置成功，请使用新密码登录",
+							"ResetPasswordFailed": "重置密码失败:",
+							"ServerError": "服务器错误,请稍候尝试"
+						},
+						"tag": {
+							"ResetPassword": "重置密码",
+							"NewPassword": "新密码",
+							"ConfirmPassword": "确认密码",
+							"Resetting": "重置中...",
+							"Reset": "重置",
+							"BackToLogin": "返回登录页面"
+						}
+					},
+					"api": {
+						"UserNotExist": "用户不存在",
+						"ResetSuccess": "更新成功",
+						"InternalServerError": "服务器内部错误"
+					}
+				}
+			},
+			"login": {},
+			"register": {
+				"account": {},
+				"securityQuestion": {},
+				"userInfo": {}
+			}
+		},
+		"contact": {},
+		"priceList": {},
+		"profile": {
+			"page": {},
+			"nameCard": {}
+		},
+		"reservation": {
+			"page": {},
+			"confirmation": {},
+			"history": {
+				"page": {},
+				"singleReservation": {}
+			}
+		}
+	},
+	"en": {
+		"aboutUs": {
+			"title": "About Us",
+			"intro": {
+				"welcome": "Hey~ Welcome to our fingertip universe! ✨",
+				"description": {
+					"a": "We're a cozy and playful",
+					"b": "nail salon",
+					"c": "hidden near Hongdae's Cherry Blossom Street, dedicated to curing all kinds of \"bad moods\" and \"empty-hand syndrome\"~🌸"
+				},
+				"service": {
+					"a": "Here, you can leisurely choose colors, styles, or even chat about anything while getting your nails done, after all,",
+					"b": "time is yours, and beauty belongs only to you 💅."
+				}
+			},
+			"owner": {
+				"title": "A Word from the Owner",
+				"intro": "I'm the founder & exclusive dream-maker of this salon (just call me boss lady 😎)",
+				"childhood": "Since childhood, I've adored dressing up. I'd paint my hands with mom's nail polish, feeling absolutely gorgeous!",
+				"background": "I came to Korea alone in high school, starting from zero due to the language barrier, but my love for beauty never changed!",
+				"education": "I graduated from Seokyeong University with a major in Beauty & Hair Design. Since high school, I've been collecting national certificates:",
+				"certificates": [
+					"National Makeup Artist Certificate",
+					"National Color Analyst Certificate",
+					"National Nail Technician Certificate",
+					"And countless practice-hand models accompanying me through sleepless nights"
+				],
+				"experience": "During the pandemic, I juggled classes and freelance work to support myself and pay tuition. Step by step, I went from a novice to a professional nail technician, making countless international friends along the way—it was truly rewarding.",
+				"achievement": "After five years, I've finally opened my own little salon! 🎉"
+			},
+			"specialFeatures": {
+				"title": "What Makes Us Special",
+				"features": [
+					"🌸 Located beside Cherry Blossom Road—just open the door for a perfect springtime snapshot",
+					"💅 Personalized nail art that’s unique each visit",
+					"🎧 Quiet and cozy—chat or relax, your choice",
+					"💖 Y2K, dopamine, sweet & cool girl vibes—all styles available!",
+					"🎁 Little surprises every time—we just love being creative!",
+					"🫶 We're never in a hurry; your happiness is what matters most"
+				]
+			},
+			"mission": {
+				"title": "Our Philosophy",
+				"quote": {
+					"a": "\"There's no such thing as the best manicure,",
+					"b": "only endless service and genuine friendship!\""
+				},
+				"message": "Behind every pair of hands is a hardworking you. I hope to become your little \"happiness machine\" when you need it most 🎈",
+				"closing": [
+					"Feeling down? Come and visit.",
+					"Even if you're not here for nails, stop by for coffee and a chat~",
+					"Because we're more than a nail salon—we're your daily dose of happiness✨"
+				]
+			}
+		},
+		"auth": {
+			"forgetPassword": {
+				"account": {
+					"page": {
+						"function": {
+							"SetCheckAccountError": "Please enter your account",
+							"SetMissingAccountError": "User does not exist",
+							"GetSecurityQuestionError": "Failed to retrieve security question:",
+							"InternalServerError": "Server error, please try again later",
+							"InputSecurityQuestionAnswer": "Please enter the security question answer",
+							"SecurityAnswerError": "Incorrect answer to security question",
+							"CheckSecurityAnswerError": "Failed to verify security question:"
+						},
+						"tag": {
+							"AccountConfirmation": "Confirmation",
+							"Account": "Account",
+							"SecurityQuestion": "Security Question:",
+							"Checking": "Checking...",
+							"CheckAccount": "Check Account",
+							"Verifying": "Verifying...",
+							"Next": "Next",
+							"BackToLogin": "Return to Login Page"
+						}
+					},
+					"api": {
+						"CheckAccountError": "Please enter your account",
+						"MissingAccountError": "User does not exist",
+						"SecurityQuestionMissingError": "This user has not set a security question. Please contact the administrator.",
+						"SecurityQuestionRequsetError": "Failed to retrieve security question:",
+						"InternalServerError": "Internal server error",
+						"NoAccountSecurityAnswerError": "Please provide your account and security question answer",
+						"SecurityAnswerMissMatch": "Incorrect answer to security question",
+						"Success": "Verification successful",
+						"VerifedSecurityQuestionFailed": "Failed to verify security question:"
+					}
+				},
+				"resetPass": {
+					"page": {
+						"function": {
+							"InputPasswordError": "Please enter a new password",
+							"InputPasswordPatternError": "Password must be at least 6 characters",
+							"InputPasswordMissMatchError": "Passwords do not match",
+							"ResetPasswordSuccess": "Password reset successfully. Please log in with your new password",
+							"ResetPasswordFailed": "Failed to reset password:",
+							"ServerError": "Server error, please try again later"
+						},
+						"tag": {
+							"ResetPassword": "Reset Password",
+							"NewPassword": "New Password",
+							"ConfirmPassword": "Confirm Password",
+							"Resetting": "Resetting...",
+							"Reset": "Reset",
+							"BackToLogin": "Return to Login Page"
+						}
+					},
+					"api": {
+						"UserNotExist": "User does not exist",
+						"ResetSuccess": "Updated successfully",
+						"InternalServerError": "Internal server error"
+					}
+				}
+			},
+			"login": {},
+			"register": {
+				"account": {},
+				"securityQuestion": {},
+				"userInfo": {}
+			}
+		},
+		"contact": {},
+		"priceList": {},
+		"profile": {
+			"page": {},
+			"nameCard": {}
+		},
+		"reservation": {
+			"page": {},
+			"confirmation": {},
+			"history": {
+				"page": {},
+				"singleReservation": {}
+			}
+		}
+	},
+	"kr": {
+		"aboutUs": {
+			"title": "소개",
+			"intro": {
+				"welcome": "헤이~ 우리의 손끝 세상에 오신 것을 환영합니다! ✨",
+				"description": {
+					"a": "홍대 벚꽃거리 옆에 위치한",
+					"b": "네일샵",
+					"c": "입니다. 따뜻하고 귀여운 분위기로 '우울함'과 '손 허전증'을 치료해드려요~ 🌸"
+				},
+				"service": {
+					"a": "여기서는 천천히 컬러를 고르고, 천천히 스타일을 선택하면서 수다도 떨 수 있어요. 어차피",
+					"b": "시간은 당신의 것, 아름다움도 오직 당신만의 것이니까요 💅"
+				}
+			},
+			"owner": {
+				"title": "원장님의 이야기",
+				"intro": "저는 이 샵의 창립자이자 유일한 꿈 메이커예요 (원장님이라고 불러주셔도 좋아요 히히😎)",
+				"childhood": "어렸을 때부터 꾸미는 걸 너무 좋아했어요. 엄마의 매니큐어로 손을 잔뜩 칠하고 예쁘다고 생각했죠~",
+				"background": "고등학교 때 혼자 한국에 왔어요. 언어도 통하지 않고 인생도 리셋됐지만, '아름다움'에 대한 사랑은 변함없었어요!",
+				"education": "서경대학교 미용예술학과를 졸업했고, 고등학교 때부터 국가자격증을 열심히 취득했어요:",
+				"certificates": [
+					"국가공인 메이크업 아티스트 자격증",
+					"국가공인 컬러리스트 자격증",
+					"국가공인 네일 아티스트 자격증",
+					"그리고 수많은 연습용 모형 손과 함께한 밤샘 공부"
+				],
+				"experience": "코로나 시기에도 수업을 들으면서 일하고, 학비도 벌어야 했죠. 손으로 생계를 이어갔어요. 초보에서 전문 네일 아티스트가 되기까지, 여러 나라의 친구들을 만났고 정말 보람찼어요.",
+				"achievement": "5년이 지나고, 드디어! 제 가게를 오픈했어요 🎉"
+			},
+			"specialFeatures": {
+				"title": "우리 샵은 조금 특별해요",
+				"features": [
+					"🌸 벚꽃거리 옆에서 문만 열어도 봄날 감성 사진",
+					"💅 개인 맞춤형, 매번 새로운 디자인",
+					"🎧 조용하고 편안한 공간, 수다도 좋고 휴식도 좋아요",
+					"💖 Y2K, 도파민, 힙한 스타일 모두 가능해요!",
+					"🎁 매번 작은 서프라이즈, 우리는 재미있는 걸 좋아해요!",
+					"🫶 시간에 쫓기지 않고, 당신의 행복이 더 중요해요"
+				]
+			},
+			"mission": {
+				"title": "우리의 모토",
+				"quote": {
+					"a": "\"최고의 네일아트가 아닌,",
+					"b": "영원한 서비스와 진심 어린 우정을 약속드립니다!\""
+				},
+				"message": "모든 손 뒤에는 열심히 살아가는 당신이 있어요. 당신이 가장 필요로 하는 순간에 '행복 제조기'가 되어드리고 싶어요 🎈",
+				"closing": [
+					"기분 안 좋으세요? 들러주세요.",
+					"네일아트 안 하셔도 커피 마시면서 수다 떨어요~",
+					"우리는 네일샵일 뿐만 아니라, 당신 일상의 작은 행복이니까요 ✨"
+				]
+			}
+		},
+		"auth": {
+			"forgetPassword": {
+				"account": {
+					"page": {
+						"function": {
+							"SetCheckAccountError": "계정을 입력하세요",
+							"SetMissingAccountError": "존재하지 않는 사용자입니다",
+							"GetSecurityQuestionError": "보안 질문을 가져오는 데 실패했습니다:",
+							"InternalServerError": "서버 오류입니다. 잠시 후 다시 시도해주세요",
+							"InputSecurityQuestionAnswer": "보안 질문 답변을 입력하세요",
+							"SecurityAnswerError": "보안 질문 답변이 틀렸습니다",
+							"CheckSecurityAnswerError": "보안 질문을 확인하는 데 실패했습니다:"
+						},
+						"tag": {
+							"AccountConfirmation": "계정 확인",
+							"Account": "계정",
+							"SecurityQuestion": "보안 질문:",
+							"Checking": "확인 중...",
+							"CheckAccount": "계정 확인",
+							"Verifying": "검증 중...",
+							"Next": "다음",
+							"BackToLogin": "로그인 페이지로 돌아가기"
+						}
+					},
+					"api": {
+						"CheckAccountError": "계정을 입력하세요",
+						"MissingAccountError": "존재하지 않는 사용자입니다",
+						"SecurityQuestionMissingError": "사용자가 보안 질문을 설정하지 않았습니다. 관리자에게 문의하세요.",
+						"SecurityQuestionRequsetError": "보안 질문을 가져오는 데 실패했습니다:",
+						"InternalServerError": "내부 서버 오류",
+						"NoAccountSecurityAnswerError": "계정과 보안 질문 답변을 제공해주세요",
+						"SecurityAnswerMissMatch": "보안 질문 답변이 틀렸습니다",
+						"Success": "검증 성공",
+						"VerifedSecurityQuestionFailed": "보안 질문을 검증하는 데 실패했습니다:"
+					}
+				},
+				"resetPass": {
+					"page": {
+						"function": {
+							"InputPasswordError": "새 비밀번호를 입력하세요",
+							"InputPasswordPatternError": "비밀번호는 최소 6자리 이상이어야 합니다",
+							"InputPasswordMissMatchError": "입력한 비밀번호가 일치하지 않습니다",
+							"ResetPasswordSuccess": "비밀번호가 성공적으로 재설정되었습니다. 새 비밀번호로 로그인해주세요",
+							"ResetPasswordFailed": "비밀번호 재설정 실패:",
+							"ServerError": "서버 오류입니다. 잠시 후 다시 시도해주세요"
+						},
+						"tag": {
+							"ResetPassword": "비밀번호 재설정",
+							"NewPassword": "새 비밀번호",
+							"ConfirmPassword": "비밀번호 확인",
+							"Resetting": "재설정 중...",
+							"Reset": "재설정",
+							"BackToLogin": "로그인 페이지로 돌아가기"
+						}
+					},
+					"api": {
+						"UserNotExist": "존재하지 않는 사용자입니다",
+						"ResetSuccess": "성공적으로 업데이트되었습니다",
+						"InternalServerError": "내부 서버 오류"
+					}
+				}
+			},
+			"login": {},
+			"register": {
+				"account": {},
+				"securityQuestion": {},
+				"userInfo": {}
+			}
+		},
+		"contact": {},
+		"priceList": {},
+		"profile": {
+			"page": {},
+			"nameCard": {}
+		},
+		"reservation": {
+			"page": {},
+			"confirmation": {},
+			"history": {
+				"page": {},
+				"singleReservation": {}
+			}
+		}
+	}
+}
