@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import { LanguageToggle } from "@/app/component/LanguageToggle";
-
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 export default function MenuComponent({
@@ -18,6 +19,9 @@ export default function MenuComponent({
 }: {
 	className?: string;
 }) {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].component.MenuComponent.page;
 	const [blink, setBlink] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isLogin, setIsLogin] = useState(false);
@@ -107,31 +111,31 @@ export default function MenuComponent({
 								className="hover:text-gray-300 transition-colors"
 								onClick={() => handleLinkClick("/")}
 							>
-								首页
+								{data.tag.Home}
 							</a>
 							<a
 								className="hover:text-gray-300 transition-colors"
 								onClick={() => handleLinkClick("/reservation")}
 							>
-								预约
+								{data.tag.Reservation}
 							</a>
 							<a
 								className="hover:text-gray-300 transition-colors"
 								onClick={() => handleLinkClick("/priceList")}
 							>
-								价格表
+								{data.tag.PriceList}
 							</a>
 							<a
 								className="hover:text-gray-300 transition-colors"
 								onClick={() => handleLinkClick("/aboutUs")}
 							>
-								关于我们
+								{data.tag.AboutUs}
 							</a>
 							<a
 								className="hover:text-gray-300 transition-colors"
 								onClick={() => handleLinkClick("/contact")}
 							>
-								联系方式
+								{data.tag.Contact}
 							</a>
 							<div className="flex gap-4 md:gap-14">
 								{!isLogin ? (
@@ -139,14 +143,14 @@ export default function MenuComponent({
 										<Button
 											onClick={() => handleLinkClick("/auth/login")}
 										>
-											登录
+											{data.tag.Login}
 										</Button>
 										<Button
 											onClick={() =>
 												handleLinkClick("/auth/register/account")
 											}
 										>
-											注册
+											{data.tag.Register}
 										</Button>
 									</div>
 								) : (
@@ -154,7 +158,7 @@ export default function MenuComponent({
 										className="flex flex-col gap-2 justify-center items-center hover:text-gray-300 transition-colors"
 										onClick={() => handleLinkClick("/profile")}
 									>
-										个人中心
+										{data.tag.Profile}
 									</a>
 								)}
 							</div>

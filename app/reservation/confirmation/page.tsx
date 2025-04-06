@@ -13,10 +13,15 @@ import {
 } from "@/components/ui/card";
 import { ZCOOL_KuaiLe } from "next/font/google";
 import { Loader2 } from "lucide-react"; // 添加Loader2图标
-
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 export default function ConfirmationPage() {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].reservation
+			.confirmation.page;
 	const router = useRouter();
 	const [reservation, setReservation] = useState<{
 		date: string;
@@ -46,11 +51,11 @@ export default function ConfirmationPage() {
 					parsedReservation.timeSlot
 				);
 			} else {
-				setError("未找到预约信息");
+				setError(data.function.NotFoundReservationInfo);
 			}
 		} catch (err) {
 			console.error("读取预约信息失败:", err);
-			setError("读取预约信息失败");
+			setError(data.function.ReadingReservationInfoError);
 		}
 	}, []);
 
@@ -90,38 +95,44 @@ export default function ConfirmationPage() {
 	const copyReservationId = () => {
 		if (reservationId) {
 			// 检查navigator.clipboard是否可用
-			if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+			if (
+				navigator.clipboard &&
+				typeof navigator.clipboard.writeText === "function"
+			) {
 				navigator.clipboard
 					.writeText(reservationId)
 					.then(() => {
-						toast.success("预约编号已复制到剪贴板", {
+						toast.success(data.function.ReservationCodeCopied, {
 							position: "top-center",
 							duration: 2000,
 						});
 						setHasCopiedId(true); // 设置已复制状态为true
 					})
 					.catch((err) => {
-						console.error("复制失败:", err);
+						console.error(
+							data.function.CopyReservationCodeError,
+							err
+						);
 						// 如果现代API失败，回退到传统方法
-						fallbackCopyTextToClipboard(reservationId);
+						fallbackCopyTextToClipboard(reservationId,data.function.ReservationCodeCopied);
 					});
 			} else {
 				// 如果不支持现代API，使用传统方法
-				fallbackCopyTextToClipboard(reservationId);
+				fallbackCopyTextToClipboard(reservationId,data.function.ReservationCodeCopied);
 			}
 		}
 	};
 
 	// 传统复制方法作为后备
-	const fallbackCopyTextToClipboard = (text: string) => {
+	const fallbackCopyTextToClipboard = (text: string, message: string): void => {
 		try {
 			const textarea = document.createElement("textarea");
 			textarea.value = text;
 			// 确保textarea在视口内但不可见
-			textarea.style.position = 'fixed';
-			textarea.style.left = '0';
-			textarea.style.top = '0';
-			textarea.style.opacity = '0';
+			textarea.style.position = "fixed";
+			textarea.style.left = "0";
+			textarea.style.top = "0";
+			textarea.style.opacity = "0";
 			document.body.appendChild(textarea);
 			textarea.focus();
 			textarea.select();
@@ -130,19 +141,19 @@ export default function ConfirmationPage() {
 			document.body.removeChild(textarea);
 
 			if (successful) {
-				toast.success("预约编号已复制到剪贴板", {
+				toast.success(message, {
 					position: "top-center",
 					duration: 2000,
 				});
 				setHasCopiedId(true);
 			} else {
-				toast.error("复制失败，请重试", {
+				toast.error(data.function.CopyReservationCodeError, {
 					position: "top-center",
 				});
 			}
 		} catch (err) {
 			console.error("复制失败:", err);
-			toast.error("复制失败，请重试", {
+			toast.error(data.function.CopyReservationCodeError, {
 				position: "top-center",
 			});
 		}
@@ -151,7 +162,7 @@ export default function ConfirmationPage() {
 	// 处理联系客服按钮点击
 	const handleContactClick = () => {
 		if (!hasCopiedId && reservationId) {
-			toast.warning("请先复制预约编号，再联系客服哟～", {
+			toast.warning(data.function.CopyReservationCodeFirst, {
 				position: "top-center",
 				duration: 2000,
 			});
@@ -169,14 +180,14 @@ export default function ConfirmationPage() {
 						className={`bg-red-100 text-center ${zcool.className}`}
 					>
 						<CardTitle className="text-2xl text-red-800">
-							无法加载预约信息
+							{data.tag.CannotLoadReservationInfo}
 						</CardTitle>
 						<CardDescription className="text-red-600">
 							{error}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="pt-6 text-center">
-						<p>可能是因为您尚未完成预约或者会话已过期</p>
+						<p>{data.tag.Reason}</p>
 					</CardContent>
 					<CardFooter className="flex justify-center gap-4">
 						<Button
@@ -184,13 +195,13 @@ export default function ConfirmationPage() {
 							onClick={() => router.push("/")}
 							className="border-pink-300 text-pink-500 hover:bg-pink-50"
 						>
-							返回首页
+							{data.tag.BackToMain}
 						</Button>
 						<Button
 							onClick={() => router.push("/reservation")}
 							className="bg-pink-500 hover:bg-pink-600"
 						>
-							重新预约
+							{data.tag.Rereserve}
 						</Button>
 					</CardFooter>
 				</Card>
@@ -205,19 +216,21 @@ export default function ConfirmationPage() {
 					className={`bg-green-100 text-center rounded-t-xl py-4 ${zcool.className}`}
 				>
 					<CardTitle className="text-2xl text-green-800">
-						预约成功！
+						{data.tag.ReservedSuccessfully}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="">
 					{reservation ? (
 						<div className="space-y-4">
 							<div className="flex justify-between items-center">
-								<span className="font-medium">预约编号:</span>
+								<span className="font-medium">
+									{data.tag.ReservationCode}:
+								</span>
 								{isLoading ? (
 									<div className="flex items-center space-x-2">
 										<Loader2 className="h-4 w-4 animate-spin text-gray-500" />
 										<span className="text-gray-500 text-sm">
-											加载中...
+											{data.tag.Loading}
 										</span>
 									</div>
 								) : (
@@ -232,59 +245,73 @@ export default function ConfirmationPage() {
 												className="h-7 px-2 text-xs border-pink-300 text-pink-500 hover:bg-pink-50"
 												onClick={copyReservationId}
 											>
-												复制
+												{data.tag.Copy}
 											</Button>
 										)}
 									</div>
 								)}
 							</div>
 							<div className="flex justify-between">
-								<span className="font-medium">订金金额：</span>
+								<span className="font-medium">
+									{data.tag.DepositAmount}
+								</span>
 								<span>20,000 원</span>
 							</div>
 							<div className="flex justify-between">
 								<span className="font-medium flex justify-center items-center">
-									订金转账账户:
+									{data.tag.DepositAccount}
 								</span>
 								<div className="flex flex-col">
 									<span className=" text-end">정영나 토스뱅크</span>
 									<span className="flex justify-center item-center gap-2">
-										<span className="flex justify-center items-center">1001-****-8397</span>
+										<span className="flex justify-center items-center">
+											1001-****-8397
+										</span>
 										<Button
 											variant="outline"
 											size="sm"
 											className="h-7 px-2 text-xs border-pink-300 text-pink-500 hover:bg-pink-50"
 											onClick={() => {
-												const address = "전영나 토스뱅크 1001-2704-8397";
+												const address =
+													"정영나 토스뱅크 1001-2704-8397";
 												// 检查navigator.clipboard是否可用
-												if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+												if (
+													navigator.clipboard &&
+													typeof navigator.clipboard.writeText ===
+														"function"
+												) {
 													navigator.clipboard
 														.writeText(address)
 														.then(() => {
-															toast.success("账户已复制到剪贴板", {
-																position: "top-center",
-																duration: 2000,
-															});
+															toast.success(
+																data.tag.AccountAlreadyCopied,
+																{
+																	position: "top-center",
+																	duration: 2000,
+																}
+															);
 														})
 														.catch((err) => {
 															console.error("复制失败:", err);
 															// 如果现代API失败，回退到传统方法
-															fallbackCopyTextToClipboard(address);
+															fallbackCopyTextToClipboard(address,data.tag.AccountAlreadyCopied);
 														});
 												} else {
 													// 如果不支持现代API，使用传统方法
-													fallbackCopyTextToClipboard(address);
+													fallbackCopyTextToClipboard(address,data.tag.AccountAlreadyCopied);
 												}
 											}}
 										>
-											复制
+											{data.tag.Copy}
 										</Button>
 									</span>
 								</div>
 							</div>
 
 							<div className="flex justify-between">
-								<span className="font-medium">预约日期:</span>
+								<span className="font-medium">
+									{data.tag.ReservationDate}
+								</span>
 								<span>
 									{new Date(reservation.date).toLocaleDateString(
 										"zh-CN"
@@ -292,68 +319,68 @@ export default function ConfirmationPage() {
 								</span>
 							</div>
 							<div className="flex justify-between">
-								<span className="font-medium">预约时间:</span>
+								<span className="font-medium">
+									{data.tag.ReservationTime}
+								</span>
 								<span>{reservation.timeSlot}</span>
 							</div>
 							<div className="bg-yellow-50 p-2 rounded-md mt-4">
 								<p className="text-yellow-800 text-sm text-center font-medium">
-									注意
+									{data.tag.Attention}
 								</p>
 								<ul className="text-yellow-800 text-sm list-inside space-y-1">
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
 										<span>
-
 											<strong className="font-bold text-red-400">
-												联系客服
+												{data.tag.AttentionA.a}
 											</strong>
-											，发送
+											{data.tag.AttentionA.b}
 											<strong className="font-bold text-red-400">
-												订单编号
+												{data.tag.AttentionA.c}
 											</strong>
-											与
+											{data.tag.AttentionA.d}
 											<strong className="font-bold text-red-400">
-												定金转账截图
+												{data.tag.AttentionA.e}
 											</strong>
-											。
+											.
 										</span>
 									</li>
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
 										<span>
-											如预约后
+											{data.tag.AttentionB.a}
 											<strong className="font-bold text-red-400">
-												一小时内
+												{data.tag.AttentionB.b}
 											</strong>
-											未支付定金，将视为放弃预约。
+											{data.tag.AttentionB.c}
 										</span>
 									</li>
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
 										<span>
 											<strong className="font-bold text-red-400">
-												定金是不予退还的！
+												{data.tag.AttentionC.a}
 											</strong>
-											如需修改时间，请您
+											{data.tag.AttentionC.b}
 											<strong className="font-bold text-red-400">
-												提前一天
+												{data.tag.AttentionC.c}
 											</strong>
-											声明，最多修改
+											{data.tag.AttentionC.d}
 											<strong className="font-bold text-red-400">
-											两次
+												{data.tag.AttentionC.e}
 											</strong>
-											（不追加额外定金）。
+											{data.tag.AttentionC.f}
 										</span>
 									</li>
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
 										<span>
-
-											迟到
+											{data.tag.AttentionD.a}
 											<strong className="font-bold text-red-400">
-												30分钟以上
+												{data.tag.AttentionD.b}
 											</strong>
-											无联系者，视为默认放弃预约，定金不予退还。
+											{data.tag.AttentionD.c}
 										</span>
 									</li>
 								</ul>
@@ -361,7 +388,7 @@ export default function ConfirmationPage() {
 						</div>
 					) : (
 						<div className="text-center py-4">
-							<p>加载预约信息中...</p>
+							<p>{data.tag.LoadingInfo}</p>
 						</div>
 					)}
 				</CardContent>
@@ -378,7 +405,7 @@ export default function ConfirmationPage() {
 						className="bg-pink-500 hover:bg-pink-600"
 						disabled={isLoading}
 					>
-						联系客服
+						{data.tag.Contact}
 					</Button>
 				</CardFooter>
 			</Card>

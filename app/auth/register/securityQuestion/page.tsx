@@ -6,10 +6,16 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRegisterStore } from "../registerStore";
 import { toast } from "react-hot-toast";
-
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 const SecurityQuestionPage = () => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].auth
+			.register.securityQuestion.page;
+
 	const router = useRouter();
 	const {
 		securityQuestion,
@@ -33,11 +39,12 @@ const SecurityQuestionPage = () => {
 		} = {};
 
 		if (!securityQuestion) {
-			newErrors.securityQuestion = "请输入安全问题";
+			newErrors.securityQuestion =
+				data.function.InputSecurityAnswerError;
 		}
 
 		if (!securityAnswer) {
-			newErrors.securityAnswer = "请输入安全问题答案";
+			newErrors.securityAnswer = data.function.SetSecurityAnswerError;
 		}
 
 		setErrors(newErrors);
@@ -48,7 +55,7 @@ const SecurityQuestionPage = () => {
 		if (validateForm()) {
 			router.push("/auth/register/userInfo");
 		} else {
-			toast.error("请填写安全问题和答案", {
+			toast.error(data.function.SetSecurityQuestionError, {
 				position: "top-center",
 				duration: 2000,
 			});
@@ -62,10 +69,12 @@ const SecurityQuestionPage = () => {
 			<div className="border-none bg-gradient-to-r from-pink-300 to-pink-400 w-full md:w-2/3 h-fit md:h-full rounded-b-none rounded-t-full flex flex-col items-center justify-center">
 				<div className="w-2/3 flex flex-col justify-between h-full py-12 gap-5">
 					<div className="flex items-center justify-center text-3xl md:text-5xl">
-						安全问题
+						{data.tag.SecurityQuestion}
 					</div>
 					<div className="">
-						<div className="text-lg">输入一个安全问题</div>
+						<div className="text-lg">
+							{data.tag.EnterSecurityQuestion}
+						</div>
 						<div className="flex gap-3 items-center">
 							<Input
 								value={securityQuestion}
@@ -80,7 +89,9 @@ const SecurityQuestionPage = () => {
 						)}
 					</div>
 					<div className="">
-						<div className="text-lg">答案</div>
+						<div className="text-lg">
+							{data.tag.EnterSecurityAnswer}
+						</div>
 						<div className="flex gap-3 items-center">
 							<Input
 								value={securityAnswer}
@@ -101,20 +112,22 @@ const SecurityQuestionPage = () => {
 								handleLinkClick("/auth/register/account")
 							}
 						>
-							<Button variant="outline">返回</Button>
+							<Button variant="outline">{data.tag.Back}</Button>
 						</div>
 						<div className="flex justify-center items-center w-full">
-							<Button onClick={handleNextStep}>继续</Button>
+							<Button onClick={handleNextStep}>
+								{data.tag.Next}
+							</Button>
 						</div>
 					</div>
 					<div className="flex justify-center items-center w-full text-sm md:text-base">
 						<div className="flex">
-							<div className="">已经有账号？</div>
+							<div className="">{data.tag.AlreadyHaveAnAccount}</div>
 							<div
 								className="ml-1 cursor-pointer hover:underline"
 								onClick={() => handleLinkClick("/auth/login")}
 							>
-								登录
+								{data.tag.LoginNow}
 							</div>
 						</div>
 					</div>

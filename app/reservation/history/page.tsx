@@ -35,7 +35,8 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react"; // 添加Loader2图标导入
 import { useRouter } from "next/navigation";
 import { ZCOOL_KuaiLe } from "next/font/google";
-
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 // 预约数据类型
@@ -63,22 +64,13 @@ type PaginationData = {
 };
 
 // 状态映射
-const statusMap = {
-	upcoming: {
-		label: "即将到来",
-		className: "bg-blue-100 text-blue-800",
-	},
-	completed: {
-		label: "已完成",
-		className: "bg-green-100 text-green-800",
-	},
-	cancelled: {
-		label: "已取消",
-		className: "bg-red-100 text-red-800",
-	},
-};
 
 const HistoryPage = () => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].reservation
+			.history.page;
+
 	const [reservations, setReservations] = useState<Reservation[]>([]);
 	const [pagination, setPagination] = useState<PaginationData>({
 		total: 0,
@@ -142,8 +134,8 @@ const HistoryPage = () => {
 		<div
 			className={` w-11/12 pt-4 md:py-6 px-4 md:px-6 h-full  bg-amber-200  rounded-t-3xl ${zcool.className}`}
 		>
-			<h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
-				我的预约记录
+			<h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex justify-center items-center">
+				{data.tag.MyReservation}
 			</h1>
 
 			<Tabs
@@ -153,19 +145,19 @@ const HistoryPage = () => {
 			>
 				<TabsList className="mb-4 w-full md:w-auto grid grid-cols-3 md:flex">
 					<TabsTrigger value="all" className="flex-1 md:flex-none">
-						全部预约
+						{data.tag.AllReservation}
 					</TabsTrigger>
 					<TabsTrigger
 						value="upcoming"
 						className="flex-1 md:flex-none"
 					>
-						即将到来
+						{data.tag.UpcomingReservation}
 					</TabsTrigger>
 					<TabsTrigger
 						value="completed"
 						className="flex-1 md:flex-none"
 					>
-						已完成
+						{data.tag.AccomplishedReservation}
 					</TabsTrigger>
 				</TabsList>
 
@@ -301,6 +293,24 @@ const ReservationTable = ({
 }: {
 	reservations: Reservation[];
 }) => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].reservation
+			.history.page;
+	const statusMap = {
+		upcoming: {
+			label: data.function.Upcoming,
+			className: "bg-blue-100 text-blue-800",
+		},
+		completed: {
+			label: data.function.Accomplished,
+			className: "bg-green-100 text-green-800",
+		},
+		cancelled: {
+			label: data.function.Canceled,
+			className: "bg-red-100 text-red-800",
+		},
+	};
 	const router = useRouter();
 
 	// 点击预约行时导航到详情页
@@ -315,10 +325,12 @@ const ReservationTable = ({
 			<Table>
 				<TableHeader className="bg-gray-50">
 					<TableRow>
-						<TableHead className="w-[100px]">预约编号</TableHead>
-						<TableHead>日期</TableHead>
-						<TableHead>时间段</TableHead>
-						<TableHead>状态</TableHead>
+						<TableHead className="w-[100px]">
+							{data.tag.ReservationCode}
+						</TableHead>
+						<TableHead>{data.tag.ReservationDate}</TableHead>
+						<TableHead>{data.tag.ReservationTime}</TableHead>
+						<TableHead>{data.tag.ReservationStatus}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody className="min-h-[250px]">
@@ -328,7 +340,7 @@ const ReservationTable = ({
 								colSpan={4}
 								className="text-center py-6 h-[250px] align-middle"
 							>
-								暂无预约记录
+								{data.tag.NoReservation}
 							</TableCell>
 						</TableRow>
 					) : (
@@ -343,7 +355,7 @@ const ReservationTable = ({
 										{reservation.id.substring(0, 8)}
 									</TableCell>
 									<TableCell>
-										{format(reservation.date, "yyyy年MM月dd日", {
+										{format(reservation.date, data.tag.DateFormat, {
 											locale: zhCN,
 										})}
 									</TableCell>
@@ -386,6 +398,24 @@ const ReservationCards = ({
 }: {
 	reservations: Reservation[];
 }) => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].reservation
+			.history.page;
+	const statusMap = {
+		upcoming: {
+			label: data.function.Upcoming,
+			className: "bg-blue-100 text-blue-800",
+		},
+		completed: {
+			label: data.function.Accomplished,
+			className: "bg-green-100 text-green-800",
+		},
+		cancelled: {
+			label: data.function.Canceled,
+			className: "bg-red-100 text-red-800",
+		},
+	};
 	const router = useRouter();
 
 	// 点击卡片时导航到详情页
@@ -398,7 +428,7 @@ const ReservationCards = ({
 	if (reservations.length === 0) {
 		return (
 			<div className="text-center py-8 bg-white rounded-lg shadow-sm h-[400px] flex items-center justify-center">
-				<p className="text-gray-500">暂无预约记录</p>
+				<p className="text-gray-500">{data.tag.NoReservation}</p>
 			</div>
 		);
 	}
@@ -414,7 +444,7 @@ const ReservationCards = ({
 					<CardHeader className="pb-1 pt-2 px-3">
 						<div className="flex justify-between items-center">
 							<CardTitle className="text-lg font-medium flex flex-col gap-1 text-teal-400">
-								<div className="">预约编号</div>
+								<div className="">{data.tag.ReservationCode}</div>
 								<div className="">
 									#{reservation.id.substring(0, 8)}
 								</div>
@@ -431,13 +461,13 @@ const ReservationCards = ({
 					</CardHeader>
 					<CardContent className="pb-2 px-3">
 						<div className="grid grid-cols-2 gap-1 text-xs">
-							<div className="text-gray-500">日期</div>
+							<div className="text-gray-500">{data.tag.ReservationDate}</div>
 							<div className="w-full justify-end flex">
-								{format(reservation.date, "yyyy年MM月dd日", {
+								{format(reservation.date,  data.tag.DateFormat, {
 									locale: zhCN,
 								})}
 							</div>
-							<div className="text-gray-500">时间段</div>
+							<div className="text-gray-500">{data.tag.ReservationTime}</div>
 							<div className="w-full justify-end flex">
 								{reservation.timeSlot}
 							</div>

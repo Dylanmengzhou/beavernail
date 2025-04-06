@@ -11,8 +11,13 @@ import { ZCOOL_KuaiLe } from "next/font/google";
 
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
-
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const ReservationPage = () => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].reservation
+			.page;
 	const router = useRouter();
 	const [date, setDate] = useState<Date | undefined>(new Date());
 	const [isCalendarClicked, setIsCalendarClicked] = useState(false);
@@ -26,7 +31,6 @@ const ReservationPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const timeSlots = ["10:00", "12:00", "14:00", "16:00", "19:00"];
-
 
 	// 获取不可预约的日期
 	useEffect(() => {
@@ -47,10 +51,10 @@ const ReservationPage = () => {
 				}
 			} catch (error) {
 				console.error("获取不可预约日期失败:", error);
-				toast.error("获取可预约日期信息失败，请稍后再试", {
+				toast.error(data.function.GetReservationInfoError, {
 					position: "top-center",
 					duration: 2000,
-				  });
+				});
 			}
 		};
 
@@ -64,12 +68,16 @@ const ReservationPage = () => {
 		try {
 			setIsLoading(true);
 			// 使用韩国时区格式化日期
-			const formattedDate = selectedDate.toLocaleDateString('ko-KR', {
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit',
-				timeZone: 'Asia/Seoul'
-			}).split('. ').join('-').replace('.', '');
+			const formattedDate = selectedDate
+				.toLocaleDateString("ko-KR", {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit",
+					timeZone: "Asia/Seoul",
+				})
+				.split(". ")
+				.join("-")
+				.replace(".", "");
 
 			const response = await fetch(
 				`/api/reservations/unavailable-times?date=${formattedDate}`
@@ -83,17 +91,17 @@ const ReservationPage = () => {
 			}
 		} catch (error) {
 			console.error("获取不可预约时间段失败:", error);
-			toast.error("获取可预约时间信息失败，请稍后再试", {
+			toast.error(data.function.GetReservationInfoError, {
 				position: "top-center",
 				duration: 2000,
-			  });
+			});
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	const handleDateSelect = (selectedDate: Date | undefined) => {
-		console.log(Date)
+		console.log(Date);
 		setDate(selectedDate);
 		if (selectedDate) {
 			setIsCalendarClicked(true);
@@ -108,12 +116,16 @@ const ReservationPage = () => {
 		try {
 			setIsLoading(true);
 			// 使用韩国时区格式化日期
-			const formattedDate = date.toLocaleDateString('ko-KR', {
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit',
-				timeZone: 'Asia/Seoul'
-			}).split('. ').join('-').replace('.', '');
+			const formattedDate = date
+				.toLocaleDateString("ko-KR", {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit",
+					timeZone: "Asia/Seoul",
+				})
+				.split(". ")
+				.join("-")
+				.replace(".", "");
 
 			const response = await fetch("/api/reservations", {
 				method: "POST",
@@ -126,34 +138,37 @@ const ReservationPage = () => {
 				}),
 			});
 
-			const data = await response.json();
+			// const data = await response.json();
 
 			if (response.ok) {
 				// 保存预约信息到localStorage
-				localStorage.setItem("latestReservation", JSON.stringify({
-					date: formattedDate,
-					timeSlot: selectedTime,
-					rawDate: date,
-				}));
+				localStorage.setItem(
+					"latestReservation",
+					JSON.stringify({
+						date: formattedDate,
+						timeSlot: selectedTime,
+						rawDate: date,
+					})
+				);
 
-				toast.success("预约成功！", {
+				toast.success(data.function.ReservationSuccess, {
 					position: "top-center",
 					duration: 2000,
-				  });
+				});
 				// 跳转到确认页面
 				router.push("/reservation/confirmation");
 			} else {
-				toast.error(data.message || "预约失败，请稍后再试", {
+				toast.error(data.function.ReservationFailed, {
 					position: "top-center",
 					duration: 2000,
-				  });
+				});
 			}
 		} catch (error) {
 			console.error("预约失败:", error);
-			toast.error("预约失败，请稍后再试", {
+			toast.error(data.function.ReservationFailed, {
 				position: "top-center",
 				duration: 2000,
-			  });
+			});
 		} finally {
 			setIsLoading(false);
 		}
@@ -197,9 +212,9 @@ const ReservationPage = () => {
 								const today = new Date();
 								// 如果当前日期已经超过起始日期，则使用当前日期作为最早可选日期
 								return today > startDate ? today : startDate;
-							})()
+							})(),
 						},
-						{ dayOfWeek: [1] },    // 禁用周一
+						{ dayOfWeek: [1] }, // 禁用周一
 						{
 							after: (() => {
 								// 起始日期是2025年4月25日
@@ -207,12 +222,13 @@ const ReservationPage = () => {
 								// 获取当前日期
 								const today = new Date();
 								// 使用较晚的日期作为计算基准
-								const baseDate = today > startDate ? today : startDate;
+								const baseDate =
+									today > startDate ? today : startDate;
 								// 从基准日期开始计算15天后的日期
 								const maxDate = new Date(baseDate);
 								maxDate.setDate(baseDate.getDate() + 15);
 								return maxDate;
-							})()
+							})(),
 						},
 						...disabledDates.map(
 							(disabledDate) => new Date(disabledDate)
@@ -225,7 +241,9 @@ const ReservationPage = () => {
 					className={`grid grid-cols-3 grid-rows-2 gap-4 w-full max-w-[300px] md:max-w-[600px] mx-auto p-10 ${coiny.className}`}
 				>
 					{isLoading ? (
-						<div className="col-span-3 text-center">加载中...</div>
+						<div className="col-span-3 text-center">
+							{data.tag.Loading}
+						</div>
 					) : (
 						<>
 							{timeSlots.map((time) => (
@@ -238,13 +256,18 @@ const ReservationPage = () => {
 											: "bg-pink-500"
 									} text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)] hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.3)] hover:bg-pink-400 active:bg-pink-300 focus:bg-pink-300 disabled:opacity-50 disabled:cursor-not-allowed flex-col justify-center items-center`}
 									onClick={() => setSelectedTime(time)}
-									disabled={unavailableTimeSlots.includes(time) || isTimeSlotPassed(time)}
+									disabled={
+										unavailableTimeSlots.includes(time) ||
+										isTimeSlotPassed(time)
+									}
 								>
 									{time}
 									{unavailableTimeSlots.includes(time) ? (
-										<span className="ml-1">(已约)</span>
+										<span className="">{data.tag.Reserved}</span>
 									) : isTimeSlotPassed(time) ? (
-										<span className="ml-1">(已过)</span>
+										<span className="">
+											{data.tag.TimePassed}
+										</span>
 									) : null}
 								</Button>
 							))}
@@ -258,7 +281,7 @@ const ReservationPage = () => {
 								onClick={handleDateTimeCheck}
 								disabled={!selectedTime || isLoading}
 							>
-								{isLoading ? "处理中..." : "确认"}
+								{isLoading ? data.tag.Processing : data.tag.Confirm}
 							</Button>
 						</>
 					)}
@@ -268,7 +291,7 @@ const ReservationPage = () => {
 					className={`h-full flex justify-center items-center ${zcool.className}`}
 				>
 					<Badge variant="secondary" className="text-2xl p-2">
-						先选择日期哟 📅
+							{ data.tag.PleaseSelectDate}
 					</Badge>
 				</div>
 			)}

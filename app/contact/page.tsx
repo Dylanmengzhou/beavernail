@@ -10,11 +10,18 @@ import { Link } from "lucide-react";
 // 导入 React Icons 中的图标
 import { SiXiaohongshu } from "react-icons/si";
 import { FaWeixin } from "react-icons/fa";
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 
 const ContactPage = () => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].contact
+			.page;
+	
 	// 使用状态管理复制状态和显示状态
 	const [copied, setCopied] = useState<string | null>(null);
 	const [revealed, setRevealed] = useState<string | null>(null);
@@ -35,12 +42,65 @@ const ContactPage = () => {
 
 	// 处理复制功能
 	const handleCopy = (type: string, value: string) => {
-		navigator.clipboard.writeText(value);
-		setCopied(type);
-		toast.success(`${type}已复制到剪贴板`, {
-			duration: 2000,
-		});
-		setTimeout(() => setCopied(null), 2000);
+		// 检查navigator.clipboard是否可用
+		if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+			navigator.clipboard
+				.writeText(value)
+				.then(() => {
+					setCopied(type);
+					toast.success(`${type}${data.function.AlreadyCopyToClipboard}`, {
+						duration: 2000,
+					});
+					setTimeout(() => setCopied(null), 2000);
+				})
+				.catch((err) => {
+					console.error("复制失败:", err);
+					// 如果现代API失败，回退到传统方法
+					fallbackCopyTextToClipboard(value, type);
+				});
+		} else {
+			// 如果不支持现代API，使用传统方法
+			fallbackCopyTextToClipboard(value, type);
+		}
+	};
+
+	// 添加传统复制方法作为后备
+	const fallbackCopyTextToClipboard = (text: string, type: string) => {
+		try {
+			const textarea = document.createElement("textarea");
+			textarea.value = text;
+			// 确保textarea在视口内但不可见
+			textarea.style.position = 'fixed';
+			textarea.style.left = '0';
+			textarea.style.top = '0';
+			textarea.style.opacity = '0';
+			document.body.appendChild(textarea);
+			textarea.focus();
+			textarea.select();
+
+			const successful = document.execCommand("copy");
+			document.body.removeChild(textarea);
+
+			if (successful) {
+				setCopied(type);
+				toast.success(`${data.function.AlreadyCopyToClipboard}`, {
+					position: "top-center",
+					duration: 2000,
+				});
+				setTimeout(() => setCopied(null), 2000);
+			} else {
+				toast.error(data.function.FailCopyToClipboard, {
+					position: "top-center",
+					duration: 2000,
+				});
+			}
+		} catch (err) {
+			console.error("复制失败:", err);
+			toast.error(data.function.FailCopyToClipboard, {
+				position: "top-center",
+				duration: 2000,
+			});
+		}
 	};
 
 	// 处理显示/隐藏功能
@@ -55,11 +115,11 @@ const ContactPage = () => {
 	};
 
 	return (
-		<div className="w-full max-w-3xl mx-auto p-6 rounded-2xl ">
+		<div className="w-full max-w-3xl mx-auto p-6 rounded-2xl">
 			<h1
 				className={`${zcool.className} text-3xl text-center text-pink-500 mb-8`}
 			>
-				联系我们
+				{data.tag.ContactUs}
 			</h1>
 
 			<div className="space-y-8">
@@ -70,12 +130,12 @@ const ContactPage = () => {
 					</div>
 					<div className="flex-grow">
 						<h2 className={`${coiny.className} text-xl text-red-600`}>
-							小红书
+							{data.tag.RedBook}
 						</h2>
-						<p className={`${zcool.className} text-gray-600`}>
+						<p className={`${zcool.className} text-gray-600 text-xs`}>
 							{revealed === "xiaohongshu"
 								? contactInfo.xiaohongshu.account
-								: "点击查看我们的小红书账号"}
+								: data.tag.ClickToShowRedBook}
 						</p>
 					</div>
 					<div className="flex space-x-2">
@@ -83,7 +143,9 @@ const ContactPage = () => {
 							onClick={() => toggleReveal("xiaohongshu")}
 							className="p-2 bg-red-100 hover:bg-red-200 rounded-full transition-colors"
 						>
-							{revealed === "xiaohongshu" ? "隐藏" : "查看"}
+							{revealed === "xiaohongshu"
+								? data.tag.Hide
+								: data.tag.Reveal}
 						</button>
 						{revealed === "xiaohongshu" && (
 							<>
@@ -130,10 +192,10 @@ const ContactPage = () => {
 						>
 							Instagram
 						</h2>
-						<p className={`${zcool.className} text-gray-600`}>
+						<p className={`${zcool.className} text-gray-600 text-xs`}>
 							{revealed === "instagram"
 								? contactInfo.instagram.account
-								: "点击查看我们的Instagram账号"}
+								: data.tag.ClickToShowInstagram}
 						</p>
 					</div>
 					<div className="flex space-x-2">
@@ -141,7 +203,9 @@ const ContactPage = () => {
 							onClick={() => toggleReveal("instagram")}
 							className="p-2 bg-purple-100 hover:bg-purple-200 rounded-full transition-colors"
 						>
-							{revealed === "instagram" ? "隐藏" : "查看"}
+							{revealed === "instagram"
+								? data.tag.Hide
+								: data.tag.Reveal}
 						</button>
 						{revealed === "instagram" && (
 							<>
@@ -159,7 +223,7 @@ const ContactPage = () => {
 									) : (
 										<Copy size={20} />
 									)}
-                                </button>
+								</button>
 
 								<button
 									onClick={() =>
@@ -187,12 +251,12 @@ const ContactPage = () => {
 						<h2
 							className={`${coiny.className} text-xl text-green-600`}
 						>
-							微信
+							{data.tag.Wechat}
 						</h2>
-						<p className={`${zcool.className} text-gray-600`}>
+						<p className={`${zcool.className} text-gray-600 text-xs`}>
 							{revealed === "wechat"
 								? contactInfo.wechat
-								: "点击查看我们的微信账号"}
+								: data.tag.ClickToShowWeChat}
 						</p>
 					</div>
 					<div className="flex space-x-2">
@@ -200,7 +264,9 @@ const ContactPage = () => {
 							onClick={() => toggleReveal("wechat")}
 							className="p-2 bg-green-100 hover:bg-green-200 rounded-full transition-colors"
 						>
-							{revealed === "wechat" ? "隐藏" : "查看"}
+							{revealed === "wechat"
+								? data.tag.Hide
+								: data.tag.Reveal}
 						</button>
 						{revealed === "wechat" && (
 							<button
@@ -228,12 +294,12 @@ const ContactPage = () => {
 						<h2
 							className={`${coiny.className} text-xl text-blue-600`}
 						>
-							合作邮箱
+							Email
 						</h2>
-						<p className={`${zcool.className} text-gray-600`}>
+						<p className={`${zcool.className} text-gray-600 text-xs`}>
 							{revealed === "email"
 								? contactInfo.email
-								: "点击查看我们的合作邮箱"}
+								: data.tag.ClickToShowEmail}
 						</p>
 					</div>
 					<div className="flex space-x-2">
@@ -241,7 +307,7 @@ const ContactPage = () => {
 							onClick={() => toggleReveal("email")}
 							className="p-2 bg-blue-100 hover:bg-blue-200 rounded-full transition-colors"
 						>
-							{revealed === "email" ? "隐藏" : "查看"}
+							{revealed === "email" ? data.tag.Hide : data.tag.Reveal}
 						</button>
 						{revealed === "email" && (
 							<button
@@ -264,8 +330,8 @@ const ContactPage = () => {
 			<div
 				className={`${zcool.className} mt-10 text-center text-gray-500`}
 			>
-				<p>我们会尽快回复您的咨询</p>
-				<p className="mt-2">期待您的到来！</p>
+				<p>{data.tag.WillReplySoon}</p>
+				<p className="mt-2">{data.tag.Welcome}</p>
 			</div>
 		</div>
 	);

@@ -1,5 +1,67 @@
 {
 	"zh": {
+		"page": {
+			"function": {},
+			"tag": {
+				"QuickReservation": "快速预约"
+			}
+		},
+		"layout": {
+			"page": {
+				"function": {},
+				"tag": {}
+			}
+		},
+		"component": {
+			"MenuComponent": {
+				"page": {
+					"function": {},
+					"tag": {
+						"Home": "首页",
+						"Reservation": "预约",
+						"PriceList": "价格表",
+						"AboutUs": "关于我们",
+						"Contact": "联系我们",
+						"Login": "登录",
+						"Register": "注册",
+						"Profile": "个人中心"
+					}
+				}
+			},
+			"AppointmentReminder": {
+				"page": {
+					"function": {
+						"SignInWarning": "请先登录,才能看到预约信息哦～",
+						"WeekDay": [
+							"周日",
+							"周一",
+							"周二",
+							"周三",
+							"周四",
+							"周五",
+							"周六"
+						],
+						"GetInfoError": "获取预约信息失败，请稍后再试",
+						"CopyAddressSuccess": "地址复制成功",
+						"CopyAddressError": "复制地址失败，请重试"
+					},
+					"tag": {
+						"Loading": "正在获取预约信息...",
+						"AppointmentReminder": "预约提醒!!",
+						"NextSchedule": "您接下来的预约行程:",
+						"ApproachingTime": {
+							"a": "距离预约还有",
+							"b": "天",
+							"c": "小时",
+							"d": "分钟"
+						},
+						"NoReservation": "暂无预约,赶快去预约吧～",
+						"StoreAddress": "店铺地址",
+						"NotLogin": "宝贝你还没登录哦, 登录查看预约提醒哟~"
+					}
+				}
+			}
+		},
 		"aboutUs": {
 			"title": "关于我们",
 			"intro": {
@@ -116,29 +178,333 @@
 					}
 				}
 			},
-			"login": {},
+			"login": {
+				"page": {
+					"function": {
+						"SetAccountError": "请输入账号",
+						"SetPasswordError": "请输入密码",
+						"LoginWarning": "登录后才能预约哦～",
+						"AccountError": "账号或密码错误",
+						"LoginSuccess": "登录成功",
+						"LoginFailed": "登录失败，请稍后重试"
+					},
+					"tag": {
+						"WelcomeBack": "欢迎回来",
+						"Account": "账号",
+						"Password": "密码",
+						"ForgetPassword": "忘记密码?",
+						"Logging": "登录中...",
+						"Login": "登录",
+						"NoAccountYet": "还没有账号？",
+						"RegisterNow": "立即注册"
+					}
+				}
+			},
 			"register": {
-				"account": {},
-				"securityQuestion": {},
-				"userInfo": {}
+				"account": {
+					"page": {
+						"function": {
+							"EnterAccount": "请输入账号",
+							"EnterPassword": "请输入密码",
+							"PasswordPatternError": "密码长度至少为6位",
+							"PleaseConfirmPassword": "请确认密码",
+							"ConfirmPasswordError": "两次输入的密码不一致",
+							"RegisterRequestFailed": "注册请求失败",
+							"CheckTheFormPattern": "请检查表单填写是否正确"
+						},
+						"tag": {
+							"Register": "注册",
+							"Account": "账号",
+							"Password": "密码",
+							"ConfirmPassword": "确认密码",
+							"Checking": "检查中...",
+							"Next": "下一步",
+							"AlreadyHaveAnAccount": "已经有账号？",
+							"LoginNow": "现在登录"
+						}
+					}
+				},
+				"securityQuestion": {
+					"page": {
+						"function": {
+							"InputSecurityAnswerError": "请输入安全问题答案",
+							"SetSecurityAnswerError": "请输入安全问题答案",
+							"SetSecurityQuestionError": "请填写安全问题和答案"
+						},
+						"tag": {
+							"SecurityQuestion": "安全问题",
+							"EnterSecurityQuestion": "输入一个安全问题",
+							"EnterSecurityAnswer": "答案",
+							"Back": "返回",
+							"Next": "继续",
+							"AlreadyHaveAnAccount": "已经有账号？",
+							"LoginNow": "现在登录"
+						}
+					}
+				},
+				"userInfo": {
+					"page": {
+						"function": {
+							"PleaseAccomplishBeforeRegister": "请完成前面的注册步骤",
+							"RegisterSuccess": "注册成功",
+							"RegisterFailed": "注册失败，请稍后重试"
+						},
+						"tag": {
+							"PersonalInfo": "个人信息",
+							"NickName": "昵称",
+							"Birthday": "生日",
+							"Gender": "性别",
+							"PleaseEnterGender": "请选择性别",
+							"Male": "男",
+							"Female": "女",
+							"Back": "返回",
+							"Registering": "注册中...",
+							"Register": "注册",
+							"AlreadyHaveAnAccount": "已经有账号？",
+							"LoginNow": "现在登录"
+						}
+					}
+				}
 			}
 		},
-		"contact": {},
-		"priceList": {},
+		"contact": {
+			"page": {
+				"function": {
+					"AlreadyCopyToClipboard": "已复制到剪贴板",
+					"FailCopyToClipboard": "复制失败，请重试"
+				},
+				"tag": {
+					"ContactUs": "联系我们",
+					"RedBook": "小红书",
+					"ClickToShowRedBook": "点击查看我们的小红书账号",
+					"Hide": "隐藏",
+					"Reveal": "查看",
+					"ClickToShowInstagram": "点击查看我们的Instagram账号",
+					"Wechat": "微信",
+					"ClickToShowWeChat": "点击查看我们的微信账号",
+					"ClickToShowEmail": "点击查看我们的合作邮箱",
+					"WillReplySoon": "我们会尽快回复您的咨询",
+					"Welcome": "期待您的到来！"
+				}
+			}
+		},
+		"priceList": {
+			"page": {
+				"tag": {
+					"Hand": "手 Hands",
+					"Pure": "纯色",
+					"CatEye": "猫眼",
+					"FrenchGradiation": "法式/渐变",
+					"Extension": "延长（单根）",
+					"Basic": "基础款式",
+					"Complex": "复杂款式",
+					"Pedi": "脚 Pedi",
+					"Style": "款式",
+					"Removal": "卸甲 Removal",
+					"OurStore": "本店无/有延长",
+					"OtherStore": "其他店有/无延长",
+					"WarningA": "* 以上价格均为韩币",
+					"WarningB": "* 所有项目均带建构",
+					"WarningC": "* 以上价格为现金价 (刷卡的话附加税+10%)",
+					"WarningD": "* 本店美甲续做时，免费卸甲"
+				}
+			}
+		},
 		"profile": {
-			"page": {},
+			"page": {
+				"tag": {
+					"Loading": "加载中...",
+					"ReservationNum": "预约次数",
+					"ReservationHistory": "预约历史",
+					"PersonalCard": "个人名片",
+					"Logouting": "退出中...",
+					"Logout": "退出"
+				}
+			},
 			"nameCard": {}
 		},
 		"reservation": {
-			"page": {},
-			"confirmation": {},
+			"page": {
+				"function": {
+					"GetReservationInfoError": "获取可预约日期信息失败，请稍后再试",
+					"ReservationSuccess": "预约成功！",
+					"ReservationFailed": "预约失败，请稍后再试"
+				},
+				"tag": {
+					"Loading": "加载中...",
+					"Reserved": "已约",
+					"TimePassed": "已过",
+					"Processing": "处理中...",
+					"Confirm": "确认",
+					"PleaseSelectDate": "先选择日期哟 📅"
+				}
+			},
+			"confirmation": {
+				"page": {
+					"function": {
+						"NotFoundReservationInfo": "未找到预约信息",
+						"ReadingReservationInfoError": "获取预约信息失败，请稍后再试",
+						"ReservationCodeCopied": "预约编号已复制到剪贴板",
+						"CopyReservationCodeError": "复制失败，请重试",
+						"CopyReservationCodeFirst": "请先复制预约编号，再联系客服哟～"
+					},
+					"tag": {
+						"CannotLoadReservationInfo": "无法加载预约信息",
+						"Reason": "可能是因为您尚未完成预约或者会话已过期",
+						"BackToMain": "返回首页",
+						"Rereserve": "重新预约",
+						"ReservedSuccessfully": "预约成功！",
+						"ReservationCode": "预约编号",
+						"Loading": "加载中...",
+						"Copy": "复制",
+						"DepositAmount": "订金金额：",
+						"DepositAccount": "订金转账账户:",
+						"AccountAlreadyCopied": "账户已复制到剪贴板",
+						"CopyAccountError": "复制失败，请重试",
+						"ReservationDate": "预约日期：",
+						"ReservationTime": "预约时间：",
+						"Attention": "注意",
+						"AttentionA": {
+							"a": "联系客服",
+							"b": "，发送",
+							"c": "订单编号",
+							"d": "与",
+							"e": "定金转账截图"
+						},
+						"AttentionB": {
+							"a": "如预约后",
+							"b": "一小时内",
+							"c": "未支付定金，将视为放弃预约。"
+						},
+						"AttentionC": {
+							"a": "定金是不予退还的！",
+							"b": "如需修改时间，请您",
+							"c": "提前一天",
+							"d": "声明，最多修改",
+							"e": "两次",
+							"f": "（不追加额外定金）。"
+						},
+						"AttentionD": {
+							"a": "迟到",
+							"b": "30分钟以上",
+							"c": "无联系者，视为默认放弃预约，定金不予退还。"
+						},
+						"LoadingInfo": "加载预约信息中...",
+						"Contact": "联系客服"
+					}
+				}
+			},
 			"history": {
-				"page": {},
-				"singleReservation": {}
+				"page": {
+					"function": {
+						"Upcoming": "即将到来",
+						"Accomplished": "已完成",
+						"Canceled": "已取消"
+					},
+					"tag": {
+						"DateFormat": "yyyy年MM月dd日",
+						"MyReservation": "我的预约记录",
+						"AllReservation": "全部预约",
+						"UpcomingReservation": "即将到来",
+						"AccomplishedReservation": "已完成",
+						"ReservationCode": "预约编号",
+						"ReservationDate": "日期",
+						"ReservationTime": "时间段",
+						"ReservationStatus": "状态",
+						"NoReservation": "暂无预约记录"
+					}
+				},
+				"singleReservation": {
+					"page": {
+						"function": {
+							"Upcoming": "即将到来",
+							"Accomplished": "已完成",
+							"Canceled": "已取消",
+							"ReservationCancelledSuccess": "预约已成功取消",
+							"ReservationCancelledFailed": "预约取消失败，请稍后再试"
+						},
+						"tag": {
+							"DateFormat": "yyyy年MM月dd日",
+							"ReservationTitle": "预约详情",
+							"ReservationNotExist": "预约不存在或已被删除",
+							"ReturnReservationList": "返回预约列表",
+							"ReservationCode": "预约编号",
+							"ReservationDate": "日期",
+							"ReservationTime": "时间段",
+							"ReservationWarning": "您的预约距离开始时间不足24小时，无法取消预约（以韩国时间为准）",
+							"CancelReservation": "取消预约",
+							"CancelReservationConfirm": "确认取消预约",
+							"CancelReservationConfirmWarning": "您确定要取消这个预约吗？此操作无法撤销。",
+							"Return": "返回",
+							"Processing": "处理中...",
+							"ConfirmCancelled": "确认取消"
+						}
+					}
+				}
 			}
 		}
 	},
 	"en": {
+		"page": {
+			"function": {},
+			"tag": { "QuickReservation": "Reserve" }
+		},
+		"layout": {
+			"page": {
+				"function": {},
+				"tag": {}
+			}
+		},
+		"component": {
+			"MenuComponent": {
+				"page": {
+					"function": {},
+					"tag": {
+						"Home": "Home",
+						"Reservation": "Reservation",
+						"PriceList": "Price List",
+						"AboutUs": "About Us",
+						"Contact": "Contact",
+						"Login": "Login",
+						"Register": "Register",
+						"Profile": "Profile"
+					}
+				}
+			},
+			"AppointmentReminder": {
+				"page": {
+					"function": {
+						"SignInWarning": "Please log in first to view your reservations~",
+						"WeekDay": [
+							"Sun",
+							"Mon",
+							"Tue",
+							"Wed",
+							"Thu",
+							"Fri",
+							"Sat"
+						],
+						"GetInfoError": "Failed to retrieve reservation information, please try again later",
+						"CopyAddressSuccess": "Address copied successfully",
+						"CopyAddressError": "Failed to copy address, please try again"
+					},
+					"tag": {
+						"Loading": "Loading reservation information...",
+						"AppointmentReminder": "Appointment Reminder!!",
+						"NextSchedule": "Your next scheduled appointment:",
+						"ApproachingTime": {
+							"a": "Your appointment is in ",
+							"b": " days ",
+							"c": " hours ",
+							"d": " minutes"
+						},
+						"NoReservation": "No reservations yet, book now~",
+						"StoreAddress": "Store Address",
+						"NotLogin": "Dear, you haven't logged in yet. Log in to see your appointment reminders~"
+					}
+				}
+			}
+		},
 		"aboutUs": {
 			"title": "About Us",
 			"intro": {
@@ -255,29 +621,327 @@
 					}
 				}
 			},
-			"login": {},
+			"login": {
+				"page": {
+					"function": {
+						"SetAccountError": "Please enter your account",
+						"SetPasswordError": "Please enter your password",
+						"LoginWarning": "Please log in first to make an appointment~",
+						"AccountError": "Incorrect account or password",
+						"LoginSuccess": "Login successful",
+						"LoginFailed": "Login failed, please try again later"
+					},
+					"tag": {
+						"WelcomeBack": "Welcome Back",
+						"Account": "Account",
+						"Password": "Password",
+						"ForgetPassword": "Forgot Password?",
+						"Logging": "Logging in...",
+						"Login": "Log In",
+						"NoAccountYet": "No account yet?",
+						"RegisterNow": "Register Now"
+					}
+				}
+			},
 			"register": {
-				"account": {},
-				"securityQuestion": {},
-				"userInfo": {}
+				"account": {
+					"page": {
+						"function": {
+							"EnterAccount": "Please enter your account",
+							"EnterPassword": "Please enter your password",
+							"PasswordPatternError": "Password must be at least 6 characters",
+							"PleaseConfirmPassword": "Please confirm your password",
+							"ConfirmPasswordError": "Passwords do not match",
+							"RegisterRequestFailed": "Registration request failed",
+							"CheckTheFormPattern": "Please check the form entries for correctness"
+						},
+						"tag": {
+							"Register": "Register",
+							"Account": "Account",
+							"Password": "Password",
+							"ConfirmPassword": "Confirm Password",
+							"Checking": "Checking...",
+							"Next": "Next",
+							"AlreadyHaveAnAccount": "Already have an account?",
+							"LoginNow": "Login now"
+						}
+					}
+				},
+				"securityQuestion": {
+					"page": {
+						"function": {
+							"InputSecurityAnswerError": "Please enter the answer to your security question",
+							"SetSecurityAnswerError": "Please enter the answer to your security question",
+							"SetSecurityQuestionError": "Please provide a security question and answer"
+						},
+						"tag": {
+							"SecurityQuestion": "Security Question",
+							"EnterSecurityQuestion": "Enter a security question",
+							"EnterSecurityAnswer": "Answer",
+							"Back": "Back",
+							"Next": "Continue",
+							"AlreadyHaveAnAccount": "Already have an account?",
+							"LoginNow": "Login now"
+						}
+					}
+				},
+				"userInfo": {
+					"page": {
+						"function": {
+							"PleaseAccomplishBeforeRegister": "Please complete the previous registration steps",
+							"RegisterSuccess": "Registration successful",
+							"RegisterFailed": "Registration failed, please try again later"
+						},
+						"tag": {
+							"PersonalInfo": "Personal Information",
+							"NickName": "Nickname",
+							"Birthday": "Birthday",
+							"Gender": "Gender",
+							"PleaseEnterGender": "Please select your gender",
+							"Male": "Male",
+							"Female": "Female",
+							"Back": "Back",
+							"Registering": "Registering...",
+							"Register": "Register",
+							"AlreadyHaveAnAccount": "Already have an account?",
+							"LoginNow": "Login now"
+						}
+					}
+				}
 			}
 		},
-		"contact": {},
-		"priceList": {},
+		"contact": {
+			"page": {
+				"function": {
+					"AlreadyCopyToClipboard": "Copied to clipboard",
+					"FailCopyToClipboard": "Fail to copy to clipboard"
+				},
+				"tag": {
+					"ContactUs": "Contact Us",
+					"RedBook": "Red Book",
+					"ClickToShowRedBook": "Click to view our Red Book account",
+					"Hide": "Hide",
+					"Reveal": "View",
+					"ClickToShowInstagram": "Click to view our Instagram account",
+					"Wechat": "Wechat",
+					"ClickToShowWeChat": "Click to view our WeChat account",
+					"ClickToShowEmail": "Click to view our email",
+					"WillReplySoon": "We will respond to your inquiry as soon as possible",
+					"Welcome": "Looking forward to your visit!"
+				}
+			}
+		},
+		"priceList": {
+			"page": {
+				"tag": {
+					"Hand": "Hands",
+					"Pure": "Solid Color",
+					"CatEye": "Cat Eye",
+					"FrenchGradiation": "French / Ombre",
+					"Extension": "Extension (per nail)",
+					"Basic": "Basic Design",
+					"Complex": "Advanced Design",
+					"Pedi": "Pedicure",
+					"Style": "Nail Art",
+					"Removal": "Gel Removal",
+					"OurStore": "Extensions done at our salon",
+					"OtherStore": "Extensions done at another salon",
+					"WarningA": "* All prices are in KRW",
+					"WarningB": "* All services include gel base & builder",
+					"WarningC": "* Prices listed are cash prices (10% VAT applied if paying by card)",
+					"WarningD": "* Free removal for gel done at our salon when getting new nails"
+				}
+			}
+		},
 		"profile": {
-			"page": {},
+			"page": {
+				"tag": {
+					"Loading": "Loading...",
+					"ReservationNum": "Reservations",
+					"ReservationHistory": "Reservation History",
+					"PersonalCard": "Profile",
+					"Logouting": "Logging out...",
+					"Logout": "Log Out"
+				}
+			},
 			"nameCard": {}
 		},
 		"reservation": {
-			"page": {},
-			"confirmation": {},
+			"page": {
+				"function": {
+					"GetReservationInfoError": "Failed to retrieve available reservation dates, please try again later",
+					"ReservationSuccess": "Reservation successful!",
+					"ReservationFailed": "Reservation failed, please try again later"
+				},
+				"tag": {
+					"Loading": "Loading...",
+					"Reserved": "Booked",
+					"TimePassed": "Passed",
+					"Processing": "Processing...",
+					"Confirm": "Confirm",
+					"PleaseSelectDate": "Please select a date first 📅"
+				}
+			},
+			"confirmation": {
+				"page": {
+					"function": {
+						"NotFoundReservationInfo": "Reservation information not found",
+						"ReadingReservationInfoError": "Failed to load reservation information, please try again later",
+						"ReservationCodeCopied": "Reservation code copied to clipboard",
+						"CopyReservationCodeError": "Failed to copy, please try again",
+						"CopyReservationCodeFirst": "Please copy the reservation code first, then contact customer service~"
+					},
+					"tag": {
+						"CannotLoadReservationInfo": "Unable to load reservation information",
+						"Reason": "Possibly because you haven't completed the reservation or the session has expired",
+						"BackToMain": "Back to Home",
+						"Rereserve": "Reserve Again",
+						"ReservedSuccessfully": "Reservation Successful!",
+						"ReservationCode": "Reservation Code",
+						"Loading": "Loading...",
+						"Copy": "Copy",
+						"DepositAmount": "Deposit Amount:",
+						"DepositAccount": "Deposit Account:",
+						"AccountAlreadyCopied": "Account copied to clipboard",
+						"CopyAccountError": "Failed to copy, please try again",
+						"ReservationDate": "Reservation Date:",
+						"ReservationTime": "Reservation Time:",
+						"Attention": "Attention",
+						"AttentionA": {
+							"a": "Contact customer service",
+							"b": ", send your ",
+							"c": "reservation code",
+							"d": " and ",
+							"e": "deposit transfer screenshot"
+						},
+						"AttentionB": {
+							"a": "If the deposit is not paid within ",
+							"b": "one hour",
+							"c": " after reservation, the reservation will be canceled."
+						},
+						"AttentionC": {
+							"a": "The deposit is non-refundable! ",
+							"b": "If you need to change the reservation time, please notify ",
+							"c": "one day in advance",
+							"d": ". You may change it up to ",
+							"e": "two times",
+							"f": " (without additional deposit)."
+						},
+						"AttentionD": {
+							"a": "Arrivals later than ",
+							"b": "30 minutes",
+							"c": " without contact will be considered canceled, and the deposit will not be refunded."
+						},
+						"LoadingInfo": "Loading reservation information...",
+						"Contact": "Contact Customer Service"
+					}
+				}
+			},
 			"history": {
-				"page": {},
-				"singleReservation": {}
+				"page": {
+					"function": {
+						"Upcoming": "Upcoming",
+						"Accomplished": "Completed",
+						"Canceled": "Canceled"
+					},
+					"tag": {
+						"DateFormat": "yyyy-MM-dd",
+						"MyReservation": "My Reservations",
+						"AllReservation": "All",
+						"UpcomingReservation": "Upcoming",
+						"AccomplishedReservation": "Completed",
+						"ReservationCode": "Reservation Code",
+						"ReservationDate": "Date",
+						"ReservationTime": "Time Slot",
+						"ReservationStatus": "Status",
+						"NoReservation": "No reservations found"
+					}
+				},
+				"singleReservation": {
+					"page": {
+						"function": {
+							"Upcoming": "Upcoming",
+							"Accomplished": "Completed",
+							"Canceled": "Canceled",
+							"ReservationCancelledSuccess": "Reservation successfully canceled",
+							"ReservationCancelledFailed": "Failed to cancel reservation, please try again later"
+						},
+						"tag": {
+							"DateFormat": "yyyy-MM-dd",
+							"ReservationTitle": "Reservation Details",
+							"ReservationNotExist": "Reservation does not exist or has been deleted",
+							"ReturnReservationList": "Back to Reservation List",
+							"ReservationCode": "Reservation Code",
+							"ReservationDate": "Date",
+							"ReservationTime": "Time Slot",
+							"ReservationWarning": "Your reservation cannot be canceled within 24 hours before the scheduled time (Korean time)",
+							"CancelReservation": "Cancel Reservation",
+							"CancelReservationConfirm": "Confirm Cancellation",
+							"CancelReservationConfirmWarning": "Are you sure you want to cancel this reservation? This action cannot be undone.",
+							"Return": "Back",
+							"Processing": "Processing...",
+							"ConfirmCancelled": "Confirm Cancellation"
+						}
+					}
+				}
 			}
 		}
 	},
 	"kr": {
+		"page": {
+			"function": {},
+			"tag": {
+				"QuickReservation": "예약"
+			}
+		},
+		"layout": {
+			"page": {
+				"function": {},
+				"tag": {}
+			}
+		},
+		"component": {
+			"MenuComponent": {
+				"page": {
+					"function": {},
+					"tag": {
+						"Home": "홈",
+						"Reservation": "예약하기",
+						"PriceList": "가격표",
+						"AboutUs": "샵 소개",
+						"Contact": "문의하기",
+						"Login": "로그인",
+						"Register": "회원가입",
+						"Profile": "마이페이지"
+					}
+				}
+			},
+			"AppointmentReminder": {
+				"page": {
+					"function": {
+						"SignInWarning": "예약 정보를 보시려면 먼저 로그인해주세요~",
+						"WeekDay": ["일", "월", "화", "수", "목", "금", "토"],
+						"GetInfoError": "예약 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요",
+						"CopyAddressSuccess": "주소가 성공적으로 복사되었습니다",
+						"CopyAddressError": "주소 복사에 실패했습니다. 다시 시도해주세요"
+					},
+					"tag": {
+						"Loading": "예약 정보를 가져오는 중...",
+						"AppointmentReminder": "예약 알림!!",
+						"NextSchedule": "다가오는 예약 일정:",
+						"ApproachingTime": {
+							"a": "예약까지 남 시간: ",
+							"b": "일",
+							"c": "시간",
+							"d": "분"
+						},
+						"NoReservation": "예약된 일정이 없습니다. 지금 바로 예약해보세요~",
+						"StoreAddress": "매장 주소",
+						"NotLogin": "아직 로그인하지 않았어요~ 로그인하고 예약 알림을 확인해보세요!"
+					}
+				}
+			}
+		},
 		"aboutUs": {
 			"title": "소개",
 			"intro": {
@@ -394,25 +1058,269 @@
 					}
 				}
 			},
-			"login": {},
+			"login": {
+				"page": {
+					"function": {
+						"SetAccountError": "계정을 입력하세요",
+						"SetPasswordError": "비밀번호를 입력하세요",
+						"LoginWarning": "예약하시려면 먼저 로그인해주세요~",
+						"AccountError": "계정 또는 비밀번호가 틀렸습니다",
+						"LoginSuccess": "로그인 성공",
+						"LoginFailed": "로그인에 실패했습니다. 잠시 후 다시 시도해주세요"
+					},
+					"tag": {
+						"WelcomeBack": "Welcome Back",
+						"Account": "계정",
+						"Password": "비밀번호",
+						"ForgetPassword": "비밀번호를 잊으셨나요?",
+						"Logging": "로그인 중...",
+						"Login": "로그인",
+						"NoAccountYet": "아직 계정이 없으신가요?",
+						"RegisterNow": "지금 가입하기"
+					}
+				}
+			},
 			"register": {
-				"account": {},
-				"securityQuestion": {},
-				"userInfo": {}
+				"account": {
+					"page": {
+						"function": {
+							"EnterAccount": "계정을 입력하세요",
+							"EnterPassword": "비밀번호를 입력하세요",
+							"PasswordPatternError": "비밀번호는 최소 6자리 이상이어야 합니다",
+							"PleaseConfirmPassword": "비밀번호를 다시 입력해주세요",
+							"ConfirmPasswordError": "입력한 비밀번호가 일치하지 않습니다",
+							"RegisterRequestFailed": "회원가입 요청에 실패했습니다",
+							"CheckTheFormPattern": "입력하신 정보를 다시 한번 확인해주세요"
+						},
+						"tag": {
+							"Register": "회원가입",
+							"Account": "계정",
+							"Password": "비밀번호",
+							"ConfirmPassword": "비밀번호 확인",
+							"Checking": "확인 중...",
+							"Next": "다음",
+							"AlreadyHaveAnAccount": "이미 계정이 있으신가요?",
+							"LoginNow": "지금 로그인하기"
+						}
+					}
+				},
+				"securityQuestion": {
+					"page": {
+						"function": {
+							"InputSecurityAnswerError": "보안 질문의 답변을 입력해주세요",
+							"SetSecurityAnswerError": "보안 질문의 답변을 입력해주세요",
+							"SetSecurityQuestionError": "보안 질문과 답변을 입력해주세요"
+						},
+						"tag": {
+							"SecurityQuestion": "보안 질문",
+							"EnterSecurityQuestion": "보안 질문 입력",
+							"EnterSecurityAnswer": "답변",
+							"Back": "돌아가기",
+							"Next": "계속",
+							"AlreadyHaveAnAccount": "이미 계정이 있으신가요?",
+							"LoginNow": "지금 로그인하기"
+						}
+					}
+				},
+				"userInfo": {
+					"page": {
+						"function": {
+							"PleaseAccomplishBeforeRegister": "이전 가입 절차를 먼저 완료해주세요",
+							"RegisterSuccess": "회원가입 성공",
+							"RegisterFailed": "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요"
+						},
+						"tag": {
+							"PersonalInfo": "개인 정보",
+							"NickName": "닉네임",
+							"Birthday": "생년월일",
+							"Gender": "성별",
+							"PleaseEnterGender": "성별을 선택해주세요",
+							"Male": "남성",
+							"Female": "여성",
+							"Back": "돌아가기",
+							"Registering": "가입 중...",
+							"Register": "가입하기",
+							"AlreadyHaveAnAccount": "이미 계정이 있으신가요?",
+							"LoginNow": "지금 로그인하기"
+						}
+					}
+				}
 			}
 		},
-		"contact": {},
-		"priceList": {},
+		"contact": {
+			"page": {
+				"function": {
+					"AlreadyCopyToClipboard": "클립보드에 복사되었습니다",
+					"FailCopyToClipboard": "클립보드 복사에 실패했습니다"
+				},
+				"tag": {
+					"ContactUs": "문의하기",
+					"RedBook": "샤오홍슈",
+					"ClickToShowRedBook": "클릭하여 샤오홍슈 계정을 확인하세요",
+					"Hide": "숨기기",
+					"Reveal": "보기",
+					"ClickToShowInstagram": "클릭하여 인스타그램 계정을 확인하세요",
+					"Wechat": "Wechat",
+					"ClickToShowWeChat": "클릭하여 위챗 계정을 확인하세요",
+					"ClickToShowEmail": "클릭하여 협력 이메일을 확인하세요",
+					"WillReplySoon": "최대한 빠르게 답변드리겠습니다",
+					"Welcome": "여러분의 방문을 기대합니다!"
+				}
+			}
+		},
+		"priceList": {
+			"page": {
+				"tag": {
+					"Hand": "손 Hands",
+					"Pure": "원컬러",
+					"CatEye": "자석젤",
+					"FrenchGradiation": "프렌치 / 그라데이션",
+					"Extension": "연장 (1개 당)",
+					"Basic": "기본 아트",
+					"Complex": "복잡 아트",
+					"Pedi": "페디 Pedi",
+					"Style": "아트",
+					"Removal": "제거 Removal",
+					"OurStore": "본샵 연장 있음/없음",
+					"OtherStore": "타샵 연장 있음/없음",
+					"WarningA": "* 상기 가격은 원(KRW) 기준입니다.",
+					"WarningB": "* 모든 시술은 기본게어, 오브레이 포함입니다.",
+					"WarningC": "* 상기 가격은 현금가이며, 카드 결제시 부가세 별도(10%).",
+					"WarningD": "* 본샵 시술젤 제거는 재시술시 무료입니다."
+				}
+			}
+		},
 		"profile": {
-			"page": {},
+			"page": {
+				"tag": {
+					"Loading": "로딩 중...",
+					"ReservationNum": "예약 횟수",
+					"ReservationHistory": "예약 내역",
+					"PersonalCard": "개인 프로필",
+					"Logouting": "로그아웃 중...",
+					"Logout": "로그아웃"
+				}
+			},
 			"nameCard": {}
 		},
 		"reservation": {
-			"page": {},
-			"confirmation": {},
+			"page": {
+				"function": {
+					"GetReservationInfoError": "예약 가능한 날짜 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요",
+					"ReservationSuccess": "예약 성공!",
+					"ReservationFailed": "예약에 실패했습니다. 잠시 후 다시 시도해주세요"
+				},
+				"tag": {
+					"Loading": "로딩 중...",
+					"Reserved": "예약됨",
+					"TimePassed": "불가",
+					"Processing": "처리 중...",
+					"Confirm": "확인",
+					"PleaseSelectDate": "먼저 날짜를 선택해주세요 📅"
+				}
+			},
+			"confirmation": {
+				"page": {
+					"function": {
+						"NotFoundReservationInfo": "예약 정보를 찾을 수 없습니다",
+						"ReadingReservationInfoError": "예약 정보 로딩에 실패했습니다. 잠시 후 다시 시도해주세요",
+						"ReservationCodeCopied": "예약 번호가 클립보드에 복사되었습니다",
+						"CopyReservationCodeError": "복사 실패, 다시 시도해주세요",
+						"CopyReservationCodeFirst": "예약 번호를 먼저 복사하신 후 고객센터에 문의해주세요~"
+					},
+					"tag": {
+						"CannotLoadReservationInfo": "예약 정보를 불러올 수 없습니다",
+						"Reason": "아직 예약을 완료하지 않으셨거나 세션이 만료된 경우일 수 있습니다",
+						"BackToMain": "홈으로 돌아가기",
+						"Rereserve": "다시 예약하기",
+						"ReservedSuccessfully": "예약 완료!",
+						"ReservationCode": "예약 번호",
+						"Loading": "로딩 중...",
+						"Copy": "복사",
+						"DepositAmount": "예약금 금액:",
+						"DepositAccount": "예약금 입금 계좌:",
+						"AccountAlreadyCopied": "계좌번호가 클립보드에 복사되었습니다",
+						"CopyAccountError": "복사 실패, 다시 시도해주세요",
+						"ReservationDate": "예약 날짜:",
+						"ReservationTime": "예약 시간:",
+						"Attention": "안내사항",
+						"AttentionA": {
+							"a": "고객센터에 문의하여",
+							"b": " ",
+							"c": "예약 번호",
+							"d": "와 ",
+							"e": "예약금 입금 내역 스크린샷을 보내주세요"
+						},
+						"AttentionB": {
+							"a": "예약 후 ",
+							"b": "1시간 이내",
+							"c": "에 예약금을 입금하지 않으면 예약이 취소됩니다."
+						},
+						"AttentionC": {
+							"a": "예약금은 환불되지 않습니다! ",
+							"b": "예약 시간 변경이 필요하신 경우 ",
+							"c": "하루 전까지",
+							"d": " 알려주세요. 최대 ",
+							"e": "2회까지",
+							"f": " 변경 가능합니다(추가 예약금 없음)."
+						},
+						"AttentionD": {
+							"a": "사전 연락 없이 ",
+							"b": "30분 이상",
+							"c": " 지각 시 예약이 취소되며 예약금은 환불되지 않습니다."
+						},
+						"LoadingInfo": "예약 정보를 로딩 중입니다...",
+						"Contact": "고객센터 문의하기"
+					}
+				}
+			},
 			"history": {
-				"page": {},
-				"singleReservation": {}
+				"page": {
+					"function": {
+						"Upcoming": "예정됨",
+						"Accomplished": "완료됨",
+						"Canceled": "취소됨"
+					},
+					"tag": {
+						"DateFormat": "yyyy년MM월dd일",
+						"MyReservation": "나의 예약",
+						"AllReservation": "전체 예약",
+						"UpcomingReservation": "예정된 예약",
+						"AccomplishedReservation": "완료된 예약",
+						"ReservationCode": "예약 번호",
+						"ReservationDate": "날짜",
+						"ReservationTime": "시간대",
+						"ReservationStatus": "상태",
+						"NoReservation": "예약 내역이 없습니다"
+					}
+				},
+				"singleReservation": {
+					"page": {
+						"function": {
+							"Upcoming": "예정됨",
+							"Accomplished": "완료됨",
+							"Canceled": "취소됨",
+							"ReservationCancelledSuccess": "예약이 성공적으로 취소되었습니다",
+							"ReservationCancelledFailed": "예약 취소에 실패했습니다. 잠시 후 다시 시도해주세요"
+						},
+						"tag": {
+							"DateFormat": "yyyy년MM월dd일",
+							"ReservationTitle": "예약 상세 정보",
+							"ReservationNotExist": "예약이 존재하지 않거나 삭제되었습니다",
+							"ReturnReservationList": "예약 목록으로 돌아가기",
+							"ReservationCode": "예약 번호",
+							"ReservationDate": "날짜",
+							"ReservationTime": "시간대",
+							"ReservationWarning": "예약 시간이 24시간 이내로 남아있어 취소할 수 없습니다 (한국 시간 기준)",
+							"CancelReservation": "예약 취소",
+							"CancelReservationConfirm": "예약 취소 확인",
+							"CancelReservationConfirmWarning": "정말로 이 예약을 취소하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+							"Return": "돌아가기",
+							"Processing": "처리 중...",
+							"ConfirmCancelled": "취소 확인"
+						}
+					}
+				}
 			}
 		}
 	}

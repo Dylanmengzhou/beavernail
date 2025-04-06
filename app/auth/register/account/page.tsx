@@ -3,14 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ZCOOL_KuaiLe } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import {  useState } from "react";
 import { useRegisterStore } from "../registerStore";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 const AccountRegisterPage = () => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].auth
+			.register.account.page;
+
+
 	const router = useRouter();
 	const {
 		account,
@@ -27,6 +34,7 @@ const AccountRegisterPage = () => {
 	}>({});
 	const [isLoading, setIsLoading] = useState(false);
 
+
 	const handleLinkClick = (url?: string) => {
 		router.push(url || "/");
 	};
@@ -39,72 +47,71 @@ const AccountRegisterPage = () => {
 		} = {};
 
 		if (!account) {
-			newErrors.account = "请输入账号";
+			newErrors.account = data.function.EnterAccount;
 		}
 
 		if (!password) {
-			newErrors.password = "请输入密码";
+			newErrors.password = data.function.EnterPassword;
 		} else if (password.length < 6) {
-			newErrors.password = "密码长度至少为6位";
+			newErrors.password = data.function.PasswordPatternError;
 		}
 
 		if (!confirmPassword) {
-			newErrors.confirmPassword = "请确认密码";
+			newErrors.confirmPassword = data.function.PleaseConfirmPassword;
 		} else if (password !== confirmPassword) {
-			newErrors.confirmPassword = "两次输入的密码不一致";
+			newErrors.confirmPassword = data.function.ConfirmPasswordError;
 		}
 
 		setErrors(newErrors);
 		return Object.keys(newErrors).length === 0;
 	};
 
-  const handleNextStep = async () => {
-    if (validateForm()) {
-      setIsLoading(true);
-      try {
-        const response = await fetch("/api/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            account,
-            password:"test",
-            securityQuestion:"test",
-            securityAnswer:"test",
-            nickname:"test",
-            gender: "test",
-            mode:"check"
-          }),
-        });
+	const handleNextStep = async () => {
+		if (validateForm()) {
+			setIsLoading(true);
+			try {
+				const response = await fetch("/api/register", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						account,
+						password: "test",
+						securityQuestion: "test",
+						securityAnswer: "test",
+						nickname: "test",
+						gender: "test",
+						mode: "check",
+					}),
+				});
 
-        const data = await response.json();
-        console.log(data);
+				const data_api = await response.json();
+				console.log(data_api);
 
-        if (data.success) {
-          router.push("/auth/register/securityQuestion");
-        } else {
-          toast.error(data.message, {
-            position: "top-center",
-            duration: 2000,
-          });
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error("我靠:", error);
-        toast.error("注册请求失败", {
-          position: "top-center",
-          duration: 2000,
-        });
-        setIsLoading(false);
-      }
-
-    } else {
-      toast.error("请检查表单填写是否正确", {
-		position: "top-center",
-		duration: 2000,
-	  });
-    }
+				if (data_api.success) {
+					router.push("/auth/register/securityQuestion");
+				} else {
+					toast.error(data_api.message, {
+						position: "top-center",
+						duration: 2000,
+					});
+					setIsLoading(false);
+				}
+			} catch (error) {
+				console.error(data.function.RegisterRequestFailed, error);
+				toast.error(data.function.RegisterRequestFailed, {
+					position: "top-center",
+					duration: 2000,
+				});
+				setIsLoading(false);
+			}
+		} else {
+			toast.error(data.function.CheckTheFormPattern, {
+				position: "top-center",
+				duration: 2000,
+			});
+		}
 	};
 
 	return (
@@ -114,10 +121,10 @@ const AccountRegisterPage = () => {
 			<div className="border-none bg-gradient-to-r from-pink-300 to-pink-400 w-full md:w-2/3 h-fit md:h-full rounded-b-none rounded-t-full flex flex-col items-center justify-center">
 				<div className="w-2/3 flex flex-col justify-between h-full py-12 gap-5">
 					<div className="flex items-center justify-center text-3xl md:text-5xl">
-						注册
+						{data.tag.Register}
 					</div>
 					<div className="">
-						<div className="text-lg">账号</div>
+						<div className="text-lg">{data.tag.Account}</div>
 						<Input
 							value={account}
 							onChange={(e) => setAccount(e.target.value)}
@@ -131,7 +138,7 @@ const AccountRegisterPage = () => {
 						)}
 					</div>
 					<div className="">
-						<div className="text-lg">密码</div>
+						<div className="text-lg">{data.tag.Password}</div>
 						<div className="flex gap-3 items-center">
 							<Input
 								type="password"
@@ -148,7 +155,7 @@ const AccountRegisterPage = () => {
 						)}
 					</div>
 					<div className="">
-						<div className="text-lg">确认密码</div>
+						<div className="text-lg">{data.tag.ConfirmPassword}</div>
 						<div className="flex gap-3 items-center">
 							<Input
 								type="password"
@@ -173,21 +180,25 @@ const AccountRegisterPage = () => {
 							{isLoading ? (
 								<>
 									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									检查中...
+									{data.tag.Checking}
 								</>
 							) : (
-								"下一步"
+								data.tag.Next
 							)}
 						</Button>
 					</div>
 					<div className="flex justify-center items-center w-full text-sm md:text-base">
 						<div className="flex">
-							<div className="">已经有账号？</div>
+							<div className="">{data.tag.AlreadyHaveAnAccount}</div>
 							<div
-								className={`ml-1 cursor-pointer hover:underline ${isLoading ? 'pointer-events-none opacity-70' : ''}`}
-								onClick={() => !isLoading && handleLinkClick("/auth/login")}
+								className={`ml-1 cursor-pointer hover:underline ${
+									isLoading ? "pointer-events-none opacity-70" : ""
+								}`}
+								onClick={() =>
+									!isLoading && handleLinkClick("/auth/login")
+								}
 							>
-								登录
+								{data.tag.LoginNow}
 							</div>
 						</div>
 					</div>

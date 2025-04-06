@@ -23,9 +23,17 @@ import {
 	AvatarFallback,
 	AvatarImage,
 } from "@/components/ui/avatar";
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 const ProfilePage = () => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].profile
+			.page;
+
+
 	const { data: session, status } = useSession();
 	const router = useRouter();
 	const [isSigningOut, setIsSigningOut] = useState(false);
@@ -78,7 +86,7 @@ const ProfilePage = () => {
 	if (status === "loading") {
 		return (
 			<div className="flex justify-center items-center h-screen">
-				加载中...
+				{data.tag.Loading}
 			</div>
 		);
 	}
@@ -106,7 +114,7 @@ const ProfilePage = () => {
 							</div>
 							<div className="flex items-center gap-3">
 								<div className={`text-sm ${zcool.className}`}>
-									预约次数
+									{data.tag.ReservationNum}
 								</div>
 								<div className={`text-sm ${zcool.className}`}>
 									{isLoadingCount ? (
@@ -130,7 +138,7 @@ const ProfilePage = () => {
 							>
 								<History size={18} />
 								<span className={`text-base ${zcool.className}`}>
-									预约历史
+									{data.tag.ReservationHistory}
 								</span>
 							</Button>
 						</div>
@@ -141,7 +149,7 @@ const ProfilePage = () => {
 							>
 								<UserRoundPen size={18} />
 								<span className={`text-base ${zcool.className}`}>
-									个人名片
+									{data.tag.PersonalCard}
 								</span>
 							</Button>
 						</div>
@@ -157,7 +165,7 @@ const ProfilePage = () => {
 									<LogOut size={18} />
 								)}
 								<span className={`text-base ${zcool.className}`}>
-									{isSigningOut ? "退出中..." : "退出"}
+									{isSigningOut ? data.tag.Logouting : data.tag.Logout}
 								</span>
 							</Button>
 						</div>

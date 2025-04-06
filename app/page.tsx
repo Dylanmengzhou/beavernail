@@ -9,10 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "sonner";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].page;
 	const [isMobile, setIsMobile] = useState(false);
 	const router = useRouter();
 
@@ -49,10 +53,10 @@ export default function Home() {
 						想要进店体验美甲吗？
 					</span> */}
 					<Button
-						className={`bg-gradient-to-r from-red-400 to-pink-500 drop-shadow-2xl text-xl md:text-3xl p-3 md:p-5  w-24 h-24 rounded-full md:w-52 md:h-52`}
+						className={`${zcool.className} flex justify-center items-center bg-gradient-to-r from-red-400 to-pink-500 drop-shadow-2xl text-xl md:text-3xl p-3 md:p-5  w-24 h-24 rounded-full md:w-52 md:h-52`}
 						onClick={() => handleClick("/reservation")}
 					>
-						快速预约
+						{data.tag.QuickReservation}
 					</Button>
 				</div>
 

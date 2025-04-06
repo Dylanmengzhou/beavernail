@@ -13,14 +13,20 @@ import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 const roboto = Roboto({ subsets: ["latin"], weight: "400" });
-
-// 定义登录表单验证模式
-const loginSchema = z.object({
-	account: z.string().min(1, "请输入账号"),
-	password: z.string().min(1, "请输入密码"),
-});
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
 
 const LoginPage = () => {
+	const { currentLang } = useLanguageStore();
+	const data =
+		languageData[currentLang as keyof typeof languageData].auth.login
+			.page;
+	// 定义登录表单验证模式
+	const loginSchema = z.object({
+		account: z.string().min(1, data.function.SetAccountError),
+		password: z.string().min(1, data.function.SetPasswordError),
+	});
+
 	const router = useRouter();
 	const [account, setAccount] = useState("");
 	const [password, setPassword] = useState("");
@@ -34,12 +40,12 @@ const LoginPage = () => {
 	useEffect(() => {
 		// 检查是否有requireLogin参数
 		if (searchParams.get("requireLogin") === "true") {
-			toast.warning("登录后才能预约哦～", {
+			toast.warning(data.function.LoginWarning, {
 				position: "top-center",
 				duration: 3000,
 			});
 		}
-	}, [searchParams]);
+	}, [searchParams, data]);
 
 	const validateForm = () => {
 		try {
@@ -82,7 +88,7 @@ const LoginPage = () => {
 			});
 
 			if (result?.error) {
-				toast.error("账号或密码错误", {
+				toast.error(data.function.AccountError, {
 					position: "top-center",
 					duration: 2000,
 				});
@@ -90,13 +96,13 @@ const LoginPage = () => {
 				// 获取回调URL或默认跳转到首页
 				const callbackUrl = searchParams.get("callbackUrl") || "/";
 				router.push(callbackUrl);
-				toast.success("登录成功", {
+				toast.success(data.function.LoginSuccess, {
 					position: "top-center",
 					duration: 2000,
 				});
 			}
 		} catch (error) {
-			toast.error("登录失败，请稍后重试", {
+			toast.error(data.function.LoginFailed, {
 				position: "top-center",
 				duration: 2000,
 			});
@@ -109,7 +115,7 @@ const LoginPage = () => {
 	const handleLinkClick = (url?: string) => {
 		router.push(url || "/");
 	};
-	const handleGoogleSignIn = (provider:string) => {
+	const handleGoogleSignIn = (provider: string) => {
 		setLoading(true);
 		signIn(provider, { callbackUrl: "/" });
 	};
@@ -124,10 +130,12 @@ const LoginPage = () => {
 					className="w-2/3 flex flex-col justify-between h-full py-10 md:py-12"
 				>
 					<div className="flex items-center justify-center text-3xl md:text-5xl">
-						欢迎回来
+						{data.tag.WelcomeBack}
 					</div>
 					<div className="">
-						<div className="text-lg md:text-xl">账号</div>
+						<div className="text-lg md:text-xl">
+							{data.tag.Account}
+						</div>
 						<Input
 							value={account}
 							onChange={(e) => setAccount(e.target.value)}
@@ -141,7 +149,9 @@ const LoginPage = () => {
 						)}
 					</div>
 					<div className="">
-						<div className="text-lg md:text-xl">密码</div>
+						<div className="text-lg md:text-xl">
+							{data.tag.Password}
+						</div>
 						<div className="flex gap-3 items-center">
 							<Input
 								type="password"
@@ -163,22 +173,24 @@ const LoginPage = () => {
 							handleLinkClick("/auth/forgetPassword/account")
 						}
 					>
-						忘记密码?
+						{data.tag.ForgetPassword}
 					</div>
 					<div className="flex justify-center items-center w-full">
 						<Button type="submit" disabled={loading}>
-							{loading ? "登录中..." : "登录"}
+							{loading ? data.tag.Logging : data.tag.Login}
 						</Button>
 					</div>
 
-
-
 					{/* 添加 Google 登录按钮 */}
-					<div className={`flex  gap-2 justify-center items-center w-full mt-4 ${roboto.className}`}>
+					<div
+						className={`flex  gap-2 justify-center items-center w-full mt-4 ${roboto.className}`}
+					>
 						<Button
 							type="button"
 							variant="outline"
-							onClick={() => { handleGoogleSignIn("google") }}
+							onClick={() => {
+								handleGoogleSignIn("google");
+							}}
 							disabled={loading}
 							className="border-none rounded-4xl"
 						>
@@ -188,7 +200,9 @@ const LoginPage = () => {
 						<Button
 							type="button"
 							variant="outline"
-							onClick={() => { handleGoogleSignIn("kakao") }}
+							onClick={() => {
+								handleGoogleSignIn("kakao");
+							}}
 							disabled={loading}
 							className="border-none rounded-4xl bg-[#FEE500]"
 						>
@@ -198,14 +212,14 @@ const LoginPage = () => {
 					</div>
 					<div className="flex justify-center items-center w-full text-sm md:text-base mt-4">
 						<div className="flex">
-							<div className="">还没有账号？</div>
+							<div className="">{data.tag.NoAccountYet}</div>
 							<div
 								className="cursor-pointer ml-1 text-blue-600"
 								onClick={() =>
 									handleLinkClick("/auth/register/account")
 								}
 							>
-								注册
+								{data.tag.RegisterNow}
 							</div>
 						</div>
 					</div>

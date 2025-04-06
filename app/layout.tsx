@@ -104,7 +104,7 @@ export default function RootLayout({
 						</SessionProvider>
 					</div>
 					<Toaster richColors />
-				
+
 			</body>
 		</html>
 	);
