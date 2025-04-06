@@ -9,7 +9,7 @@ interface LanguageState {
 export const useLanguageStore = create<LanguageState>()(
   persist(
     (set) => ({
-      currentLang: 'en',
+      currentLang: 'kr',
       setLanguage: (lang) => {
         set({ currentLang: lang })
         document.cookie = `language-storage=${JSON.stringify({ state: { currentLang: lang } })}; path=/`
