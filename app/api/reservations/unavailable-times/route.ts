@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { auth } from "@/auth";
+// import { auth } from "@/auth";
 
 const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
   try {
     // 获取当前会话信息（如果需要验证用户身份）
-      const session = await auth();
+      // const session = await auth();
 
     // 如果需要验证用户身份，可以在这里检查
-    if (!session) {
-      return NextResponse.json({ error: "未授权访问" }, { status: 401 });
-    }
+    // if (!session) {
+    //   return NextResponse.json({ error: "未授权访问" }, { status: 401 });
+    // }
 
     // 从URL获取日期参数
     const { searchParams } = new URL(request.url);
