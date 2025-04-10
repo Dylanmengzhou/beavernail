@@ -114,17 +114,26 @@ export default function ConfirmationPage() {
 							err
 						);
 						// 如果现代API失败，回退到传统方法
-						fallbackCopyTextToClipboard(reservationId,data.function.ReservationCodeCopied);
+						fallbackCopyTextToClipboard(
+							reservationId,
+							data.function.ReservationCodeCopied
+						);
 					});
 			} else {
 				// 如果不支持现代API，使用传统方法
-				fallbackCopyTextToClipboard(reservationId,data.function.ReservationCodeCopied);
+				fallbackCopyTextToClipboard(
+					reservationId,
+					data.function.ReservationCodeCopied
+				);
 			}
 		}
 	};
 
 	// 传统复制方法作为后备
-	const fallbackCopyTextToClipboard = (text: string, message: string): void => {
+	const fallbackCopyTextToClipboard = (
+		text: string,
+		message: string
+	): void => {
 		try {
 			const textarea = document.createElement("textarea");
 			textarea.value = text;
@@ -262,18 +271,19 @@ export default function ConfirmationPage() {
 									{data.tag.DepositAccount}
 								</span>
 								<div className="flex flex-col">
-									<span className=" text-end">정영나 토스뱅크</span>
+									<span className=" text-end">
+										정영나(비버네일) 신한
+									</span>
 									<span className="flex justify-center item-center gap-2">
 										<span className="flex justify-center items-center">
-											1001-****-8397
+											110-***-652515
 										</span>
 										<Button
 											variant="outline"
 											size="sm"
 											className="h-7 px-2 text-xs border-pink-300 text-pink-500 hover:bg-pink-50"
 											onClick={() => {
-												const address =
-													"정영나 토스뱅크 1001-2704-8397";
+												const address = "110-599-652515";
 												// 检查navigator.clipboard是否可用
 												if (
 													navigator.clipboard &&
@@ -294,11 +304,17 @@ export default function ConfirmationPage() {
 														.catch((err) => {
 															console.error("复制失败:", err);
 															// 如果现代API失败，回退到传统方法
-															fallbackCopyTextToClipboard(address,data.tag.AccountAlreadyCopied);
+															fallbackCopyTextToClipboard(
+																address,
+																data.tag.AccountAlreadyCopied
+															);
 														});
 												} else {
 													// 如果不支持现代API，使用传统方法
-													fallbackCopyTextToClipboard(address,data.tag.AccountAlreadyCopied);
+													fallbackCopyTextToClipboard(
+														address,
+														data.tag.AccountAlreadyCopied
+													);
 												}
 											}}
 										>
