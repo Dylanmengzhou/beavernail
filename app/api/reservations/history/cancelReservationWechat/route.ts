@@ -63,7 +63,13 @@ export async function POST(req: NextRequest) {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
-				text: `❌ *您有一条预约取消了*\n👤 顾客名: *${userInfo?.name}*\n🆔 预约码: *${reservationId}*\n☎️ 联系方式: *${userInfo?.email}*\n🗓 预约日期: *${reservation.date}*\n⌛️ 预约时间: *${reservation.timeSlot}*`,
+				text: `❌ *您有一条预约取消了*\n👤 顾客名: *${
+					userInfo?.name
+				}*\n🆔 预约码: *${reservationId}*\n☎️ 联系方式: *${
+					userInfo?.email
+				}*\n🗓 预约日期: *${new Date(
+					reservation.date
+				)}*\n⌛️ 预约时间: *${reservation.timeSlot}*`,
 			}),
 		});
 		return NextResponse.json({ message: "预约已成功取消" });
