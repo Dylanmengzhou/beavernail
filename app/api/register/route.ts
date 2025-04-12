@@ -14,7 +14,7 @@ const register = async (
 ) => {
 	// 检查用户名是否已存在
 	const user = await prisma.user.findUnique({
-		where: { username: username as string,provider:'credentials' },
+		where: { username: username as string, provider: "credentials" },
 	});
 
 	if (user) {
@@ -28,6 +28,7 @@ const register = async (
 		await prisma.user.create({
 			data: {
 				username: username,
+				name: nickname,
 				password: hashedPassword,
 				securityQuestion: securityQuestion,
 				securityAnswer: securityAnswer,

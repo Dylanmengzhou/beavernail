@@ -17,6 +17,13 @@ const canCancelInTime = (reservationDate: Date) => {
 export async function POST(req: NextRequest) {
 	try {
 		const { reservationId, userId } = await req.json();
+		const userInfo = await prisma.user.findUnique({
+			where: { id: userId },
+			select: {
+				name: true,
+				email: true,
+			},
+		});
 		const reservation = await prisma.reservation.findUnique({
 			where: {
 				id: reservationId,
@@ -50,6 +57,14 @@ export async function POST(req: NextRequest) {
 			where: {
 				id: reservationId,
 			},
+		});
+
+		await fetch(process.env.SLACK_URL as string, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				text: `❌ *您有一条预约取消了*\n👤 顾客名: *${userInfo?.name}*\n🆔 预约码: *${reservationId}*\n☎️ 联系方式: *${userInfo?.email}*\n🗓 预约日期: *${reservation.date}*\n⌛️ 预约时间: *${reservation.timeSlot}*`,
+			}),
 		});
 		return NextResponse.json({ message: "预约已成功取消" });
 	} catch (error) {

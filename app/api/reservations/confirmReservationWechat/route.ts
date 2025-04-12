@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
 	try {
 		// 解析请求体
-        const body = await request.json();
+		const body = await request.json();
 		const { date, timeSlot, userId } = body;
 
 		if (!date || !timeSlot) {
@@ -15,6 +15,13 @@ export async function POST(request: Request) {
 				{ status: 400 }
 			);
 		}
+		const userInfo = await prisma.user.findUnique({
+			where: { id: userId },
+			select: {
+				name: true,
+				email: true,
+			},
+		});
 
 		// 检查该时间段是否已被预约
 		const existingReservation = await prisma.reservation.findUnique({
@@ -42,6 +49,13 @@ export async function POST(request: Request) {
 				timeSlot,
 				userId,
 			},
+		});
+		await fetch(process.env.SLACK_URL as string, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				text: `✅ *你有新的预约*\n👤 顾客名: *${userInfo?.name}*\n☎️ 联系方式: *${userInfo?.email}*\n🗓 预约日期: *${date}*\n⌛️ 预约时间: *${timeSlot}*`,
+			}),
 		});
 
 		return NextResponse.json({

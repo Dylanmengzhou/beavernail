@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id               String        @id @default(cuid())
-  name             String?       // 添加 name 字段
+  name             String? // 添加 name 字段
   username         String?       @unique
   password         String?
   image            String?
@@ -26,7 +26,7 @@ model User {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
   reservations     Reservation[]
-  email            String?       @unique
+  email            String?
   emailVerified    DateTime?
   accounts         Account[]
   provider         String
