@@ -72,6 +72,20 @@ export async function POST(req: NextRequest) {
 				)}*\n⌛️ 预约时间: *${reservation.timeSlot}*`,
 			}),
 		});
+		await fetch(process.env.LARK_CANCELED_URL as string, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				msg_type: "text",
+				content: {
+					username: userInfo?.name,
+					phone: userInfo?.email,
+					reservationId: reservationId,
+					date: new Date(reservation.date),
+					time: reservation.timeSlot,
+				},
+			}),
+		});
 		return NextResponse.json({ message: "预约已成功取消" });
 	} catch (error) {
 		console.error("取消预约失败:", error);

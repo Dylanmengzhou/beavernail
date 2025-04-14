@@ -58,6 +58,20 @@ export async function POST(request: Request) {
 			}),
 		});
 
+		await fetch(process.env.LARK_SUCCESS_URL as string, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				msg_type: "text",
+				content: {
+					username: userInfo?.name,
+					phone: userInfo?.email,
+					date: date,
+					time: timeSlot,
+				},
+			}),
+		});
+
 		return NextResponse.json({
 			message: "预约成功",
 			reservation: newReservation,

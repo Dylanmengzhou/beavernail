@@ -3,8 +3,8 @@ import prisma from "@/lib/prisma";
 import axios from "axios";
 
 const WECHAT_CONFIG = {
-	appid: "wxcfeccdaf9b270868", // 您的小程序appid
-	secret: "892037aae8dfcd951c3a394a8de5ae07", // 您的小程序secret，请替换为实际值
+	appid: process.env.WECHAT_MINIAPP_APPID, // 您的小程序appid
+	secret: process.env.WECHAT_MINIAPP_SECRET, // 您的小程序secret，请替换为实际值
 };
 export async function POST(req: NextRequest) {
 	const { code, userInfo } = await req.json();
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 	}
 
 	const wechatRes = await axios.get(
-		"https://api.weixin.qq.com/sns/jscode2session",
+		process.env.WECHAT_MINIAPP_URL as string,
 		{
 			params: {
 				appid: WECHAT_CONFIG.appid,
