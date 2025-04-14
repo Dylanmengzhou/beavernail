@@ -62,13 +62,7 @@ export async function POST(request: Request) {
 				userId,
 			},
 		});
-		await fetch(process.env.SLACK_URL as string, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				text: `✅ *你有新的预约*\n👤 顾客名: *${userInfo?.name}*\n☎️ 联系方式: *${userInfo?.email}*\n🗓 预约日期: *${date}*\n⌛️ 预约时间: *${timeSlot}*`,
-			}),
-		});
+
 		await fetch(process.env.LARK_SUCCESS_URL as string, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -80,6 +74,14 @@ export async function POST(request: Request) {
 					date: date,
 					time: timeSlot,
 				},
+			}),
+		});
+
+		await fetch(process.env.SLACK_URL as string, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				text: `✅ *你有新的预约*\n👤 顾客名: *${userInfo?.name}*\n☎️ 联系方式: *${userInfo?.email}*\n🗓 预约日期: *${date}*\n⌛️ 预约时间: *${timeSlot}*`,
 			}),
 		});
 

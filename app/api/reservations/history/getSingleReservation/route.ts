@@ -165,13 +165,6 @@ export async function POST(request: NextRequest) {
 			},
 		});
 
-		await fetch(process.env.SLACK_URL as string, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				text: `❌ *您有一条预约取消了*\n👤 顾客名: *${user?.name}*\n🆔 预约码: *${reservationId}*\n☎️ 联系方式: *${user?.email}*\n🗓 预约日期: *${reservation.date}*\n⌛️ 预约时间: *${reservation.timeSlot}*`,
-			}),
-		});
 		await fetch(process.env.LARK_CANCELED_URL as string, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -184,6 +177,14 @@ export async function POST(request: NextRequest) {
 					date: new Date(reservation.date),
 					time: reservation.timeSlot,
 				},
+			}),
+		});
+
+		await fetch(process.env.SLACK_URL as string, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				text: `❌ *您有一条预约取消了*\n👤 顾客名: *${user?.name}*\n🆔 预约码: *${reservationId}*\n☎️ 联系方式: *${user?.email}*\n🗓 预约日期: *${reservation.date}*\n⌛️ 预约时间: *${reservation.timeSlot}*`,
 			}),
 		});
 
