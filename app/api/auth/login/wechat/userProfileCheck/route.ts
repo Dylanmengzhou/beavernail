@@ -24,5 +24,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
         success: true,
         message: "用户信息完整",
+        data: {
+            name: user.name,
+            email: user.email,
+        },
     });
 }
