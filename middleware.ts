@@ -18,7 +18,14 @@ export default auth((req) => {
 
   // 需要登录才能访问的路由
   const protectedRoutes = ['/profile', '/settings', '/reservation'];
+  if (!req.auth?.user.email
+    && req.nextUrl.pathname.startsWith('/reservation')
+    && !req.nextUrl.pathname.startsWith('/profile/updateProfile')
 
+  ) {
+    const updateProfileUrl = new URL('/profile/updateProfile', req.nextUrl.origin);
+    return NextResponse.redirect(updateProfileUrl);
+  }
   // 如果用户未登录且访问受保护的路由
   if (!req.auth && protectedRoutes.some(route => req.nextUrl.pathname.startsWith(route))) {
     // 添加查询参数，表示用户是从受保护页面重定向过来的

@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 export async function GET() {
 	const session = await auth();
-	console.log(session)
 	try {
 		if (!session || !session.user) {
 			return NextResponse.json(

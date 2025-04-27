@@ -316,12 +316,28 @@
 					"Loading": "加载中...",
 					"ReservationNum": "预约次数",
 					"ReservationHistory": "预约历史",
+					"ChangeProfile": "修改个人资料",
 					"PersonalCard": "个人名片",
 					"Logouting": "退出中...",
 					"Logout": "退出"
 				}
 			},
-			"nameCard": {}
+			"nameCard": {},
+			"updateProfile": {
+				"page": {
+					"function": {
+						"PleaseEnterContactInfo": "请输入联系方式",
+						"ChangeSuccessPleaseRelogin": "成功更新个人资料，请重新登录",
+						"UpdateContactInfoFailed": "更新联系方式失败，请稍后再试"
+					},
+					"tag": {
+						"UpdateContactInfo": "联系方式",
+						"InputPlaceholder": "请输入联系方式",
+						"Update": "更新",
+						"Updating": "更新中..."
+					}
+				}
+			}
 		},
 		"reservation": {
 			"page": {
@@ -759,12 +775,28 @@
 					"Loading": "Loading...",
 					"ReservationNum": "Reservations",
 					"ReservationHistory": "Reservation History",
+					"ChangeProfile": "Change Profile",
 					"PersonalCard": "Profile",
 					"Logouting": "Logging out...",
 					"Logout": "Log Out"
 				}
 			},
-			"nameCard": {}
+			"nameCard": {},
+			"updateProfile": {
+				"page": {
+					"function": {
+						"PleaseEnterContactInfo": "Please enter your contact information",
+						"ChangeSuccessPleaseRelogin": "Profile updated successfully. Please log in again",
+						"UpdateContactInfoFailed": "Failed to update contact information. Please try again later"
+					},
+					"tag": {
+						"UpdateContactInfo": "Contact Information",
+						"InputPlaceholder": "Please enter your contact info",
+						"Update": "Update",
+						"Updating": "Updating..."
+					}
+				}
+			}
 		},
 		"reservation": {
 			"page": {
@@ -1196,12 +1228,28 @@
 					"Loading": "로딩 중...",
 					"ReservationNum": "예약 횟수",
 					"ReservationHistory": "예약 내역",
+					"ChangeProfile": "프로필 변경",
 					"PersonalCard": "개인 프로필",
 					"Logouting": "로그아웃 중...",
 					"Logout": "로그아웃"
 				}
 			},
-			"nameCard": {}
+			"nameCard": {},
+			"updateProfile": {
+				"page": {
+					"function": {
+						"PleaseEnterContactInfo": "연락처 정보를 입력해주세요",
+						"ChangeSuccessPleaseRelogin": "프로필을 성공적으로 변경했습니다. 다시 로그인해주세요",
+						"UpdateContactInfoFailed": "연락처 정보 업데이트에 실패했습니다. 잠시 후 다시 시도해주세요"
+					},
+					"tag": {
+						"UpdateContactInfo": "연락처 정보",
+						"InputPlaceholder": "연락처를 입력해주세요",
+						"Update": "변경",
+						"Updating": "업데이트 중..."
+					}
+				}
+			}
 		},
 		"reservation": {
 			"page": {

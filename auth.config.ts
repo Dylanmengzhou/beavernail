@@ -18,7 +18,6 @@ export default {
 				return {
 					id: profile.sub,
 					name: profile.name,
-					email: profile.email,
 					image: profile.picture,
 					emailVerified: new Date(),
 					username: profile.sub.toString(), // 将 name 赋值给 username
@@ -67,8 +66,8 @@ export default {
 				const user = await prisma.user.findUnique({
 					where: {
 						username: credentials.username as string,
-						provider: 'credentials'  // 确保用户是通过 credentials 方式注册的
-					 },
+						provider: "credentials", // 确保用户是通过 credentials 方式注册的
+					},
 				});
 
 				// 先检查用户是否存在
