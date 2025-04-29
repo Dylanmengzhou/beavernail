@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
 					username: userInfo?.name,
 					phone: userInfo?.email,
 					reservationId: reservationId,
-					date: new Date(reservation.date),
+					date: new Date(reservation.date).toISOString().split('T')[0],
 					time: reservation.timeSlot,
 				},
 			}),

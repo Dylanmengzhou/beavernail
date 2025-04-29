@@ -175,7 +175,7 @@ export async function POST(request: NextRequest) {
 					username: user?.name,
 					phone: user?.email,
 					reservationId: reservationId,
-					date: new Date(reservation.date),
+					date: new Date(reservation.date).toISOString().split('T')[0],
 					time: reservation.timeSlot,
 				},
 			}),
