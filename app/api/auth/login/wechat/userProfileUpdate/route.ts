@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user) {
+        console.log("用户不存在")
         return NextResponse.json(
             { success: false, message: "用户不存在" },
             { status: 400 }
