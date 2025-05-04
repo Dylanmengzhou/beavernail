@@ -173,9 +173,12 @@ export async function POST(request: NextRequest) {
 				content: {
 					whoCancelled: "用户取消",
 					username: user?.name,
+					contactType: user?.contactType,
 					phone: user?.email,
 					reservationId: reservationId,
-					date: new Date(reservation.date).toISOString().split('T')[0],
+					date: new Date(reservation.date)
+						.toISOString()
+						.split("T")[0],
 					time: reservation.timeSlot,
 				},
 			}),

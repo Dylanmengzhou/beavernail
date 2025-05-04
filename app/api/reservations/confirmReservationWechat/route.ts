@@ -20,6 +20,7 @@ export async function POST(request: Request) {
 			select: {
 				name: true,
 				email: true,
+				contactType: true,
 			},
 		});
 
@@ -61,15 +62,8 @@ export async function POST(request: Request) {
 					phone: userInfo?.email,
 					date: date,
 					time: timeSlot,
+					contactType: userInfo?.contactType,
 				},
-			}),
-		});
-
-		await fetch(process.env.SLACK_URL as string, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				text: `✅ *你有新的预约*\n👤 顾客名: *${userInfo?.name}*\n☎️ 联系方式: *${userInfo?.email}*\n🗓 预约日期: *${date}*\n⌛️ 预约时间: *${timeSlot}*`,
 			}),
 		});
 

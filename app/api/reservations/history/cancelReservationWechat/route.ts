@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
 			select: {
 				name: true,
 				email: true,
+				contactType: true,
 			},
 		});
 		const reservation = await prisma.reservation.findUnique({
@@ -69,23 +70,12 @@ export async function POST(req: NextRequest) {
 					username: userInfo?.name,
 					phone: userInfo?.email,
 					reservationId: reservationId,
-					date: new Date(reservation.date).toISOString().split('T')[0],
+					date: new Date(reservation.date)
+						.toISOString()
+						.split("T")[0],
 					time: reservation.timeSlot,
+					contactType: userInfo?.contactType,
 				},
-			}),
-		});
-
-		await fetch(process.env.SLACK_URL as string, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				text: `❌ *您有一条预约取消了*\n👤 顾客名: *${
-					userInfo?.name
-				}*\n🆔 预约码: *${reservationId}*\n☎️ 联系方式: *${
-					userInfo?.email
-				}*\n🗓 预约日期: *${new Date(
-					reservation.date
-				)}*\n⌛️ 预约时间: *${reservation.timeSlot}*`,
 			}),
 		});
 
