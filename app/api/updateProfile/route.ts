@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 		);
 	}
 
-	const { userId, nickName, contactNumber } = body;
+	const { userId, nickName, contactNumber, contactType } = body;
 
 	// 更严谨的验证
 	if (
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
 			data: {
 				nickname: nickName,
 				email: contactNumber,
+				contactType: contactType,
 			},
 			select: {
 				id: true,
