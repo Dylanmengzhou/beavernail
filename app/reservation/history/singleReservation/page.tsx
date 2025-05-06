@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format, addHours, isBefore, subHours } from "date-fns";
 import { zhCN } from "date-fns/locale";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -70,6 +70,8 @@ export default function ReservationDetailPage() {
 	console.log("reservationId", reservationId);
 	// type of reservationId
 	console.log("type of reservationId", typeof reservationId);
+
+	const [copying, setCopying] = useState(false);
 
 	// 获取预约详情
 	useEffect(() => {
@@ -160,6 +162,43 @@ export default function ReservationDetailPage() {
 		router.push("/reservation/history");
 	};
 
+	// 复制账户号码
+	const copyAccountNumber = () => {
+		const accountNumber = "110599652515";
+
+		// 创建临时输入框元素
+		const tempInput = document.createElement("input");
+		tempInput.value = accountNumber;
+		document.body.appendChild(tempInput);
+
+		// 选择内容
+		tempInput.select();
+		tempInput.setSelectionRange(0, 99999); // 兼容移动端
+
+		// 尝试复制
+		try {
+			document.execCommand("copy");
+			setCopying(true);
+			toast.success("账号已复制到剪贴板", {
+				position: "top-center",
+				duration: 1500,
+			});
+
+			setTimeout(() => {
+				setCopying(false);
+			}, 2000);
+		} catch (err) {
+			console.error("复制失败:", err);
+			toast.error("复制失败，请手动复制", {
+				position: "top-center",
+				duration: 2000,
+			});
+		} finally {
+			// 删除临时元素
+			document.body.removeChild(tempInput);
+		}
+	};
+
 	if (loading) {
 		return (
 			<div className="w-11/12 pt-4 md:py-6 px-4 md:px-6 h-full bg-amber-200 rounded-t-3xl flex items-center justify-center">
@@ -182,7 +221,7 @@ export default function ReservationDetailPage() {
 					</h1>
 				</div>
 				<div className="bg-white rounded-lg p-6 text-center">
-					<p className="text-gray-500">{ data.tag.ReservationNotExist}</p>
+					<p className="text-gray-500">{data.tag.ReservationNotExist}</p>
 					<Button className="mt-4" onClick={handleBack}>
 						{data.tag.ReturnReservationList}
 					</Button>
@@ -220,9 +259,8 @@ export default function ReservationDetailPage() {
 						</CardTitle>
 						<Badge
 							variant="outline"
-							className={`${
-								statusMap[reservation.status].className
-							} px-2 py-1`}
+							className={`${statusMap[reservation.status].className
+								} px-2 py-1`}
 						>
 							{statusMap[reservation.status].label}
 						</Badge>
@@ -233,7 +271,7 @@ export default function ReservationDetailPage() {
 						<div className="flex justify-between items-center">
 							<div className="text-gray-500">{data.tag.ReservationDate}</div>
 							<div className="flex justify-end">
-								{format(reservation.date,data.tag.DateFormat, {
+								{format(reservation.date, data.tag.DateFormat, {
 									locale: zhCN,
 								})}
 							</div>
@@ -242,6 +280,32 @@ export default function ReservationDetailPage() {
 							<div className="text-gray-500">{data.tag.ReservationTime}</div>
 							<div className="flex justify-end">
 								{reservation.timeSlot}
+							</div>
+						</div>
+						<div className="flex justify-between">
+							<div className="text-gray-500">定金金额</div>
+							<div className="flex justify-end">
+								20,000 원
+							</div>
+						</div>
+						<div className="flex justify-between items-center">
+							<div className="text-gray-500">转账账户</div>
+							<div className="flex flex-col justify-end items-end">
+								<span>정영나(비버네일) 신한</span>
+								<div className="flex items-center gap-1">
+									<span>110599652515</span>
+									<button
+										onClick={copyAccountNumber}
+										className="p-0.5 rounded hover:bg-gray-100 transition-colors"
+										title="复制账号"
+									>
+										{copying ? (
+											<Check className="h-3.5 w-3.5 text-green-500" />
+										) : (
+											<Copy className="h-3.5 w-3.5 text-gray-400" />
+										)}
+									</button>
+								</div>
 							</div>
 						</div>
 						{isWithin24Hours && canCancel && (
@@ -270,7 +334,7 @@ export default function ReservationDetailPage() {
 							</DialogTrigger>
 							<DialogContent>
 								<DialogHeader>
-									<DialogTitle>{data.tag.CancelReservationConfirm }</DialogTitle>
+									<DialogTitle>{data.tag.CancelReservationConfirm}</DialogTitle>
 									<DialogDescription>
 										{data.tag.CancelReservationConfirmWarning}
 									</DialogDescription>
