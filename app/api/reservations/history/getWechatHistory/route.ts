@@ -34,6 +34,11 @@ export async function POST(request: Request) {
 			orderBy: {
 				date: "asc",
 			},
+			include: {
+				nailArtist: {
+					select: { name: true },
+				},
+			},
 		});
 
 		return NextResponse.json({

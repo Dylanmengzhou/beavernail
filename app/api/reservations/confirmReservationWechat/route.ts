@@ -7,7 +7,7 @@ export async function POST(request: Request) {
 	try {
 		// 解析请求体
 		const body = await request.json();
-		const { date, timeSlot, userId } = body;
+		const { date, timeSlot, userId,nailArtistId } = body;
 
 		if (!date || !timeSlot) {
 			return NextResponse.json(
@@ -29,6 +29,7 @@ export async function POST(request: Request) {
 			where: {
 				date: new Date(date),
 				timeSlot: timeSlot,
+				nailArtistId: nailArtistId,
 			},
 		});
 
@@ -47,6 +48,7 @@ export async function POST(request: Request) {
 				date: new Date(date),
 				timeSlot,
 				userId,
+				nailArtistId,
 			},
 		});
 
