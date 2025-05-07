@@ -17,13 +17,21 @@ import languageData from "@/public/language.json";
 import { useLanguageStore } from "@/store/languageStore";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
+interface Reservation {
+	id: string;
+	nailArtistName?: string;
+	date: string;
+	timeSlot: string;
+	// 如果还有其他字段，可以继续补充
+}
+
 export default function ConfirmationPage() {
 	const { currentLang } = useLanguageStore();
 	const data =
 		languageData[currentLang as keyof typeof languageData].reservation
 			.confirmation.page;
 	const router = useRouter();
-	const [reservation, setReservation] = useState<any>(null);
+	const [reservation, setReservation] = useState<Reservation | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 

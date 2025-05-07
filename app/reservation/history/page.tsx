@@ -28,8 +28,6 @@ import { zhCN } from "date-fns/locale";
 import {
 	Card,
 	CardContent,
-	CardHeader,
-	CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react"; // 添加Loader2图标导入
@@ -440,7 +438,7 @@ const ReservationCards = ({
 							<span>{reservation.timeSlot}</span>
 						</div>
 						<div className="flex justify-between">
-							<span className="text-gray-500">{data.tag.NailArtist }</span>
+							<span className="text-gray-500">{data.tag.NailArtist}</span>
 							<span>{reservation.nailArtistName || "-"}</span>
 						</div>
 					</CardContent>

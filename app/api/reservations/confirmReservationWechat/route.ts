@@ -25,12 +25,10 @@ export async function POST(request: Request) {
 		});
 
 		// 检查该时间段是否已被预约
-		const existingReservation = await prisma.reservation.findUnique({
+		const existingReservation = await prisma.reservation.findFirst({
 			where: {
-				date_timeSlot: {
-					date: new Date(date),
-					timeSlot: timeSlot,
-				},
+				date: new Date(date),
+				timeSlot: timeSlot,
 			},
 		});
 
