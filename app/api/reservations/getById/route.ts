@@ -18,6 +18,12 @@ export async function POST(request: Request) {
       },
       select: {
         id: true,
+        nailArtist: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 
@@ -25,7 +31,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "预约未找到" }, { status: 404 });
     }
 
-    return NextResponse.json({ id: reservation.id });
+    return NextResponse.json({ id: reservation.id, nailArtist: reservation.nailArtist });
   } catch (error) {
     console.error("获取预约ID失败:", error);
     return NextResponse.json({ error: "获取预约ID失败" }, { status: 500 });

@@ -35,6 +35,7 @@ type Reservation = {
 	date: Date;
 	timeSlot: string;
 	status: "upcoming" | "completed" | "cancelled";
+	nailArtistName?: string;
 };
 
 export default function ReservationDetailPage() {
@@ -89,6 +90,7 @@ export default function ReservationDetailPage() {
 				setReservation({
 					...data,
 					date: new Date(data.date),
+					nailArtistName: data.nailArtistName,
 				});
 			} catch (error) {
 				console.error("获取预约详情失败:", error);
@@ -311,6 +313,10 @@ export default function ReservationDetailPage() {
 									</button>
 								</div>
 							</div>
+						</div>
+						<div className="flex justify-between">
+							<span className="text-gray-500">{data.tag.NailArtist}</span>
+							<span>{reservation.nailArtistName || "-"}</span>
 						</div>
 						{isWithin24Hours && canCancel && (
 							<div className="col-span-2 mt-2 text-red-500 text-sm">

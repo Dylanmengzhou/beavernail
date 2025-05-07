@@ -353,7 +353,8 @@
 					"TimePassed": "已过",
 					"Processing": "处理中...",
 					"Confirm": "确认",
-					"PleaseSelectDate": "先选择日期哟 📅"
+					"PleaseSelectDate": "选择日期哟 📅",
+					"PleaseSelectArtist": "先选择美甲师哟 💅"
 				}
 			},
 			"confirmation": {
@@ -428,7 +429,8 @@
 						"ReservationDate": "日期",
 						"ReservationTime": "时间段",
 						"ReservationStatus": "状态",
-						"NoReservation": "暂无预约记录"
+						"NoReservation": "暂无预约记录",
+						"NailArtist": "美甲师"
 					}
 				},
 				"singleReservation": {
@@ -456,7 +458,8 @@
 							"CancelReservationConfirmWarning": "您确定要取消这个预约吗？此操作无法撤销。",
 							"Return": "返回",
 							"Processing": "处理中...",
-							"ConfirmCancelled": "确认取消"
+							"ConfirmCancelled": "确认取消",
+							"NailArtist": "美甲师"
 						}
 					}
 				}
@@ -815,7 +818,8 @@
 					"TimePassed": "Passed",
 					"Processing": "Processing...",
 					"Confirm": "Confirm",
-					"PleaseSelectDate": "Please select a date first 📅"
+					"PleaseSelectDate": "Please select a date 📅",
+					"PleaseSelectArtist": "Please select an artist first 💅"
 				}
 			},
 			"confirmation": {
@@ -890,7 +894,8 @@
 						"ReservationDate": "Date",
 						"ReservationTime": "Time Slot",
 						"ReservationStatus": "Status",
-						"NoReservation": "No reservations found"
+						"NoReservation": "No reservations found",
+						"NailArtist": "Nail Artist"
 					}
 				},
 				"singleReservation": {
@@ -918,7 +923,8 @@
 							"CancelReservationConfirmWarning": "Are you sure you want to cancel this reservation? This action cannot be undone.",
 							"Return": "Back",
 							"Processing": "Processing...",
-							"ConfirmCancelled": "Confirm Cancellation"
+							"ConfirmCancelled": "Confirm Cancellation",
+							"NailArtist": "Nail Artist"
 						}
 					}
 				}
@@ -1271,7 +1277,8 @@
 					"TimePassed": "불가",
 					"Processing": "처리 중...",
 					"Confirm": "확인",
-					"PleaseSelectDate": "먼저 날짜를 선택해주세요 📅"
+					"PleaseSelectDate": "먼저 날짜를 선택해주세요 📅",
+					"PleaseSelectArtist": "네일리스트를 선택해주세요 💅"
 				}
 			},
 			"confirmation": {
@@ -1346,7 +1353,8 @@
 						"ReservationDate": "날짜",
 						"ReservationTime": "시간대",
 						"ReservationStatus": "상태",
-						"NoReservation": "예약 내역이 없습니다"
+						"NoReservation": "예약 내역이 없습니다",
+						"NailArtist": "네일리스트"
 					}
 				},
 				"singleReservation": {
@@ -1374,7 +1382,8 @@
 							"CancelReservationConfirmWarning": "정말로 이 예약을 취소하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
 							"Return": "돌아가기",
 							"Processing": "처리 중...",
-							"ConfirmCancelled": "취소 확인"
+							"ConfirmCancelled": "취소 확인",
+							"NailArtist": "네일리스트"
 						}
 					}
 				}

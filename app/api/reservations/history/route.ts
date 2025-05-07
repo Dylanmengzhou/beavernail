@@ -67,6 +67,11 @@ export async function GET(request: Request) {
             username: true,
           },
         },
+        nailArtist: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 
@@ -76,12 +81,12 @@ export async function GET(request: Request) {
     // 转换数据格式
     const formattedReservations = reservations.map((reservation) => {
       const isUpcoming = new Date(reservation.date) >= now;
-
       return {
         id: reservation.id,
         date: reservation.date,
         timeSlot: reservation.timeSlot,
         status: isUpcoming ? "upcoming" : "completed",
+        nailArtistName: reservation.nailArtist?.name || "",
       };
     });
 

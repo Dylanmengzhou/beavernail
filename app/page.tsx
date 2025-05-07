@@ -47,23 +47,38 @@ export default function Home() {
 				<div
 					className={`w-full flex-1 bg-transparent flex flex-col gap-6 md:gap-10 items-center justify-center ${zcool.className} mt-4 md:mt-0`}
 				>
-					{/* <span
-						className={`text-5xl md:text-7xl bg-gradient-to-r from-fuchsia-600 to-purple-600 inline-block text-transparent bg-clip-text opacity-50 text-center`}
-					>
-						想要进店体验美甲吗？
-					</span> */}
 					<Button
-						className={`${zcool.className} flex justify-center items-center bg-gradient-to-r from-red-400 to-pink-500 drop-shadow-2xl text-xl md:text-3xl p-3 md:p-5  w-24 h-24 rounded-full md:w-52 md:h-52`}
+						className={`
+							${zcool.className}
+							flex justify-center items-center
+							relative
+							w-32 h-32 md:w-60 md:h-60
+							rounded-[2.5rem] md:rounded-[4rem]
+							bg-gradient-to-br from-pink-300 via-pink-200 to-fuchsia-200
+							border-4 border-pink-200/80
+							shadow-[0_8px_32px_0_rgba(255,120,200,0.18),0_1.5px_0_0_rgba(255,255,255,0.7)_inset,0_0_0_8px_rgba(255,182,193,0.10)]
+							backdrop-blur-xl
+							text-pink-600 text-2xl md:text-4xl font-extrabold tracking-wider
+							drop-shadow-[0_2px_8px_rgba(255,120,200,0.18)]
+							transition-all duration-200
+							active:scale-95 active:shadow-[0_2px_8px_0_rgba(255,120,200,0.10)]
+							overflow-hidden
+							group
+						`}
 						onClick={() => handleClick("/reservation")}
 					>
-						{data.tag.QuickReservation}
+						{/* 玻璃高光 */}
+						<span className="absolute left-0 top-0 w-full h-1/2 rounded-t-[2.5rem] md:rounded-t-[4rem] bg-white/40 blur-lg opacity-60 pointer-events-none"></span>
+						{/* 按钮文字 */}
+						<span className="z-10 drop-shadow-[0_2px_8px_rgba(255,255,255,0.7)] text-shadow-pink">
+							{data.tag.QuickReservation}
+						</span>
 					</Button>
 				</div>
 
 				<div
-					className={`${
-						isMobile ? "flex flex-col gap-4" : "flex justify-between"
-					} p-3 md:p-5 mb-2 md:mb-0 w-full mt-auto`}
+					className={`${isMobile ? "flex flex-col gap-4" : "flex justify-between"
+						} p-3 md:p-5 mb-2 md:mb-0 w-full mt-auto`}
 				>
 					<div className={isMobile ? "self-center" : ""}>
 						<DailyInfo />

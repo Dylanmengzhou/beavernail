@@ -19,28 +19,27 @@ export async function POST(request: Request) {
 
 		// 解析请求体
 		const body = await request.json();
-		const { date, timeSlot } = body;
+		const { date, timeSlot, nailArtistId } = body;
 
-		if (!date || !timeSlot) {
+		if (!date || !timeSlot || !nailArtistId) {
 			return NextResponse.json(
-				{ error: "日期和时间段不能为空" },
+				{ error: "日期、时间段和美甲师不能为空" },
 				{ status: 400 }
 			);
 		}
 
-		// 检查该时间段是否已被预约
-		const existingReservation = await prisma.reservation.findUnique({
+		// 检查该美甲师该时间段是否已被预约
+		const existingReservation = await prisma.reservation.findFirst({
 			where: {
-				date_timeSlot: {
-					date: new Date(date),
-					timeSlot: timeSlot,
-				},
+				date: new Date(date),
+				timeSlot: timeSlot,
+				nailArtistId: nailArtistId,
 			},
 		});
 
 		if (existingReservation) {
 			return NextResponse.json(
-				{ error: "该时间段已被预约，请选择其他时间" },
+				{ error: "该美甲师该时间段已被预约，请选择其他时间" },
 				{ status: 409 }
 			);
 		}
@@ -61,6 +60,7 @@ export async function POST(request: Request) {
 				date: new Date(date),
 				timeSlot,
 				userId,
+				nailArtistId,
 			},
 		});
 

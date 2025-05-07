@@ -45,6 +45,7 @@ type Reservation = {
 	date: Date;
 	timeSlot: string;
 	status: "upcoming" | "completed" | "cancelled";
+	nailArtistName?: string;
 };
 
 // API返回的预约数据类型
@@ -323,69 +324,42 @@ const ReservationTable = ({
 	return (
 		<div className="overflow-x-auto h-full">
 			<Table>
-				<TableHeader className="bg-gray-50">
+				<TableHeader>
 					<TableRow>
-						<TableHead className="w-[100px]">
-							{data.tag.ReservationCode}
-						</TableHead>
+						<TableHead>{data.tag.ReservationCode}</TableHead>
 						<TableHead>{data.tag.ReservationDate}</TableHead>
 						<TableHead>{data.tag.ReservationTime}</TableHead>
+						<TableHead>{data.tag.NailArtist}</TableHead>
 						<TableHead>{data.tag.ReservationStatus}</TableHead>
 					</TableRow>
 				</TableHeader>
-				<TableBody className="min-h-[250px]">
-					{reservations.length === 0 ? (
-						<TableRow>
-							<TableCell
-								colSpan={4}
-								className="text-center py-6 h-[250px] align-middle"
-							>
-								{data.tag.NoReservation}
+				<TableBody>
+					{reservations.map((reservation) => (
+						<TableRow
+							key={reservation.id}
+							onClick={() => handleRowClick(reservation.id)}
+							className="cursor-pointer hover:bg-pink-50"
+						>
+							<TableCell>
+								#{reservation.id.substring(0, 8)}
+							</TableCell>
+							<TableCell>
+								{format(reservation.date, data.tag.DateFormat, {
+									locale: zhCN,
+								})}
+							</TableCell>
+							<TableCell>{reservation.timeSlot}</TableCell>
+							<TableCell>{reservation.nailArtistName || "-"}</TableCell>
+							<TableCell>
+								<Badge
+									variant="outline"
+									className={statusMap[reservation.status].className}
+								>
+									{statusMap[reservation.status].label}
+								</Badge>
 							</TableCell>
 						</TableRow>
-					) : (
-						<>
-							{reservations.map((reservation) => (
-								<TableRow
-									key={reservation.id}
-									className="hover:bg-gray-50 cursor-pointer"
-									onClick={() => handleRowClick(reservation.id)}
-								>
-									<TableCell className="font-medium">
-										{reservation.id.substring(0, 8)}
-									</TableCell>
-									<TableCell>
-										{format(reservation.date, data.tag.DateFormat, {
-											locale: zhCN,
-										})}
-									</TableCell>
-									<TableCell>{reservation.timeSlot}</TableCell>
-									<TableCell>
-										<Badge
-											variant="outline"
-											className={`px-2 py-1 ${
-												statusMap[reservation.status].className
-											}`}
-										>
-											{statusMap[reservation.status].label}
-										</Badge>
-									</TableCell>
-								</TableRow>
-							))}
-							{/* 如果数据少于5条，添加空行保持高度 */}
-							{reservations.length < 5 &&
-								Array.from({ length: 5 - reservations.length }).map(
-									(_, index) => (
-										<TableRow
-											key={`empty-${index}`}
-											className="h-[50px]"
-										>
-											<TableCell colSpan={4}>&nbsp;</TableCell>
-										</TableRow>
-									)
-								)}
-						</>
-					)}
+					))}
 				</TableBody>
 			</Table>
 		</div>
@@ -434,56 +408,44 @@ const ReservationCards = ({
 	}
 
 	return (
-		<div className="space-y-3 h-full overflow-y-auto pb-4">
+		<div className="grid grid-cols-1 gap-4">
 			{reservations.map((reservation) => (
 				<Card
 					key={reservation.id}
-					className="shadow-sm border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors "
+					className="bg-white rounded-lg shadow-sm cursor-pointer hover:bg-pink-50"
 					onClick={() => handleCardClick(reservation.id)}
 				>
-					<CardHeader className="pb-1 pt-2 px-3">
-						<div className="flex justify-between items-center">
-							<CardTitle className="text-lg font-medium flex flex-col gap-1 text-teal-400">
-								<div className="">{data.tag.ReservationCode}</div>
-								<div className="">
-									#{reservation.id.substring(0, 8)}
-								</div>
-							</CardTitle>
+					<CardContent className="p-4">
+						<div className="flex justify-between items-center mb-2">
+							<span className="font-medium text-pink-600">
+								#{reservation.id.substring(0, 8)}
+							</span>
 							<Badge
 								variant="outline"
-								className={`${
-									statusMap[reservation.status].className
-								} text-xs px-1.5 py-0.5`}
+								className={statusMap[reservation.status].className}
 							>
 								{statusMap[reservation.status].label}
 							</Badge>
 						</div>
-					</CardHeader>
-					<CardContent className="pb-2 px-3">
-						<div className="grid grid-cols-2 gap-1 text-xs">
-							<div className="text-gray-500">{data.tag.ReservationDate}</div>
-							<div className="w-full justify-end flex">
-								{format(reservation.date,  data.tag.DateFormat, {
+						<div className="flex justify-between">
+							<span className="text-gray-500">{data.tag.ReservationDate}</span>
+							<span>
+								{format(reservation.date, data.tag.DateFormat, {
 									locale: zhCN,
 								})}
-							</div>
-							<div className="text-gray-500">{data.tag.ReservationTime}</div>
-							<div className="w-full justify-end flex">
-								{reservation.timeSlot}
-							</div>
+							</span>
+						</div>
+						<div className="flex justify-between">
+							<span className="text-gray-500">{data.tag.ReservationTime}</span>
+							<span>{reservation.timeSlot}</span>
+						</div>
+						<div className="flex justify-between">
+							<span className="text-gray-500">{data.tag.NailArtist }</span>
+							<span>{reservation.nailArtistName || "-"}</span>
 						</div>
 					</CardContent>
 				</Card>
 			))}
-			{/* 如果数据少于5条，添加空白卡片保持高度 */}
-			{reservations.length < 5 &&
-				Array.from({ length: 5 - reservations.length }).map(
-					(_, index) => (
-						<div key={`empty-card-${index}`} className="h-[70px]">
-							&nbsp;
-						</div>
-					)
-				)}
 		</div>
 	);
 };

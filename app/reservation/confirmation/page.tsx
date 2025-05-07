@@ -23,84 +23,49 @@ export default function ConfirmationPage() {
 		languageData[currentLang as keyof typeof languageData].reservation
 			.confirmation.page;
 	const router = useRouter();
-	const [reservation, setReservation] = useState<{
-		date: string;
-		timeSlot: string;
-		rawDate: Date;
-	} | null>(null);
+	const [reservation, setReservation] = useState<any>(null);
 	const [error, setError] = useState<string | null>(null);
-	const [reservationId, setReservationId] = useState<string | null>(
-		null
-	);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		try {
-			// 从本地存储获取预约信息
-			const storedReservation = localStorage.getItem(
-				"latestReservation"
-			);
-			console.log("存储的预约信息:", storedReservation);
-
-			if (storedReservation) {
-				const parsedReservation = JSON.parse(storedReservation);
-				setReservation(parsedReservation);
-
-				// 获取预约ID
-				fetchReservationId(
-					parsedReservation.date,
-					parsedReservation.timeSlot
-				);
+			const stored = localStorage.getItem("latestReservation");
+			if (stored) {
+				const { reservationId } = JSON.parse(stored);
+				if (reservationId) {
+					fetch(`/api/reservations/history/getSingleReservation?reservationId=${reservationId}`)
+						.then(res => res.json())
+						.then(data => {
+							if (data.error) setError(data.error);
+							else setReservation(data);
+						})
+						.finally(() => setIsLoading(false));
+				} else {
+					setError("未找到预约信息");
+					setIsLoading(false);
+				}
 			} else {
-				setError(data.function.NotFoundReservationInfo);
+				setError("未找到预约信息");
+				setIsLoading(false);
 			}
-		} catch (err) {
-			console.error("读取预约信息失败:", err);
-			setError(data.function.ReadingReservationInfoError);
+		} catch {
+			setError("获取预约信息失败");
+			setIsLoading(false);
 		}
 	}, []);
-
-	const [isLoading, setIsLoading] = useState(true); // 添加加载状态
-
-	// 获取预约ID的函数
-	const fetchReservationId = async (
-		date: string,
-		timeSlot: string
-	) => {
-		setIsLoading(true); // 开始加载
-		try {
-			const response = await fetch("/api/reservations/getById", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ date, timeSlot }),
-			});
-
-			if (response.ok) {
-				const data = await response.json();
-				setReservationId(data.id);
-			} else {
-				console.error("获取预约ID失败");
-			}
-		} catch (error) {
-			console.error("获取预约ID请求失败:", error);
-		} finally {
-			setIsLoading(false); // 结束加载
-		}
-	};
 
 	const [hasCopiedId, setHasCopiedId] = useState(false); // 添加状态跟踪是否已复制预约编号
 
 	// 复制预约编号到剪贴板
 	const copyReservationId = () => {
-		if (reservationId) {
+		if (reservation?.id) {
 			// 检查navigator.clipboard是否可用
 			if (
 				navigator.clipboard &&
 				typeof navigator.clipboard.writeText === "function"
 			) {
 				navigator.clipboard
-					.writeText(reservationId)
+					.writeText(reservation.id)
 					.then(() => {
 						toast.success(data.function.ReservationCodeCopied, {
 							position: "top-center",
@@ -115,14 +80,14 @@ export default function ConfirmationPage() {
 						);
 						// 如果现代API失败，回退到传统方法
 						fallbackCopyTextToClipboard(
-							reservationId,
+							reservation.id,
 							data.function.ReservationCodeCopied
 						);
 					});
 			} else {
 				// 如果不支持现代API，使用传统方法
 				fallbackCopyTextToClipboard(
-					reservationId,
+					reservation.id,
 					data.function.ReservationCodeCopied
 				);
 			}
@@ -170,7 +135,7 @@ export default function ConfirmationPage() {
 
 	// 处理联系客服按钮点击
 	const handleContactClick = () => {
-		if (!hasCopiedId && reservationId) {
+		if (!hasCopiedId && reservation?.id) {
 			toast.warning(data.function.CopyReservationCodeFirst, {
 				position: "top-center",
 				duration: 2000,
@@ -228,7 +193,7 @@ export default function ConfirmationPage() {
 						{data.tag.ReservedSuccessfully}
 					</CardTitle>
 				</CardHeader>
-				<CardContent className="">
+				<CardContent className="pt-6 text-center">
 					{reservation ? (
 						<div className="space-y-4">
 							<div className="flex justify-between items-center">
@@ -245,9 +210,9 @@ export default function ConfirmationPage() {
 								) : (
 									<div className="flex items-center space-x-2">
 										<span className="font-mono text-base">
-											{reservationId?.substring(0, 8)}
+											{reservation?.id?.substring(0, 8)}
 										</span>
-										{reservationId && (
+										{reservation?.id && (
 											<Button
 												variant="outline"
 												size="sm"
@@ -260,6 +225,12 @@ export default function ConfirmationPage() {
 									</div>
 								)}
 							</div>
+							{reservation?.nailArtistName && (
+								<div className="flex justify-between">
+									<span className="font-medium">美甲师：</span>
+									<span>{reservation.nailArtistName}</span>
+								</div>
+							)}
 							<div className="flex justify-between">
 								<span className="font-medium">
 									{data.tag.DepositAmount}
@@ -288,7 +259,7 @@ export default function ConfirmationPage() {
 												if (
 													navigator.clipboard &&
 													typeof navigator.clipboard.writeText ===
-														"function"
+													"function"
 												) {
 													navigator.clipboard
 														.writeText(address)
@@ -383,10 +354,7 @@ export default function ConfirmationPage() {
 												{data.tag.AttentionC.c}
 											</strong>
 											{data.tag.AttentionC.d}
-											<strong className="font-bold text-red-400">
-												{data.tag.AttentionC.e}
-											</strong>
-											{data.tag.AttentionC.f}
+											{data.tag.AttentionC.e}
 										</span>
 									</li>
 									<li className="flex items-start">

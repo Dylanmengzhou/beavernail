@@ -61,6 +61,11 @@ export async function GET(request: NextRequest) {
 				id: reservationId,
 				userId: user.id, // 确保只能查看自己的预约
 			},
+			include: {
+				nailArtist: {
+					select: { name: true },
+				},
+			},
 		});
 
 		if (!reservation) {
@@ -80,6 +85,7 @@ export async function GET(request: NextRequest) {
 			date: reservation.date,
 			timeSlot: reservation.timeSlot,
 			status: isUpcoming ? "upcoming" : "completed",
+			nailArtistName: reservation.nailArtist?.name || "",
 		};
 
 		return NextResponse.json(formattedReservation);

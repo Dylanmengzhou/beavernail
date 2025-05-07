@@ -5,16 +5,28 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
+
 
 import { Coiny } from "next/font/google";
 import { ZCOOL_KuaiLe } from "next/font/google";
+import languageData from "@/public/language.json";
+import { useLanguageStore } from "@/store/languageStore";
+import { User2 } from "lucide-react";
+import { roleNameMap } from "@/lib/roleMap";
 
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
-import languageData from "@/public/language.json";
-import { useLanguageStore } from "@/store/languageStore";
+
 const ReservationPage = () => {
 	const { currentLang } = useLanguageStore();
+	const lang = (currentLang as 'zh' | 'en' | 'ko');
 	const data =
 		languageData[currentLang as keyof typeof languageData].reservation
 			.page;
@@ -29,6 +41,8 @@ const ReservationPage = () => {
 		string[]
 	>([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [artists, setArtists] = useState<{ id: string; name: string; role?: string }[]>([]);
+	const [selectedArtist, setSelectedArtist] = useState<string>("");
 
 	const timeSlots = ["10:00", "12:00", "14:00", "16:00", "19:00"];
 
@@ -61,13 +75,22 @@ const ReservationPage = () => {
 		fetchDisabledDates();
 	}, []);
 
-	// 获取选定日期不可预约的时间段
-	const fetchUnavailableTimeSlots = async (selectedDate: Date) => {
-		if (!selectedDate) return;
+	useEffect(() => {
+		fetch("/api/nail-artists")
+			.then(res => res.json())
+			.then(data => {
+				console.log("nail-artists接口返回：", data);
+				setArtists(Array.isArray(data) ? data : []);
+				// 不再默认选中 NaNa，初始值为空
+				setSelectedArtist("");
+			});
+	}, []);
 
+	// 获取选定日期不可预约的时间段
+	const fetchUnavailableTimeSlots = async (selectedDate: Date, artistId: string) => {
+		if (!selectedDate || !artistId) return;
 		try {
 			setIsLoading(true);
-			// 使用韩国时区格式化日期
 			const formattedDate = selectedDate
 				.toLocaleDateString("ko-KR", {
 					year: "numeric",
@@ -78,12 +101,8 @@ const ReservationPage = () => {
 				.split(". ")
 				.join("-")
 				.replace(".", "");
-
-			const response = await fetch(
-				`/api/reservations/unavailable-times?date=${formattedDate}`
-			);
+			const response = await fetch(`/api/reservations/unavailable-times?date=${formattedDate}&nailArtistId=${artistId}`);
 			const data = await response.json();
-
 			if (data.unavailableTimes) {
 				setUnavailableTimeSlots(data.unavailableTimes);
 			} else {
@@ -100,17 +119,27 @@ const ReservationPage = () => {
 		}
 	};
 
+	// 监听 date 和 selectedArtist 变化
+	useEffect(() => {
+		if (date && selectedArtist) {
+			fetchUnavailableTimeSlots(date, selectedArtist);
+			setSelectedTime(null); // 切换老师或日期时重置选中的时间
+		}
+	}, [date, selectedArtist]);
+
 	const handleDateSelect = (selectedDate: Date | undefined) => {
-		console.log(Date);
 		setDate(selectedDate);
 		if (selectedDate) {
 			setIsCalendarClicked(true);
-			fetchUnavailableTimeSlots(selectedDate);
-			setSelectedTime(null); // 重置选中的时间
+			setSelectedTime(null);
 		}
 	};
 
 	const handleDateTimeCheck = async () => {
+		if (!selectedArtist) {
+			toast.error("请先选择美甲师", { position: "top-center", duration: 2000 });
+			return;
+		}
 		if (!date || !selectedTime) return;
 
 		try {
@@ -135,27 +164,25 @@ const ReservationPage = () => {
 				body: JSON.stringify({
 					date: formattedDate,
 					timeSlot: selectedTime,
+					nailArtistId: selectedArtist,
 				}),
 			});
 
-			// const data = await response.json();
-
 			if (response.ok) {
-				// 保存预约信息到localStorage
+				const resData = await response.json();
 				localStorage.setItem(
 					"latestReservation",
 					JSON.stringify({
+						reservationId: resData.reservation.id,
 						date: formattedDate,
 						timeSlot: selectedTime,
 						rawDate: date,
 					})
 				);
-
 				toast.success(data.function.ReservationSuccess, {
 					position: "top-center",
 					duration: 2000,
 				});
-				// 跳转到确认页面
 				router.push("/reservation/confirmation");
 			} else {
 				toast.error(data.function.ReservationFailed, {
@@ -194,6 +221,9 @@ const ReservationPage = () => {
 		return now > slotTime;
 	};
 
+	// 日历和时间段禁用逻辑
+	const isArtistSelected = !!selectedArtist;
+
 	return (
 		<div className="flex flex-col items-center justify-start h-full w-full">
 			<div className="bg-white rounded-xl p-6 flex flex-col justify-center items-center shadow-2xl">
@@ -201,83 +231,85 @@ const ReservationPage = () => {
 					required
 					mode="single"
 					selected={date}
-					onSelect={handleDateSelect}
+					onSelect={isArtistSelected ? handleDateSelect : undefined}
 					className="rounded-md border-none justify-center items-center"
 					disabled={[
+						!isArtistSelected,
 						{
 							before: (() => {
-								// 起始日期是2025年4月25日
 								const startDate = new Date(2025, 3, 25);
-								// 获取当前日期
 								const today = new Date();
-								// 如果当前日期已经超过起始日期，则使用当前日期作为最早可选日期
 								return today > startDate ? today : startDate;
 							})(),
 						},
-						{ dayOfWeek: [1] }, // 禁用周一
+						{ dayOfWeek: [1] },
 						{
 							after: (() => {
-								// 起始日期是2025年4月25日
 								const startDate = new Date(2025, 3, 25);
-								// 获取当前日期
 								const today = new Date();
-								// 使用较晚的日期作为计算基准
-								const baseDate =
-									today > startDate ? today : startDate;
-								// 从基准日期开始计算15天后的日期
+								const baseDate = today > startDate ? today : startDate;
 								const maxDate = new Date(baseDate);
 								maxDate.setDate(baseDate.getDate() + 15);
 								return maxDate;
 							})(),
 						},
-						...disabledDates.map(
-							(disabledDate) => new Date(disabledDate)
-						),
+						...disabledDates.map((disabledDate) => new Date(disabledDate)),
 					]}
 				/>
+				{/* 美甲师选择下拉框 */}
+				<div className="mt-6 w-full flex flex-col items-center">
+
+					<div className="w-full flex flex-col items-center">
+						<Select value={selectedArtist} onValueChange={setSelectedArtist}>
+							<SelectTrigger className="rounded-2xl border-2 border-pink-200 bg-gradient-to-r from-pink-50 via-fuchsia-50 to-pink-100 shadow-lg focus:ring-2 focus:ring-pink-300 text-pink-600 font-bold text-base h-12 px-4 flex items-center justify-between">
+								<User2 className="w-5 h-5 text-pink-400 mr-2" />
+								<SelectValue placeholder={data.tag.PleaseSelectArtist} />
+							</SelectTrigger>
+							<SelectContent className="rounded-2xl border-2 border-pink-200 bg-white shadow-2xl animate-in fade-in zoom-in-95">
+								{artists.map(artist => {
+									const roleInfo = roleNameMap[artist.role || "L3"] || roleNameMap["L3"];
+									return (
+										<SelectItem
+											key={artist.id}
+											value={artist.id}
+											className="rounded-xl px-4 py-3 text-base font-semibold text-pink-600 hover:bg-pink-100 hover:text-fuchsia-600 transition-all duration-200 cursor-pointer flex items-center gap-2"
+										>
+											<span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-pink-400 to-fuchsia-400 mr-2"></span>
+											{artist.name}
+											<span className={`ml-2 text-xs rounded-full px-2 py-0.5 ${roleInfo.color}`}>{roleInfo.label[lang === "ko" ? "kr" : lang]}</span>
+										</SelectItem>
+									);
+								})}
+							</SelectContent>
+						</Select>
+					</div>
+				</div>
 			</div>
-			{isCalendarClicked ? (
-				<div
-					className={`grid grid-cols-3 grid-rows-2 gap-4 w-full max-w-[300px] md:max-w-[600px] mx-auto p-10 ${coiny.className}`}
-				>
+			{isCalendarClicked && isArtistSelected ? (
+				<div className={`grid grid-cols-3 grid-rows-2 gap-4 w-full max-w-[300px] md:max-w-[600px] mx-auto p-10 ${coiny.className}`}>
 					{isLoading ? (
-						<div className="col-span-3 text-center">
-							{data.tag.Loading}
-						</div>
+						<div className="col-span-3 text-center">{data.tag.Loading}</div>
 					) : (
 						<>
 							{timeSlots.map((time) => (
 								<Button
 									key={time}
 									variant="default"
-									className={`h-14 rounded-2xl ${
-										selectedTime === time
-											? "bg-pink-300"
-											: "bg-pink-500"
-									} text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)] hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.3)] hover:bg-pink-400 active:bg-pink-300 focus:bg-pink-300 disabled:opacity-50 disabled:cursor-not-allowed flex-col justify-center items-center`}
+									className={`h-14 rounded-2xl ${selectedTime === time ? "bg-pink-300" : "bg-pink-500"} text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)] hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.3)] hover:bg-pink-400 active:bg-pink-300 focus:bg-pink-300 disabled:opacity-50 disabled:cursor-not-allowed flex-col justify-center items-center`}
 									onClick={() => setSelectedTime(time)}
-									disabled={
-										unavailableTimeSlots.includes(time) ||
-										isTimeSlotPassed(time)
-									}
+									disabled={unavailableTimeSlots.includes(time) || isTimeSlotPassed(time)}
 								>
 									{time}
 									{unavailableTimeSlots.includes(time) ? (
 										<span className="">{data.tag.Reserved}</span>
 									) : isTimeSlotPassed(time) ? (
-										<span className="">
-											{data.tag.TimePassed}
-										</span>
+										<span className="">{data.tag.TimePassed}</span>
 									) : null}
 								</Button>
 							))}
 							<Button
 								variant="default"
-								className={`h-14 rounded-2xl ${
-									selectedTime ? "bg-green-600" : "bg-black"
-								} text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)] hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.3)] ${
-									zcool.className
-								} disabled:opacity-50 disabled:cursor-not-allowed`}
+								className={`h-14 rounded-2xl ${selectedTime ? "bg-green-600" : "bg-black"} text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)] hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.3)] ${zcool.className} disabled:opacity-50 disabled:cursor-not-allowed`}
 								onClick={handleDateTimeCheck}
 								disabled={!selectedTime || isLoading}
 							>
@@ -286,13 +318,13 @@ const ReservationPage = () => {
 						</>
 					)}
 				</div>
+			) : !isArtistSelected ? (
+				<div className={`h-full flex justify-center items-center ${zcool.className}`}>
+					<Badge variant="secondary" className="text-2xl p-2">{data.tag.PleaseSelectArtist}</Badge>
+				</div>
 			) : (
-				<div
-					className={`h-full flex justify-center items-center ${zcool.className}`}
-				>
-					<Badge variant="secondary" className="text-2xl p-2">
-							{ data.tag.PleaseSelectDate}
-					</Badge>
+				<div className={`h-full flex justify-center items-center ${zcool.className}`}>
+					<Badge variant="secondary" className="text-2xl p-2">{data.tag.PleaseSelectDate}</Badge>
 				</div>
 			)}
 		</div>
