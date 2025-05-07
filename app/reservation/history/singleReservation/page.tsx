@@ -283,13 +283,17 @@ export default function ReservationDetailPage() {
 							</div>
 						</div>
 						<div className="flex justify-between">
-							<div className="text-gray-500">定金金额</div>
+							<div className="text-gray-500">{
+								data.tag.DepositAmount
+							}</div>
 							<div className="flex justify-end">
 								20,000 원
 							</div>
 						</div>
 						<div className="flex justify-between items-center">
-							<div className="text-gray-500">转账账户</div>
+							<div className="text-gray-500">{
+								data.tag.DepositAccount
+							}</div>
 							<div className="flex flex-col justify-end items-end">
 								<span>정영나(비버네일) 신한</span>
 								<div className="flex items-center gap-1">

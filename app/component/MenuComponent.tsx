@@ -67,9 +67,8 @@ export default function MenuComponent({
 				>
 					<LanguageToggle />
 					<div
-						className={`relative flex flex-col items-center justify-center p-5 ${
-							className || ""
-						} cursor-pointer`}
+						className={`relative flex flex-col items-center justify-center p-5 ${className || ""
+							} cursor-pointer`}
 						onClick={toggleMenu}
 					>
 						<Image
@@ -81,14 +80,12 @@ export default function MenuComponent({
 						<div className="absolute inset-0 flex flex-col items-center justify-center">
 							<div className="flex space-x-2">
 								<div
-									className={`w-1 ${
-										blink ? "h-0" : "h-2"
-									} bg-white rounded-full transition-all duration-100`}
+									className={`w-1 ${blink ? "h-0" : "h-2"
+										} bg-white rounded-full transition-all duration-100`}
 								></div>
 								<div
-									className={`w-1 ${
-										blink ? "h-0" : "h-2"
-									} bg-white rounded-full transition-all duration-100`}
+									className={`w-1 ${blink ? "h-0" : "h-2"
+										} bg-white rounded-full transition-all duration-100`}
 								></div>
 							</div>
 							<span className={`text-white ${coiny.className}`}>
@@ -137,6 +134,14 @@ export default function MenuComponent({
 							>
 								{data.tag.Contact}
 							</a>
+							{isLogin && (
+								<a
+									className="hover:text-gray-300 transition-colors"
+									onClick={() => handleLinkClick("/reservation/history")}
+								>
+									{data.tag.ReservationHistory}
+								</a>
+							)}
 							<div className="flex gap-4 md:gap-14">
 								{!isLogin ? (
 									<div className="flex gap-4 md:gap-14">

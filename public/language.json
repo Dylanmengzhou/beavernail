@@ -17,6 +17,7 @@
 				"page": {
 					"function": {},
 					"tag": {
+						"ReservationHistory": "预约历史",
 						"Home": "首页",
 						"Reservation": "预约",
 						"PriceList": "价格表",
@@ -447,6 +448,8 @@
 							"ReservationCode": "预约编号",
 							"ReservationDate": "日期",
 							"ReservationTime": "时间段",
+							"DepositAmount": "定金金额",
+							"DepositAccount": "转账账户",
 							"ReservationWarning": "您的预约距离开始时间不足24小时，无法取消预约（以韩国时间为准）",
 							"CancelReservation": "取消预约",
 							"CancelReservationConfirm": "确认取消预约",
@@ -477,6 +480,7 @@
 					"function": {},
 					"tag": {
 						"Home": "Home",
+						"ReservationHistory": "Reservation History",
 						"Reservation": "Reservation",
 						"PriceList": "Price List",
 						"AboutUs": "About Us",
@@ -906,6 +910,8 @@
 							"ReservationCode": "Reservation Code",
 							"ReservationDate": "Date",
 							"ReservationTime": "Time Slot",
+							"DepositAmount": "Deposit Amount",
+							"DepositAccount": "Deposit Account",
 							"ReservationWarning": "Your reservation cannot be canceled within 24 hours before the scheduled time (Korean time)",
 							"CancelReservation": "Cancel Reservation",
 							"CancelReservationConfirm": "Confirm Cancellation",
@@ -938,6 +944,7 @@
 					"function": {},
 					"tag": {
 						"Home": "홈",
+						"ReservationHistory": "예약 내역",
 						"Reservation": "예약하기",
 						"PriceList": "가격표",
 						"AboutUs": "샵 소개",
@@ -1359,6 +1366,8 @@
 							"ReservationCode": "예약 번호",
 							"ReservationDate": "날짜",
 							"ReservationTime": "시간대",
+							"DepositAmount": "예약금 금액",
+							"DepositAccount": "예약금 계좌",
 							"ReservationWarning": "예약 시간이 24시간 이내로 남아있어 취소할 수 없습니다 (한국 시간 기준)",
 							"CancelReservation": "예약 취소",
 							"CancelReservationConfirm": "예약 취소 확인",
