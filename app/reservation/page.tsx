@@ -43,6 +43,7 @@ const ReservationPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [artists, setArtists] = useState<{ id: string; name: string; role?: string }[]>([]);
 	const [selectedArtist, setSelectedArtist] = useState<string>("");
+	const [isArtistLoading, setIsArtistLoading] = useState(false);
 
 	const timeSlots = ["10:00", "12:00", "14:00", "16:00", "19:00"];
 
@@ -76,13 +77,25 @@ const ReservationPage = () => {
 	}, []);
 
 	useEffect(() => {
+		setIsArtistLoading(true);
 		fetch("/api/nail-artists")
 			.then(res => res.json())
 			.then(data => {
 				console.log("nail-artists接口返回：", data);
-				setArtists(Array.isArray(data) ? data : []);
-				// 不再默认选中 NaNa，初始值为空
-				setSelectedArtist("");
+				const artistsData = Array.isArray(data) ? data : [];
+				setArtists(artistsData);
+				// 如果只有一个美甲师，自动选择该美甲师
+				if (artistsData.length === 1) {
+					setSelectedArtist(artistsData[0].id);
+				} else {
+					// 有多个美甲师时，初始值为空
+					setSelectedArtist("");
+				}
+				setIsArtistLoading(false);
+			})
+			.catch(err => {
+				console.error("获取美甲师列表失败:", err);
+				setIsArtistLoading(false);
 			});
 	}, []);
 
@@ -263,23 +276,41 @@ const ReservationPage = () => {
 						<Select value={selectedArtist} onValueChange={setSelectedArtist}>
 							<SelectTrigger className="rounded-2xl border-2 border-pink-200 bg-gradient-to-r from-pink-50 via-fuchsia-50 to-pink-100 shadow-lg focus:ring-2 focus:ring-pink-300 text-pink-600 font-bold text-base h-12 px-4 flex items-center justify-between">
 								<User2 className="w-5 h-5 text-pink-400 mr-2" />
-								<SelectValue placeholder={data.tag.PleaseSelectArtist} />
+								{isArtistLoading ? (
+									<div className="flex items-center space-x-1">
+										<div className="w-2 h-2 rounded-full bg-pink-400 animate-pulse" style={{ animationDelay: "0ms", opacity: "0.7" }}></div>
+										<div className="w-2 h-2 rounded-full bg-fuchsia-400 animate-pulse" style={{ animationDelay: "300ms", opacity: "0.8" }}></div>
+										<div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse" style={{ animationDelay: "600ms", opacity: "0.9" }}></div>
+									</div>
+								) : (
+									<SelectValue placeholder={data.tag.PleaseSelectArtist} />
+								)}
 							</SelectTrigger>
 							<SelectContent className="rounded-2xl border-2 border-pink-200 bg-white shadow-2xl animate-in fade-in zoom-in-95">
-								{artists.map(artist => {
-									const roleInfo = roleNameMap[artist.role || "L3"] || roleNameMap["L3"];
-									return (
-										<SelectItem
-											key={artist.id}
-											value={artist.id}
-											className="rounded-xl px-4 py-3 text-base font-semibold text-pink-600 hover:bg-pink-100 hover:text-fuchsia-600 transition-all duration-200 cursor-pointer flex items-center gap-2"
-										>
-											<span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-pink-400 to-fuchsia-400 mr-2"></span>
-											{artist.name}
-											<span className={`ml-2 text-xs rounded-full px-2 py-0.5 ${roleInfo.color}`}>{roleInfo.label[lang === "ko" ? "kr" : lang]}</span>
-										</SelectItem>
-									);
-								})}
+								{isArtistLoading ? (
+									<div className="flex justify-center items-center py-3">
+										<div className="flex items-center space-x-1">
+											<div className="w-2 h-2 rounded-full bg-pink-400 animate-pulse" style={{ animationDelay: "0ms", opacity: "0.7" }}></div>
+											<div className="w-2 h-2 rounded-full bg-fuchsia-400 animate-pulse" style={{ animationDelay: "300ms", opacity: "0.8" }}></div>
+											<div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse" style={{ animationDelay: "600ms", opacity: "0.9" }}></div>
+										</div>
+									</div>
+								) : (
+									artists.map(artist => {
+										const roleInfo = roleNameMap[artist.role || "L3"] || roleNameMap["L3"];
+										return (
+											<SelectItem
+												key={artist.id}
+												value={artist.id}
+												className="rounded-xl px-4 py-3 text-base font-semibold text-pink-600 hover:bg-pink-100 hover:text-fuchsia-600 transition-all duration-200 cursor-pointer flex items-center gap-2"
+											>
+												<span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-pink-400 to-fuchsia-400 mr-2"></span>
+												{artist.name}
+												<span className={`ml-2 text-xs rounded-full px-2 py-0.5 ${roleInfo.color}`}>{roleInfo.label[lang === "ko" ? "kr" : lang]}</span>
+											</SelectItem>
+										);
+									})
+								)}
 							</SelectContent>
 						</Select>
 					</div>
