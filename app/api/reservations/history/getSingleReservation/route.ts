@@ -138,6 +138,11 @@ export async function POST(request: NextRequest) {
 				id: reservationId,
 				userId: user.id, // 确保只能取消自己的预约
 			},
+			include: {
+				nailArtist: {
+					select: { name: true },
+				},
+			},
 		});
 
 		if (!reservation) {
@@ -186,6 +191,8 @@ export async function POST(request: NextRequest) {
 						.toISOString()
 						.split("T")[0],
 					time: reservation.timeSlot,
+					provider: user?.provider,
+					nailArtist: reservation.nailArtist?.name,
 				},
 			}),
 		});

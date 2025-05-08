@@ -23,12 +23,21 @@ export async function POST(req: NextRequest) {
 				name: true,
 				email: true,
 				contactType: true,
+				provider: true,
 			},
 		});
 		const reservation = await prisma.reservation.findUnique({
 			where: {
 				id: reservationId,
 				userId: userId, // 确保只能取消自己的预约
+
+			},
+			include: {
+				nailArtist: {
+					select: {
+						name: true,
+					},
+				},
 			},
 		});
 
@@ -75,6 +84,8 @@ export async function POST(req: NextRequest) {
 						.split("T")[0],
 					time: reservation.timeSlot,
 					contactType: userInfo?.contactType,
+					provider: userInfo?.provider,
+					nailArtist: reservation.nailArtist?.name,
 				},
 			}),
 		});

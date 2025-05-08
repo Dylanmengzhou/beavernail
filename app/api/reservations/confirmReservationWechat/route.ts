@@ -21,6 +21,7 @@ export async function POST(request: Request) {
 				name: true,
 				email: true,
 				contactType: true,
+				provider: true,
 			},
 		});
 
@@ -52,6 +53,13 @@ export async function POST(request: Request) {
 			},
 		});
 
+		const nailArtist = await prisma.nailArtist.findUnique({
+			where: { id: nailArtistId },
+			select: {
+				name: true,
+			},
+		});
+
 		await fetch(process.env.LARK_SUCCESS_URL as string, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -63,6 +71,8 @@ export async function POST(request: Request) {
 					date: date,
 					time: timeSlot,
 					contactType: userInfo?.contactType,
+					provider: userInfo?.provider,
+					nailArtist: nailArtist?.name,
 				},
 			}),
 		});

@@ -51,7 +51,8 @@ export async function POST(request: Request) {
 			select: {
 				name: true,
 				email: true,
-				contactType: true
+				contactType: true,
+				provider: true,
 			},
 		});
 		// 创建新预约
@@ -61,6 +62,13 @@ export async function POST(request: Request) {
 				timeSlot,
 				userId,
 				nailArtistId,
+			},
+		});
+
+		const nailArtist = await prisma.nailArtist.findUnique({
+			where: { id: nailArtistId },
+			select: {
+				name: true,
 			},
 		});
 
@@ -75,6 +83,8 @@ export async function POST(request: Request) {
 					date: date,
 					time: timeSlot,
 					contactType: userInfo?.contactType,
+					provider: userInfo?.provider,
+					nailArtist: nailArtist?.name,
 				},
 			}),
 		});
