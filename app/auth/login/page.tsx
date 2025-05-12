@@ -124,7 +124,7 @@ const LoginPage = () => {
 		<div
 			className={`w-full h-2/3 md:h-full flex items-end justify-center ${zcool.className}`}
 		>
-			<div className="border-none bg-gradient-to-r from-pink-300 to-pink-400 w-full md:w-2/3 h-full md:h-5/6 rounded-b-none rounded-t-full flex flex-col items-center justify-center">
+			<div className="border-none bg-gradient-to-r from-pink-300 to-pink-400 w-full md:w-2/3 h-fit md:h-full rounded-b-none rounded-t-full flex flex-col items-center justify-center">
 				<form
 					onSubmit={handleSubmit}
 					className="w-2/3 flex flex-col justify-between h-full py-10 md:py-12"

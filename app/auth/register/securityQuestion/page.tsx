@@ -124,7 +124,7 @@ const SecurityQuestionPage = () => {
 						<div className="flex">
 							<div className="">{data.tag.AlreadyHaveAnAccount}</div>
 							<div
-								className="ml-1 cursor-pointer hover:underline"
+								className="ml-1 cursor-pointer text-blue-600"
 								onClick={() => handleLinkClick("/auth/login")}
 							>
 								{data.tag.LoginNow}

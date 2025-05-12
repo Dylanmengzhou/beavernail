@@ -191,7 +191,7 @@ const AccountRegisterPage = () => {
 						<div className="flex">
 							<div className="">{data.tag.AlreadyHaveAnAccount}</div>
 							<div
-								className={`ml-1 cursor-pointer hover:underline ${
+								className={`ml-1 cursor-pointer text-blue-600 ${
 									isLoading ? "pointer-events-none opacity-70" : ""
 								}`}
 								onClick={() =>
