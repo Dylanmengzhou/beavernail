@@ -182,7 +182,7 @@ export async function POST(request: NextRequest) {
 			body: JSON.stringify({
 				msg_type: "text",
 				content: {
-					whoCancelled: "用户取消",
+					whoCancelled: "用户",
 					username: user?.name,
 					contactType: user?.contactType,
 					phone: user?.email,

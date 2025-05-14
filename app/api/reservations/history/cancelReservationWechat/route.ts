@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 			body: JSON.stringify({
 				msg_type: "text",
 				content: {
-					whoCancelled: "用户取消",
+					whoCancelled: "用户",
 					username: userInfo?.name,
 					phone: userInfo?.email,
 					reservationId: reservationId,
