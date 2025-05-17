@@ -60,6 +60,7 @@ model Reservation {
   note         String?
   finalPrice   Int?
   currency     String?
+  depositPaid  Boolean?
   nailArtist   NailArtist? @relation(fields: [nailArtistId], references: [id])
   user         User        @relation(fields: [userId], references: [id])
 
