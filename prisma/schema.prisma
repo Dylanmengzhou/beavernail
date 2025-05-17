@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,7 +6,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 
 model User {
   id               String        @id @default(cuid())
@@ -27,9 +23,10 @@ model User {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
   email            String?
-  emailVerified    DateTime?
   provider         String
   contactType      String?
+  altContact       String?
+  altContactType   String?
   accounts         Account[]
   reservations     Reservation[]
 }
@@ -53,23 +50,29 @@ model Account {
 }
 
 model Reservation {
-  id        String   @id @default(cuid())
-  date      DateTime
-  timeSlot  String
-  userId    String
+  id           String      @id @default(cuid())
+  date         DateTime
+  timeSlot     String
+  userId       String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   nailArtistId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  note         String?
+  finalPrice   Int?
+  currency     String?
   nailArtist   NailArtist? @relation(fields: [nailArtistId], references: [id])
+  user         User        @relation(fields: [userId], references: [id])
 
   @@unique([date, timeSlot, nailArtistId])
 }
 
 model NailArtist {
-  id   String @id @default(cuid())
-  name String @unique
-  role String @default("L6")
+  id           String        @id @default(cuid())
+  name         String        @unique
+  role         String        @default("L6")
+  account      String?
+  password     String?
+  membertype   String?
   reservations Reservation[]
 }
 
