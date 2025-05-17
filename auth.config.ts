@@ -19,7 +19,6 @@ export default {
 					id: profile.sub,
 					name: profile.name,
 					image: profile.picture,
-					emailVerified: new Date(),
 					username: profile.sub.toString(), // 将 name 赋值给 username
 					provider: "google", // 标记为 Google 登录
 				};
