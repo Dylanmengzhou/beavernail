@@ -53,6 +53,7 @@ export async function POST(request: Request) {
         email: true,
         contactType: true,
         provider: true,
+        membershipType: true,
       },
     });
     // 创建新预约
@@ -62,6 +63,7 @@ export async function POST(request: Request) {
         timeSlot,
         userId,
         nailArtistId,
+        currentMemberShip: userInfo?.membershipType,
       },
     });
 

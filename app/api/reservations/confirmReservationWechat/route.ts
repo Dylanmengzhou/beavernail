@@ -22,6 +22,7 @@ export async function POST(request: Request) {
         email: true,
         contactType: true,
         provider: true,
+        membershipType: true,
       },
     });
 
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
         timeSlot,
         userId,
         nailArtistId,
+        currentMemberShip: userInfo?.membershipType,
       },
     });
 
