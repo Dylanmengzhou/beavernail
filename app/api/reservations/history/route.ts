@@ -59,7 +59,7 @@ export async function GET(request: Request) {
       skip,
       take: limit,
       orderBy: {
-        date: "asc",
+        date: "desc",
       },
       include: {
         user: {
@@ -87,6 +87,9 @@ export async function GET(request: Request) {
         timeSlot: reservation.timeSlot,
         status: isUpcoming ? "upcoming" : "completed",
         nailArtistName: reservation.nailArtist?.name || "",
+        finalPrice: reservation.finalPrice,
+        paymentMethod: reservation.paymentMethod,
+        currentMemberShip: reservation.currentMemberShip,
       };
     });
 

@@ -33,8 +33,19 @@ export async function GET(request: NextRequest) {
     const reservationsCount = await prisma.reservation.count({
       where: { userId: user.id },
     });
-
-    return NextResponse.json({ count: reservationsCount });
+    const remainBalance: { balance: string }[] = await prisma.$queryRaw`
+      SELECT 
+        GREATEST(u."balance" - COALESCE((
+          SELECT SUM(r2."finalPrice")
+          FROM "Reservation" r2
+          WHERE r2."userId" = u.id 
+          AND r2."paymentMethod" = 'memberCard'
+          AND r2."finalPrice" IS NOT NULL
+        ), 0), 0) AS "balance"
+      FROM "User" u
+      WHERE id = ${user.id}
+    `
+    return NextResponse.json({ count: reservationsCount, remainBalance: Number(remainBalance[0].balance) });
   } catch (error) {
     console.error("获取预约次数时出错:", error);
     return NextResponse.json(
