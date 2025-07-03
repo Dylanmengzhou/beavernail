@@ -204,7 +204,7 @@ const HistoryPage = () => {
           </div>
 
           {/* 移动端内容 */}
-          <div className="block md:hidden h-[600px]">
+          <div className="block md:hidden h-[400px]">
             <TabsContent value="all" className="mt-0 h-full">
               {loading ? (
                 <div className="flex items-center justify-center h-full bg-gradient-to-br from-white to-pink-50/30 rounded-2xl shadow-xl border border-pink-100/50">
@@ -351,9 +351,6 @@ const ReservationTable = ({
               👤 用户类型
             </TableHead>
             <TableHead className="font-bold text-pink-800">
-              💰 最终价格
-            </TableHead>
-            <TableHead className="font-bold text-pink-800">
               💳 支付方式
             </TableHead>
           </TableRow>
@@ -399,13 +396,7 @@ const ReservationTable = ({
                   }
                 </Badge>
               </TableCell>
-              <TableCell>
-                <span className="font-bold text-green-600">
-                  {reservation.finalPrice
-                    ? reservation.finalPrice.toLocaleString("ko-KR") + " 원"
-                    : "-"}
-                </span>
-              </TableCell>
+        
               <TableCell>
                 {reservation.paymentMethod
                   ? paymentMethodMap[
@@ -538,16 +529,18 @@ const ReservationCards = ({
                 </span>
               </div>
 
-              <div className="flex justify-between items-center py-2 px-3  rounded-xl">
-                <span className="text-gray-600 font-medium flex items-center gap-2">
-                  💰 最终价格
-                </span>
-                <span className="font-bold text-green-600 text-lg">
-                  {reservation.finalPrice
-                    ? reservation.finalPrice.toLocaleString("ko-KR") + " 원"
-                    : "-"}
-                </span>
-              </div>
+             {reservation.currentMemberShip==="vip"&&(
+               <div className="flex justify-between items-center py-2 px-3  rounded-xl">
+               <span className="text-gray-600 font-medium flex items-center gap-2">
+                 💰 最终价格
+               </span>
+               <span className="font-bold text-green-600 text-lg">
+                 {reservation.finalPrice
+                   ? reservation.finalPrice.toLocaleString("ko-KR") + " 원"
+                   : "-"}
+               </span>
+             </div>
+             )}
 
               <div className="flex justify-between items-center py-2 px-3  rounded-xl">
                 <span className="text-gray-600 font-medium flex items-center gap-2">

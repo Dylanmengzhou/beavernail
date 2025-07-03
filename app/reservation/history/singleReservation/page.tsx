@@ -212,7 +212,9 @@ export default function ReservationDetailPage() {
 
   if (!reservation) {
     return (
-      <div className={`w-full h-full flex items-center justify-center ${zcool.className}`}>
+      <div
+        className={`w-full h-full flex items-center justify-center ${zcool.className}`}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="bg-white border-2 border-black p-6 text-center">
             <p className="text-gray-500 mb-4">{data.tag.ReservationNotExist}</p>
@@ -235,9 +237,9 @@ export default function ReservationDetailPage() {
   return (
     <div className={`w-10/12 h-full  ${zcool.className}`}>
       {/* 发票样式容器 */}
-      <div className="bg-white shadow-lg border-2 border-black overflow-hidden font-mono max-w-4xl mx-auto">
+      <div className="bg-white shadow-2xl border-0  overflow-hidden font-mono max-w-4xl mx-auto">
         {/* 复古发票头部 */}
-        <div className="bg-white border-b-4 border-black p-6">
+        <div className="bg-white p-6">
           <div className="text-center mb-4">
             <div className="border-2 border-black p-4 inline-block">
               <h2 className="text-3xl font-bold tracking-widest mb-1">
@@ -266,8 +268,8 @@ export default function ReservationDetailPage() {
         </div>
 
         {/* 客户信息 */}
-        <div className="p-6 border-b-2 border-black bg-white">
-          <div className="grid grid-cols-2 gap-8">
+        <div className="p-6  bg-white">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <h3 className="font-bold text-sm mb-2 border-b border-black pb-1">
                 CUSTOMER INFO
@@ -275,25 +277,46 @@ export default function ReservationDetailPage() {
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span>TYPE:</span>
-                  <span className={`font-bold ${reservation.currentMemberShip === "vip" ? " text-amber-400" : ""}`}>
-                    {membershipMap[reservation.currentMemberShip as keyof typeof membershipMap]}
+                  <span
+                    className={`font-bold ${
+                      reservation.currentMemberShip === "vip"
+                        ? " text-amber-400"
+                        : ""
+                    }`}
+                  >
+                    {
+                      membershipMap[
+                        reservation.currentMemberShip as keyof typeof membershipMap
+                      ]
+                    }
                   </span>
                 </div>
-                {reservation.currentMemberShip==="vip" && (
+                {reservation.currentMemberShip === "vip" && (
                   <>
-				  <div className="flex justify-between">
-                    <span>余额:</span>
-                    <span className="font-bold">
-                      {reservation.currentBalance?.toLocaleString("ko-KR")}원
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>-结余后: </span>
-                    <span className={`font-bold text-sm ${reservation.finalPrice?"":"text-red-500"}`}>
-						{reservation.finalPrice && reservation.currentBalance?((reservation.currentBalance-reservation.finalPrice)?.toLocaleString("ko-KR")+"원"):("未确认")}
-                    </span>
-                  </div>
-				  </>
+                    <div className="flex justify-between">
+                      <span>余额:</span>
+                      <span className="font-bold">
+                        {reservation.currentBalance?.toLocaleString("ko-KR")}원
+                      </span>
+                    </div>
+                    {reservation.paymentMethod === "memberCard" && (
+                      <div className="flex justify-between">
+                        <span>结后: </span>
+                        <span
+                          className={`font-bold text-sm ${
+                            reservation.finalPrice ? "" : "text-red-500"
+                          }`}
+                        >
+                          {reservation.finalPrice && reservation.currentBalance
+                            ? (
+                                reservation.currentBalance -
+                                reservation.finalPrice
+                              )?.toLocaleString("ko-KR") + "원"
+                            : "未确认"}
+                        </span>
+                      </div>
+                    )}
+                  </>
                 )}
                 <div className="flex justify-between">
                   <span>STATUS:</span>
@@ -313,14 +336,14 @@ export default function ReservationDetailPage() {
               </h3>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span>ISSUED:</span>
-                  <span className="font-mono">
+                  <span>发行:</span>
+                  <span className="font-mono text-xs flex items-center">
                     {format(new Date(), "yyyy/MM/dd")}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>SERVICE:</span>
-                  <span className="font-mono">
+                  <span>服务:</span>
+                  <span className="font-mono text-xs flex items-center">
                     {format(reservation.date, "yyyy/MM/dd")}
                   </span>
                 </div>
@@ -341,21 +364,24 @@ export default function ReservationDetailPage() {
               {/* 表头 */}
               <thead>
                 <tr className="bg-black text-white text-xs font-bold">
-                  <th className="p-2 text-center border-r border-white w-12">
-                    QTY
+                  <th
+                    className={`p-2 border-r  ${
+                      reservation.currentMemberShip === "vip"
+                        ? "border-white"
+                        : "border-black"
+                    }`}
+                  >
+                    DESCRIPTION
                   </th>
-                  <th className="p-2 border-r border-white">DESCRIPTION</th>
-                  <th className="p-2 text-center border-r border-white w-20">
-                    UNIT
-                  </th>
-                  <th className="p-2 text-center w-24">AMOUNT</th>
+                  {reservation.currentMemberShip === "vip" && (
+                    <th className="p-2 text-center">AMOUNT</th>
+                  )}
                 </tr>
               </thead>
 
               <tbody>
                 {/* 服务项目 */}
                 <tr className="border-b border-black text-sm">
-                  <td className="p-2 text-center border-r border-black">1</td>
                   <td className="p-2 border-r border-black">
                     <div className="font-bold">NAIL ART SERVICE</div>
                     <div className="text-xs text-gray-600">
@@ -368,60 +394,35 @@ export default function ReservationDetailPage() {
                       </div>
                     )}
                   </td>
-                  <td className="p-2 text-center border-r border-black">
-                    SERVICE
-                  </td>
-                  <td className={`p-2 text-center font-mono ${reservation.finalPrice?"":"text-red-500"}`}>
-                    {reservation.finalPrice
-                      ? formatPrice(reservation.finalPrice)
-                      : "未确认"}
-                  </td>
+                  {reservation.currentMemberShip === "vip" && (
+                    <>
+                      <td
+                        className={`p-2 text-center font-mono text-xs ${
+                          reservation.finalPrice ? "" : "text-red-500"
+                        }`}
+                      >
+                        {reservation.finalPrice
+                          ? formatPrice(reservation.finalPrice) + " 원"
+                          : "未确认"}
+                      </td>
+                    </>
+                  )}
                 </tr>
 
                 {/* 押金项目 */}
                 <tr className="border-b border-black text-sm">
-                  <td className="p-2 text-center border-r border-black">1</td>
                   <td className="p-2 border-r border-black">
                     <div className="font-bold">RESERVATION DEPOSIT</div>
                     <div className="text-xs text-gray-600">ADVANCE PAYMENT</div>
                   </td>
-                  <td className="p-2 text-center border-r border-black">
-                    定金
-                  </td>
-                  <td className="p-2 text-center font-mono">20,000</td>
+                  {reservation.currentMemberShip === "vip" && (
+                    <td className="p-2 text-center font-mono text-xs">
+                      20,000 원
+                    </td>
+                  )}
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          {/* 总计区域 */}
-          <div className="mt-4 border-2 border-black">
-            <div className="bg-black text-white p-2">
-              <div className="flex justify-between text-sm font-bold">
-                <div>PAYMENT SUMMARY</div>
-                <div>AMOUNT (KRW)</div>
-              </div>
-            </div>
-            <div className="p-4 space-y-2">
-              <div className="flex justify-between text-sm border-b border-gray-300 pb-1">
-                <span>SERVICE TOTAL:</span>
-                <span className="font-mono">
-                  {reservation.finalPrice
-                    ? formatPrice(reservation.finalPrice)
-                    : "0"}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm border-b border-gray-300 pb-1">
-                <span>DEPOSIT PAID:</span>
-                <span className="font-mono">20,000</span>
-              </div>
-              <div className="flex justify-between text-lg font-bold border-t-2 border-black pt-2">
-                <span>到店应付:</span>
-                <span className={`font-mono ${reservation.finalPrice?"":"text-red-500"}`}>
-                  {reservation.finalPrice?formatPrice(reservation.finalPrice - 20000):"未确认"}
-                </span>
-              </div>
-            </div>
           </div>
 
           {/* 支付信息 */}
@@ -473,7 +474,7 @@ export default function ReservationDetailPage() {
         </div>
 
         {/* 复古发票底部 */}
-        <div className="bg-white border-t-4 border-black p-6">
+        <div className="bg-white p-6">
           <div className="text-center text-xs mb-4 border-2 border-black p-3">
             <div className="font-bold mb-2">THANK YOU FOR YOUR BUSINESS</div>
             <div className="space-y-1">
