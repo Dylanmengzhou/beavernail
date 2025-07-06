@@ -6,6 +6,7 @@ import { Button } from "./button";
 import { Input } from "./input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface OCRResult {
   success: boolean;
@@ -120,7 +121,7 @@ export function ImageUpload({
         return true;
       } else {
         console.error("预约更新失败:", result.error);
-        toast.error("预约信息更新失败",{
+        toast.error("预约信息更新失败", {
           duration: 1500,
           position: "top-center",
         });
@@ -128,7 +129,7 @@ export function ImageUpload({
       }
     } catch (error) {
       console.error("预约更新错误:", error);
-      toast.error("预约信息更新失败",{
+      toast.error("预约信息更新失败", {
         duration: 1500,
         position: "top-center",
       });
@@ -183,7 +184,7 @@ export function ImageUpload({
 
       // 检查图片是否符合要求
       if (!ocrResult.analysis?.isValidImage) {
-        toast.error("图片不符合要求，请上传包含金额或名字的图片",{
+        toast.error("图片不符合要求，请上传包含金额或名字的图片", {
           duration: 1500,
           position: "top-center",
         });
@@ -195,7 +196,7 @@ export function ImageUpload({
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("/api/upload-image-simple", {
+      const response = await fetch("/api/upload-image-to-picbed", {
         method: "POST",
         body: formData,
       });
@@ -210,7 +211,7 @@ export function ImageUpload({
         );
 
         if (reservationUpdateSuccess) {
-          toast.success("上传成功！",{
+          toast.success("上传成功！", {
             duration: 1500,
             position: "top-center",
           });
@@ -219,12 +220,14 @@ export function ImageUpload({
           // 如果有reservationId，跳转到历史页面
           if (reservationId) {
             setTimeout(() => {
-              router.push(`/reservation/history/singleReservation?reservationId=${reservationId}`);
+              router.push(
+                `/reservation/history/singleReservation?reservationId=${reservationId}`
+              );
             }, 1500); // 1.5秒后跳转，让用户看到成功提示
           }
         }
       } else {
-        toast.error("上传失败，请重试",{
+        toast.error("上传失败，请重试", {
           duration: 1500,
           position: "top-center",
         });
@@ -232,7 +235,7 @@ export function ImageUpload({
       }
     } catch (error) {
       console.error("上传错误:", error);
-      toast.error("上传失败，请重试",{
+      toast.error("上传失败，请重试", {
         duration: 1500,
         position: "top-center",
       });
@@ -270,10 +273,12 @@ export function ImageUpload({
       >
         {previewUrl ? (
           <div className="space-y-3">
-            <img
+            <Image
               src={previewUrl}
               alt="预览"
               className="max-h-48 mx-auto rounded-lg shadow-md object-contain"
+              width={100}
+              height={100}
             />
             <div className="text-sm text-gray-600">
               <p>文件名: {file?.name.slice(-10)}</p>
