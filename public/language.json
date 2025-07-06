@@ -1,4 +1,4 @@
-{
+	{
 	"zh": {
 		"page": {
 			"function": {},
@@ -373,17 +373,18 @@
 						"Rereserve": "重新预约",
 						"ReservedSuccessfully": "预约成功！",
 						"ReservationCode": "预约编号",
+						"NailArtist": "美甲师",
 						"Loading": "加载中...",
 						"Copy": "复制",
 						"DepositAmount": "订金金额：",
-						"DepositAccount": "订金转账账户:",
+						"DepositAccount": "订金账号:",
 						"AccountAlreadyCopied": "账户已复制到剪贴板",
 						"CopyAccountError": "复制失败，请重试",
 						"ReservationDate": "预约日期：",
 						"ReservationTime": "预约时间：",
 						"Attention": "注意",
 						"AttentionA": {
-							"a": "联系客服",
+							"a": "上传转账截图或者联系客服",
 							"b": "，发送",
 							"c": "订单编号",
 							"d": "与",
@@ -408,7 +409,8 @@
 							"c": "无联系者，视为默认放弃预约，定金不予退还。"
 						},
 						"LoadingInfo": "加载预约信息中...",
-						"Contact": "联系客服"
+						"Contact": "联系客服",
+						"UploadImage": "上传转账截图"
 					}
 				}
 			},
@@ -832,6 +834,7 @@
 						"CopyReservationCodeFirst": "Please copy the reservation code first, then contact customer service~"
 					},
 					"tag": {
+						"NailArtist": "Nail Artist",
 						"CannotLoadReservationInfo": "Unable to load reservation information",
 						"Reason": "Possibly because you haven't completed the reservation or the session has expired",
 						"BackToMain": "Back to Home",
@@ -848,7 +851,7 @@
 						"ReservationTime": "Reservation Time:",
 						"Attention": "Attention",
 						"AttentionA": {
-							"a": "Contact customer service",
+							"a": "Upload the transfer screenshot or Contact customer service",
 							"b": ", send your ",
 							"c": "reservation code",
 							"d": " and ",
@@ -873,7 +876,8 @@
 							"c": " without contact will be considered canceled, and the deposit will not be refunded."
 						},
 						"LoadingInfo": "Loading reservation information...",
-						"Contact": "Contact Customer Service"
+						"Contact": "Customer Service",
+						"UploadImage": "Upload Transfer Photo"
 					}
 				}
 			},
@@ -1291,6 +1295,7 @@
 						"CopyReservationCodeFirst": "예약 번호를 먼저 복사하신 후 고객센터에 문의해주세요~"
 					},
 					"tag": {
+						"NailArtist": "네일리스트",
 						"CannotLoadReservationInfo": "예약 정보를 불러올 수 없습니다",
 						"Reason": "아직 예약을 완료하지 않으셨거나 세션이 만료된 경우일 수 있습니다",
 						"BackToMain": "홈으로 돌아가기",
@@ -1307,7 +1312,7 @@
 						"ReservationTime": "예약 시간:",
 						"Attention": "안내사항",
 						"AttentionA": {
-							"a": "고객센터에 문의하여",
+							"a": "전송 스크린샷을 업로드하거나 고객 서비스에 연락하십시오.",
 							"b": " ",
 							"c": "예약 번호",
 							"d": "와 ",
@@ -1332,7 +1337,8 @@
 							"c": " 지각 시 예약이 취소되며 예약금은 환불되지 않습니다."
 						},
 						"LoadingInfo": "예약 정보를 로딩 중입니다...",
-						"Contact": "고객센터 문의하기"
+						"Contact": "고객센터 문의하기",
+						"UploadImage": "송금 캡처 이미지 업로드"
 					}
 				}
 			},

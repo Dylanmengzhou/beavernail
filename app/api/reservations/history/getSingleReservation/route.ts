@@ -68,6 +68,8 @@ export async function GET(request: NextRequest) {
       paymentMethod: string;
       currentMemberShip: string;
       balance: number;
+      depositPaid: boolean;
+      uploadImage: string;
     }[] = await prisma.$queryRaw`
 	SELECT
 				r.id AS "reservationId",
@@ -86,6 +88,7 @@ export async function GET(request: NextRequest) {
 				r."finalPrice",
 				r."currency",
 				r."depositPaid",
+        r."uploadImage",
 				u."membershipType",
         r."paymentMethod",
         r."currentMemberShip",
@@ -130,7 +133,10 @@ export async function GET(request: NextRequest) {
       paymentMethod: reservation.paymentMethod,
       currentMemberShip: reservation.currentMemberShip,
       currentBalance: reservation.balance ? Number(reservation.balance) : 0,
+      depositPaid: reservation.depositPaid,
+      depositImage: reservation.uploadImage,
     };
+    console.log(formattedReservation);
 
     return NextResponse.json(formattedReservation);
   } catch (error) {

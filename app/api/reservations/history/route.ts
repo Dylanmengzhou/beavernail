@@ -90,6 +90,7 @@ export async function GET(request: Request) {
         finalPrice: reservation.finalPrice,
         paymentMethod: reservation.paymentMethod,
         currentMemberShip: reservation.currentMemberShip,
+        depositPaid: reservation.depositPaid,
       };
     });
 

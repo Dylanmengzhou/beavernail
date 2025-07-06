@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { format, addHours, isBefore, subHours } from "date-fns";
 import { Loader2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
-
 import { Button } from "@/components/ui/button";
+import { ImageViewer } from "@/components/ui/image-viewer";
 import {
   Dialog,
   DialogContent,
@@ -31,6 +31,8 @@ type Reservation = {
   paymentMethod?: string;
   currentMemberShip?: string;
   currentBalance?: number;
+  depositPaid?: boolean;
+  depositImage?: string;
 };
 
 export default function ReservationDetailPage() {
@@ -394,19 +396,13 @@ export default function ReservationDetailPage() {
                       </div>
                     )}
                   </td>
-                  {reservation.currentMemberShip === "vip" && (
-                    <>
-                      <td
-                        className={`p-2 text-center font-mono text-xs ${
-                          reservation.finalPrice ? "" : "text-red-500"
-                        }`}
-                      >
-                        {reservation.finalPrice
-                          ? formatPrice(reservation.finalPrice) + " 원"
-                          : "未确认"}
-                      </td>
-                    </>
-                  )}
+                  <td
+                    className={`p-2 text-center font-mono text-xs`}
+                  >
+                    {reservation.finalPrice
+                      ? formatPrice(reservation.finalPrice) + " 원"
+                      : "面议"}
+                  </td>
                 </tr>
 
                 {/* 押金项目 */}
@@ -415,12 +411,40 @@ export default function ReservationDetailPage() {
                     <div className="font-bold">RESERVATION DEPOSIT</div>
                     <div className="text-xs text-gray-600">ADVANCE PAYMENT</div>
                   </td>
-                  {reservation.currentMemberShip === "vip" && (
-                    <td className="p-2 text-center font-mono text-xs">
-                      20,000 원
-                    </td>
-                  )}
+                  <td className="p-2 text-center font-mono text-xs">
+                    20,000원 {reservation.depositPaid ? "(已支付)" : "(未支付)"}
+                  </td>
                 </tr>
+                {/* 押金上传截图 */}
+                {reservation.depositPaid && reservation.depositImage && (
+                  <tr className="border-b border-black text-sm">
+                    <td className="p-2 border-r border-black">
+                      <div className="font-bold">DEPOSIT IMAGE</div>
+                      <div className="text-xs text-gray-600">UPLOAD IMAGE</div>
+                      <div className="text-xs text-gray-600 mt-2">
+                        <Button
+                          className="text-white px-1! w-full md:w-fit"
+                          onClick={() =>
+                            router.push(
+                              `/reservation/confirmation/uploadImage?reservationId=${reservationId}`
+                            )
+                          }
+                        >
+                          更改截图
+                        </Button>
+                      </div>
+                    </td>
+                    <td className="p-2  font-mono text-xs flex items-center justify-center">
+                      <ImageViewer
+                        src={decodeURIComponent(reservation.depositImage || "")}
+                        alt="押金截图"
+                        width={100}
+                        height={100}
+                        style={{ objectFit: "cover" }}
+                      />
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

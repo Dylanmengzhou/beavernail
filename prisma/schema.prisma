@@ -62,6 +62,8 @@ model Reservation {
   note          String?
   currentMemberShip String?
   paymentMethod String?     @default("cash")
+  uploadImage   String?
+  ocrResult     Boolean?
   finalPrice    Int?
   currency      String?
   depositPaid   Boolean?

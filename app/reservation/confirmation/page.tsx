@@ -195,13 +195,13 @@ export default function ConfirmationPage() {
 		<div className="flex flex-col items-center justify-center h-full p-4">
 			<Card className="w-full max-w-md shadow-xl border-none pt-0 ">
 				<CardHeader
-					className={`bg-green-100 text-center rounded-t-xl py-4 ${zcool.className}`}
+					className={`bg-green-100 text-center rounded-t-xl py-2 ${zcool.className}`}
 				>
-					<CardTitle className="text-2xl text-green-800">
+					<CardTitle className="text-xl text-green-800">
 						{data.tag.ReservedSuccessfully}
 					</CardTitle>
 				</CardHeader>
-				<CardContent className="pt-6 text-center">
+				<CardContent className=" text-center">
 					{reservation ? (
 						<div className="space-y-4">
 							<div className="flex justify-between items-center">
@@ -235,7 +235,7 @@ export default function ConfirmationPage() {
 							</div>
 							{reservation?.nailArtistName && (
 								<div className="flex justify-between">
-									<span className="font-medium">美甲师：</span>
+									<span className="font-medium">{data.tag.NailArtist}:</span>
 									<span>{reservation.nailArtistName}</span>
 								</div>
 							)}
@@ -249,14 +249,12 @@ export default function ConfirmationPage() {
 								<span className="font-medium flex justify-center items-center">
 									{data.tag.DepositAccount}
 								</span>
-								<div className="flex flex-col">
-									<span className=" text-end">
+								<div className="flex gap-2">
+									<span className=" text-end text-xs flex justify-end items-center">
 										정영나(비버네일) 신한
 									</span>
-									<span className="flex justify-center item-center gap-2">
-										<span className="flex justify-center items-center">
-											110-***-652515
-										</span>
+									<span className="flex justify-end item-center gap-2">
+
 										<Button
 											variant="outline"
 											size="sm"
@@ -320,13 +318,13 @@ export default function ConfirmationPage() {
 								<span>{reservation.timeSlot}</span>
 							</div>
 							<div className="bg-yellow-50 p-2 rounded-md mt-4">
-								<p className="text-yellow-800 text-sm text-center font-medium">
+								<p className="text-yellow-800 text-sm text-center font-medium mb-2">
 									{data.tag.Attention}
 								</p>
-								<ul className="text-yellow-800 text-sm list-inside space-y-1">
+								<ul className="text-yellow-800 text-sm list-inside space-y-2">
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
-										<span>
+										<span className="text-left">
 											<strong className="font-bold text-red-400">
 												{data.tag.AttentionA.a}
 											</strong>
@@ -341,9 +339,9 @@ export default function ConfirmationPage() {
 											.
 										</span>
 									</li>
-									<li className="flex items-start">
+									<li className="flex items-start ">
 										<span className="mr-2">•</span>
-										<span>
+										<span className="text-left">
 											{data.tag.AttentionB.a}
 											<strong className="font-bold text-red-400">
 												{data.tag.AttentionB.b}
@@ -353,7 +351,7 @@ export default function ConfirmationPage() {
 									</li>
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
-										<span>
+										<span className="text-left">
 											<strong className="font-bold text-red-400">
 												{data.tag.AttentionC.a}
 											</strong>
@@ -367,7 +365,7 @@ export default function ConfirmationPage() {
 									</li>
 									<li className="flex items-start">
 										<span className="mr-2">•</span>
-										<span>
+										<span className="text-left">
 											{data.tag.AttentionD.a}
 											<strong className="font-bold text-red-400">
 												{data.tag.AttentionD.b}
@@ -394,10 +392,17 @@ export default function ConfirmationPage() {
 					</Button> */}
 					<Button
 						onClick={handleContactClick}
-						className="bg-pink-500 hover:bg-pink-600"
+						className="bg-pink-500 hover:bg-pink-600 text-xs"
 						disabled={isLoading}
 					>
 						{data.tag.Contact}
+					</Button>
+					<Button
+						onClick={() => router.push(`/reservation/confirmation/uploadImage?reservationId=${reservation?.id}`)}
+						className="bg-pink-500 hover:bg-pink-600 text-xs" 
+						disabled={isLoading}
+					>
+						{data.tag.UploadImage}
 					</Button>
 				</CardFooter>
 			</Card>

@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import { ZCOOL_KuaiLe } from "next/font/google";
 import languageData from "@/public/language.json";
 import { useLanguageStore } from "@/store/languageStore";
+import { Button } from "@/components/ui/button";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 
 // 预约数据类型
@@ -39,6 +40,7 @@ type Reservation = {
   finalPrice?: number;
   paymentMethod?: string;
   currentMemberShip?: string;
+  depositPaid?: boolean;
 };
 
 // API返回的预约数据类型
@@ -353,13 +355,18 @@ const ReservationTable = ({
             <TableHead className="font-bold text-pink-800">
               💳 支付方式
             </TableHead>
+            <TableHead className="font-bold text-pink-800">
+              💰 押金支付状态
+            </TableHead>
+            <TableHead className="font-bold text-pink-800">
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {reservations.map((reservation) => (
             <TableRow
               key={reservation.id}
-              onClick={() => handleRowClick(reservation.id)}
+              
               className="cursor-pointer hover:bg-gradient-to-r hover:from-pink-50 hover:to-pink-100/50 transition-all duration-200 border-b border-pink-100/30"
             >
               <TableCell>#{reservation.id.substring(0, 8)}</TableCell>
@@ -403,6 +410,21 @@ const ReservationTable = ({
                       reservation.paymentMethod as keyof typeof paymentMethodMap
                     ]
                   : "-"}
+              </TableCell>
+              <TableCell className="flex items-center gap-2 justify-center">
+                <div className={`font-semibold text-gray-800 ${
+                    reservation.depositPaid ? "text-green-600" : "text-red-600"
+                  }`}>
+                  {reservation.depositPaid ? "已支付" : "未支付"}
+                </div>
+                {!reservation.depositPaid && (
+                  <Button  className="text-white p-1!" onClick={() => router.push(`/reservation/confirmation/uploadImage?reservationId=${reservation.id}`)}>
+                    上传截图
+                  </Button>
+                )}
+              </TableCell>
+              <TableCell className="text-gray-500/40 text-sm cursor-pointer " onClick={() => handleRowClick(reservation.id)}>
+                点击查看详情
               </TableCell>
             </TableRow>
           ))}
@@ -461,7 +483,7 @@ const ReservationCards = ({
         <Card
           key={reservation.id}
           className="pb-0 bg-gradient-to-br from-white to-pink-50/30 rounded-2xl shadow-xl hover:shadow-2xl cursor-pointer border border-pink-100/50 transition-all duration-300 hover:scale-[1.02] hover:border-pink-200"
-          onClick={() => handleCardClick(reservation.id)}
+          
         >
           <CardContent className="p-5 pb-2 flex flex-col gap-3">
             {/* 头部 - 预约编号和状态 */}
@@ -554,12 +576,31 @@ const ReservationCards = ({
                     : "-"}
                 </span>
               </div>
+              <div className="flex justify-between items-center py-2 px-3  rounded-xl">
+                <span className="text-gray-600 font-medium flex items-center gap-2">
+                  � 押金支付状态
+                </span>
+                <span className={`font-semibold text-gray-800 ${
+                    reservation.depositPaid ? "text-green-600" : "text-red-600"
+                  }`}>
+                  {reservation.depositPaid ? "已支付" : "未支付"}
+                  
+                </span>
+              </div>
+              <div className="flex justify-center items-center py-2 px-3  rounded-xl">
+                {!reservation.depositPaid && (
+                    <Button  className="text-white" onClick={() => router.push(`/reservation/confirmation/uploadImage?reservationId=${reservation.id}`)}>
+                      上传截图
+                    </Button>
+                  )}
+              </div>
+
             </div>
 
             {/* 底部装饰 */}
             <div className="mt-2 flex flex-col w-full items-center justify-center gap-2">
               <div className="w-8/12 h-1 bg-gradient-to-r from-pink-300 to-pink-400 rounded-full"></div>
-              <div className="text-gray-500/40 text-sm">点击查看详情</div>
+              <div className="text-gray-500/40 text-sm" onClick={() => handleCardClick(reservation.id)}>点击查看详情</div>
             </div>
           </CardContent>
         </Card>
