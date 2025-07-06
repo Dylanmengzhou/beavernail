@@ -375,9 +375,8 @@ export default function ReservationDetailPage() {
                   >
                     DESCRIPTION
                   </th>
-                  {reservation.currentMemberShip === "vip" && (
-                    <th className="p-2 text-center">AMOUNT</th>
-                  )}
+
+                  <th className="p-2 text-center">AMOUNT</th>
                 </tr>
               </thead>
 
@@ -396,9 +395,7 @@ export default function ReservationDetailPage() {
                       </div>
                     )}
                   </td>
-                  <td
-                    className={`p-2 text-center font-mono text-xs`}
-                  >
+                  <td className={`p-2 text-center font-mono text-xs`}>
                     {reservation.finalPrice
                       ? formatPrice(reservation.finalPrice) + " 원"
                       : "面议"}
