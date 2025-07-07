@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["tesseract.js"],
-  },
+  serverExternalPackages: ["tesseract.js"],
   images: {
     remotePatterns: [
       {
