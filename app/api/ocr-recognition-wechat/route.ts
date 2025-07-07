@@ -21,9 +21,12 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // 创建Tesseract worker
+    // 创建Tesseract worker - 使用CDN配置
     const worker = await createWorker("chi_sim+kor+eng", 1, {
-    //   workerPath: "./node_modules/tesseract.js/src/worker-script/node/index.js",
+      workerPath: `https://unpkg.com/tesseract.js@6.0.1/dist/worker.min.js`,
+      langPath: `https://tessdata.projectnaptha.com/4.0.0`,
+      corePath: `https://unpkg.com/tesseract.js-core@6.0.1/tesseract-core-simd.wasm.js`,
+      logger: (m) => console.log(m),
     });
 
     try {
