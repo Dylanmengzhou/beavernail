@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     // 创建Tesseract worker
     const worker = await createWorker("chi_sim+kor+eng", 1, {
-      workerPath: "./node_modules/tesseract.js/src/worker-script/node/index.js",
+    //   workerPath: "./node_modules/tesseract.js/src/worker-script/node/index.js",
     });
 
     try {
