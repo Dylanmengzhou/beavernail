@@ -21,11 +21,17 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // 创建Tesseract worker - 使用本地文件配置
+    // 动态获取域名
+    const host = request.headers.get("host") || "localhost:3000";
+    const protocol = request.headers.get("x-forwarded-proto") || "http";
+    const baseUrl = `${protocol}://${host}`;
+
+    // 创建Tesseract worker - 使用混合配置
     const worker = await createWorker("chi_sim+kor+eng", 1, {
-      workerPath: "/tesseract/worker.min.js",
-      langPath: "/tesseract",
-      corePath: "/tesseract/tesseract-core-simd.wasm.js",
+      workerPath: `${baseUrl}/tesseract/worker.min.js`,
+      langPath: `${baseUrl}/tesseract`,
+      corePath:
+        "https://unpkg.com/tesseract.js-core@6.0.1/tesseract-core-simd.wasm.js",
       logger: (m) => console.log(m),
     });
 
