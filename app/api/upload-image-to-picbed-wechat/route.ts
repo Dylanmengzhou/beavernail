@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
       },
       data: {
         uploadImage: "https://telegraph-image-czf.pages.dev" + result[0].src,
-        depositPaid: true,
       },
     });
     console.log("result[0].src", result[0].src);
