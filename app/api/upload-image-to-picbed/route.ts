@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const updatedReservation = await prisma.reservation.update({
+    await prisma.reservation.update({
       where: { id: reservationId as string },
       data: {
         depositPaid: true,
