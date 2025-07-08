@@ -89,6 +89,8 @@ export async function POST(request: NextRequest) {
         id: reservationId as string,
       },
       data: {
+        depositPaid: true,
+        ocrResult: true,
         uploadImage: "https://telegraph-image-czf.pages.dev" + result[0].src,
       },
     });
