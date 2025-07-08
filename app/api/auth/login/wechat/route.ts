@@ -75,6 +75,7 @@ export async function POST(req: NextRequest) {
       userId: openid,
       membershipType: user?.membershipType,
       remainBalance: Number(remainBalance[0].balance) || 0,
+      name: user?.name
     },
   });
 }
