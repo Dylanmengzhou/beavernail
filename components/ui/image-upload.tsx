@@ -54,11 +54,12 @@ export function ImageUpload({
       await worker.terminate();
 
       const recognizedText = text.trim();
-      console.log("📝 OCR识别结果:\n", recognizedText);
+      const recognizedWithoutSpace = recognizedText.replace(/\s/g, "");
+      console.log("📝 OCR识别结果:\n", recognizedWithoutSpace);
 
       // 检查是否包含类似"20,000"、"20000"、"20.000"的金额
-      const includesAmount = /20[,.]?000/.test(recognizedText);
-      const includesName = /(정영나|비버네일)/.test(recognizedText);
+      const includesAmount = /20[,.]?000/.test(recognizedWithoutSpace);
+      const includesName = /(정영나|비버네일)/.test(recognizedWithoutSpace);
 
       console.log("\n🔍 检查关键词:");
       console.log("是否包含金额（如20000 / 20,000 / 20.000）:", includesAmount);
@@ -69,7 +70,7 @@ export function ImageUpload({
 
       return {
         success: true,
-        text: recognizedText,
+        text: recognizedWithoutSpace,
         analysis: {
           includesAmount,
           includesName,
@@ -89,51 +90,6 @@ export function ImageUpload({
       };
     } finally {
       setIsProcessingOCR(false);
-    }
-  };
-
-  const updateReservation = async (
-    uploadImage: string,
-    ocrResult: OCRResult
-  ) => {
-    if (!reservationId) {
-      console.log("没有提供reservationId，跳过预约更新");
-      return true; // 如果没有reservationId，也认为是成功的
-    }
-
-    try {
-      const response = await fetch("/api/reservations/update-upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          reservationId,
-          uploadImage,
-          ocrResult,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        console.log("预约更新成功:", result);
-        return true;
-      } else {
-        console.error("预约更新失败:", result.error);
-        toast.error("预约信息更新失败", {
-          duration: 1500,
-          position: "top-center",
-        });
-        return false;
-      }
-    } catch (error) {
-      console.error("预约更新错误:", error);
-      toast.error("预约信息更新失败", {
-        duration: 1500,
-        position: "top-center",
-      });
-      return false;
     }
   };
 
@@ -192,9 +148,16 @@ export function ImageUpload({
         return;
       }
 
-      // 图片符合要求，继续上传
+      // 图片符合要求，调用合并后的API
       const formData = new FormData();
       formData.append("file", file);
+      formData.append(
+        "ocrResult",
+        String(ocrResult.analysis?.isValidImage || false)
+      );
+      if (reservationId) {
+        formData.append("reservationId", reservationId);
+      }
 
       const response = await fetch("/api/upload-image-to-picbed", {
         method: "POST",
@@ -204,30 +167,22 @@ export function ImageUpload({
       const result = await response.json();
 
       if (result.success) {
-        // 图片上传成功，现在更新预约信息
-        const reservationUpdateSuccess = await updateReservation(
-          result.url,
-          ocrResult
-        );
+        toast.success("上传成功！", {
+          duration: 1500,
+          position: "top-center",
+        });
+        onUploadSuccess?.(result.url, ocrResult);
 
-        if (reservationUpdateSuccess) {
-          toast.success("上传成功！", {
-            duration: 1500,
-            position: "top-center",
-          });
-          onUploadSuccess?.(result.url, ocrResult);
-
-          // 如果有reservationId，跳转到历史页面
-          if (reservationId) {
-            setTimeout(() => {
-              router.push(
-                `/reservation/history/singleReservation?reservationId=${reservationId}`
-              );
-            }, 1500); // 1.5秒后跳转，让用户看到成功提示
-          }
+        // 如果有reservationId，跳转到历史页面
+        if (reservationId) {
+          setTimeout(() => {
+            router.push(
+              `/reservation/history/singleReservation?reservationId=${reservationId}`
+            );
+          }, 1500); // 1.5秒后跳转，让用户看到成功提示
         }
       } else {
-        toast.error("上传失败，请重试", {
+        toast.error(result.error || "上传失败，请重试", {
           duration: 1500,
           position: "top-center",
         });

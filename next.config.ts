@@ -12,7 +12,14 @@ const nextConfig: NextConfig = {
     ],
   },
   webpack: (config, { isServer }) => {
-    // 处理tesseract.js在客户端的依赖问题
+    // 🔥 关键配置：处理WebAssembly
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+      layers: true,
+    };
+
+    // 处理tesseract.js的依赖
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -20,9 +27,26 @@ const nextConfig: NextConfig = {
         path: false,
         crypto: false,
       };
+    } else {
+      // 服务器端配置
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        canvas: false,
+        encoding: false,
+      };
+
+      // 🔥 确保WebAssembly文件被正确处理
+      config.module.rules.push({
+        test: /\.wasm$/,
+        type: "webassembly/async",
+      });
     }
 
     return config;
+  },
+  // 🔥 实验性功能
+  experimental: {
+    serverComponentsExternalPackages: ["tesseract.js"],
   },
 };
 
