@@ -52,23 +52,24 @@ model Account {
 }
 
 model Reservation {
-  id            String      @id @default(cuid())
-  date          DateTime
-  timeSlot      String
-  userId        String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  nailArtistId  String?
-  note          String?
+  id                String      @id @default(cuid())
+  date              DateTime
+  timeSlot          String
+  userId            String
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  nailArtistId      String?
+  note              String?
   currentMemberShip String?
-  paymentMethod String?     @default("cash")
-  uploadImage   String?
-  ocrResult     Boolean?
-  finalPrice    Int?
-  currency      String?
-  depositPaid   Boolean?
-  nailArtist    NailArtist? @relation(fields: [nailArtistId], references: [id])
-  user          User        @relation(fields: [userId], references: [id])
+  paymentMethod     String?     @default("cash")
+  uploadImage       String?
+  ocrResult         Boolean?
+  isClick           Boolean?    @default(false)
+  finalPrice        Int?
+  currency          String?
+  depositPaid       Boolean?
+  nailArtist        NailArtist? @relation(fields: [nailArtistId], references: [id])
+  user              User        @relation(fields: [userId], references: [id])
 
   @@unique([date, timeSlot, nailArtistId])
 }
