@@ -12,8 +12,10 @@ import { useSession } from "next-auth/react";
 import { LanguageToggle } from "@/app/component/LanguageToggle";
 import languageData from "@/public/language.json";
 import { useLanguageStore } from "@/store/languageStore";
+import { Single_Day } from "next/font/google";
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
+const single = Single_Day({ weight: "400" });
 export default function MenuComponent({
 	className,
 }: {
@@ -102,7 +104,7 @@ export default function MenuComponent({
 					<div className="relative bg-[url('/nav_texture.svg')] bg-cover bg-center bg-[#f4a3af] bg-blend-soft-light bg-opacity-10 backdrop-filter backdrop-blur-sm rounded-[4rem] w-2/3 max-w-md h-[50vh] md:h-[90vh] mx-4 flex flex-col items-center justify-center shadow-lg">
 						{/* 菜单内容 */}
 						<div
-							className={`h-2/3 text-white text-2xl md:text-4xl flex flex-col items-center justify-between ${zcool.className}`}
+							className={`h-2/3 text-white text-2xl md:text-4xl flex flex-col items-center justify-between ${currentLang === "kr" ? single.className : zcool.className}`}
 						>
 							<a
 								className="hover:text-gray-300 transition-colors"

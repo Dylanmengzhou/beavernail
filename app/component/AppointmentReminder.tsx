@@ -3,6 +3,7 @@ import { ZCOOL_KuaiLe } from "next/font/google";
 import { Coiny } from "next/font/google";
 import { Heart, Loader2 } from "lucide-react";
 import { Single_Day } from "next/font/google";
+import { Emilys_Candy } from "next/font/google";
 import { Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -11,6 +12,7 @@ import { useLanguageStore } from "@/store/languageStore";
 const zcool = ZCOOL_KuaiLe({ subsets: ["latin"], weight: "400" });
 const coiny = Coiny({ subsets: ["latin"], weight: "400" });
 const single = Single_Day({ weight: "400" });
+const emily = Emilys_Candy({ subsets: ["latin"], weight: "400" });	
 
 export default function AppointmentReminder() {
 	const { currentLang } = useLanguageStore();
@@ -155,7 +157,7 @@ export default function AppointmentReminder() {
 				// 加载中显示加载动画
 				<div className="flex flex-col items-center justify-center py-4">
 					<Loader2 className="h-8 w-8 animate-spin mb-2" />
-					<div className={`${zcool.className} text-[#424242]`}>
+					<div className={`${currentLang === "kr" ? single.className : zcool.className} text-[#424242]`}>
 						{data.tag.Loading}
 					</div>
 				</div>
@@ -163,7 +165,7 @@ export default function AppointmentReminder() {
 				// 已登录显示预约信息
 				<>
 					<div
-						className={`${zcool.className} text-[#fa5e75] flex justify-between`}
+						className={`${currentLang === "kr" ? single.className : zcool.className} text-[#fa5e75] flex justify-between`}
 					>
 						<span className="text-xl">
 							{data.tag.AppointmentReminder}
@@ -172,7 +174,7 @@ export default function AppointmentReminder() {
 							<Heart className="inline fill-red-500 w-3 h-3" />
 						</div>
 					</div>
-					<div className={`${zcool.className} text-[#424242]`}>
+					<div className={`${currentLang === "kr" ? single.className : zcool.className} text-[#424242]`}>
 						{data.tag.NextSchedule}
 					</div>
 
@@ -183,7 +185,7 @@ export default function AppointmentReminder() {
 							>
 								<span>{nextReservation.date}</span>
 								<span>{nextReservation.timeSlot}</span>
-								<span className={`${zcool.className} text-xl`}>
+								<span className={`${currentLang === "kr" ? single.className : zcool.className} text-xl`}>
 									{nextReservation.weekDay}
 								</span>
 							</div>
@@ -193,7 +195,7 @@ export default function AppointmentReminder() {
 							{/* 添加倒计时显示 */}
 							{timeLeft && (
 								<div
-									className={`${zcool.className} text-[#fa5e75] text-lg mt-1`}
+									className={`${currentLang === "kr" ? single.className : zcool.className} text-[#fa5e75] text-lg mt-1`}
 								>
 									{data.tag.ApproachingTime.a} {timeLeft.days}{" "}
 									{data.tag.ApproachingTime.b} {timeLeft.hours}{" "}
@@ -204,12 +206,12 @@ export default function AppointmentReminder() {
 							{/* 其他内容保持不变 */}
 						</>
 					) : (
-						<div className={`${zcool.className} text-[#424242]`}>
+						<div className={`${currentLang === "kr" ? single.className : zcool.className} text-[#424242]`}>
 							{data.tag.NoReservation}
 						</div>
 					)}
 					<div
-						className={`${zcool.className} text-[#424242] text-xl`}
+						className={`${currentLang === "kr" ? single.className : currentLang === "en" ? emily.className : zcool.className} text-[#424242] text-xl`}
 					>
 						<div className="">
 							<span className="">{data.tag.StoreAddress}</span>
